@@ -30,7 +30,7 @@ export default function DashboardVisitor(props) {
 
             <Layout>
 
-                <Content style={{ padding: /* '0 50px' */20, minHeight: 380, background: colorBgContainer }}>
+                <Content style={{ padding: /* '0 50px' */24, minHeight: 380, background: colorBgContainer }}>
 
                     {/*                     <Breadcrumb separator=">" style={{ margin: '16px 0' }}>
                         <Breadcrumb.Item>啊吧啊吧</Breadcrumb.Item>
@@ -44,7 +44,6 @@ export default function DashboardVisitor(props) {
                         {/* <Route path="/" element={<RedirectOnce />} /> */}
                         <Route path="/" element={<Navigate to="/menu" />} />
                         <Route path="/menu" element={<Menu/>} />
-                        <Route path="/grafica" element={<Navigate to="/grafica/humedad" />} />                        
                         <Route path="/grafica/humedad" element={<GraficaHumedad/>} />
                         <Route path="/grafica/temperatura" element={<GraficaTemp/>} />
                         <Route path="/grafica/Eco2" element={<GraficaEco2/>} />

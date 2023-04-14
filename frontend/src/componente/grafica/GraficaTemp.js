@@ -23,78 +23,37 @@ const GraficaTemp = () => {
     );
   }
 
-  const chartData = data.map((item) => ({
-    date: item.time_index,
-    temp: parseFloat(item.temperatura),
-    entityId: item.entity_id,
+  const chartData = data.labels.map((label, index) => ({
+    date: label,
+    temp: data.valuesTemperatura[index],
   }));
 
-  const calculateStats = (data, entityId) => {
-    const filteredData = data.filter((item) => item.entityId === entityId);
-    const minValue = Math.min(...filteredData.map((item) => item.temp));
-    const maxValue = Math.max(...filteredData.map((item) => item.temp));
-    const avgValue = filteredData.reduce((acc, item) => acc + item.temp, 0) / filteredData.length;
-    return { minValue, maxValue, avgValue };
-  };
-
-  const nodo1Stats = calculateStats(chartData, 'nodo1');
-  const nodo2Stats = calculateStats(chartData, 'nodo2');
-  const nodo3Stats = calculateStats(chartData, 'nodo3');
-
-  const config_1 = {
+  const config = {
     data: chartData,
     xField: 'date',
     yField: 'temp',
-    seriesField: 'entityId',
     xAxis: {
-      type: 'time',
+      label: {
+        autoRotate: false,
+      },
     },
     slider: {
-      start: 0.3,
-      end: 0.5,
+      start: 0,
+      end: 1,
     },
-    legend: {
-      custom: true,
-      items: [
-        { id: 'nodo1', name: 'nodo1', value: 'nodo1', marker: { symbol: 'square', style: { fill: '#5AD8A6' } } },
-        { id: 'nodo2', name: 'nodo2', value: 'nodo2', marker: { symbol: 'square', style: { fill: '#5D7092' } } },
-        { id: 'nodo3', name: 'nodo3', value: 'nodo3', marker: { symbol: 'square', style: { fill: '#5B8FF9' } } },
-      ],
+    scrollbar: {
+      type: 'horizontal',
     },
   };
-  const config_2 = {
-    data: chartData,
-    xField: 'date',
-    yField: 'temp',
-    xAxis: {
-      type: 'time',
-    },
-    seriesField: 'entityId',
-    legend: {
-      custom: true,
-      items: [
-        { id: 'nodo1', name: 'nodo1', value: 'nodo1', marker: { symbol: 'square', style: { fill: '#5AD8A6' } } },
-        { id: 'nodo2', name: 'nodo2', value: 'nodo2', marker: { symbol: 'square', style: { fill: '#5D7092' } } },
-        { id: 'nodo3', name: 'nodo3', value: 'nodo3', marker: { symbol: 'square', style: { fill: '#5B8FF9' } } },
-      ],
-    },
-  };
+
   return (
     <div
       style={{
-        paddingTop: '10px',
+        paddingTop: '160px',
+
       }}
     >
-      <div class="text-center">
-        <span class="text-style">Temperatura</span>
-      </div>
-      <Line {...config_1} />
-      <div
-        style={{
-          paddingTop: '20px',
-        }}
-      ></div>
-      <Line {...config_2} />
+      <Line {...config} />
     </div>
   );
 };
