@@ -28,7 +28,7 @@ export default class List extends Component {
   render() {
     return (
       <>
-        
+
         <Row xs={1} md={4} className="g-4">
           {this.state.productos.map(p => {
             return (

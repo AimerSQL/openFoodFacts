@@ -6,17 +6,21 @@ const useJsonData = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('../../../1.json');
+        const response = await fetch('../../../unir.json');
         const jsonData = await response.json();
-        
 
-        const labels = jsonData.map((item) => new Date(parseInt(item.time_index)).toLocaleString());
-        const valuesHumedad = jsonData.map((item) => parseFloat(item.humedad));
-        const valuesTemperatura = jsonData.map((item) => parseFloat(item.temperatura));
+        const allData = jsonData.reduce((acc, item) => {
+          const newItem = {
+            ...item,
+            time_index: new Date(parseInt(item.time_index))//.toLocaleString(),
+          };
+          acc.push(newItem);
+          return acc;
+        }, []);
 
-        setTimeout(() => {
-            setData({ labels, valuesHumedad, valuesTemperatura });
-          }, 666);
+        allData.sort((a, b) => new Date(a.time_index) - new Date(b.time_index));
+
+        setData(allData);
       } catch (error) {
         console.error('Error fetching JSON data:', error);
       }

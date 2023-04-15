@@ -40,7 +40,7 @@ export default class Menu extends Component {
                             </Col>
                             <Col xs="auto">
                                 <Link to={`/foodInfo/${this.state.id}`}>
-                                    <Button type="primary" icon={<SearchOutlined/>} size={'large'}>
+                                    <Button type="primary" icon={<SearchOutlined />} size={'large'}>
                                         Buscar
                                     </Button>
                                 </Link>

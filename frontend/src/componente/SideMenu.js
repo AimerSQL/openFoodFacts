@@ -8,7 +8,7 @@ import {
 import { Layout, Menu } from 'antd';
 const { Sider } = Layout;
 
-export default function sideMenu () {
+export default function sideMenu() {
 
     return (
         <Sider trigger={null} collapsible>

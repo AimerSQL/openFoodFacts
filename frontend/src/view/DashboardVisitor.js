@@ -24,43 +24,44 @@ export default function DashboardVisitor(props) {
 
     return (
         <BrowserRouter>
-        <Layout>
-
-            <TopHeader />
-
             <Layout>
 
-                <Content style={{ padding: /* '0 50px' */24, minHeight: 380, background: colorBgContainer }}>
+                <TopHeader />
 
-                    {/*                     <Breadcrumb separator=">" style={{ margin: '16px 0' }}>
-                        <Breadcrumb.Item>啊吧啊吧</Breadcrumb.Item>
-                        <Breadcrumb.Item>啊吧啊吧</Breadcrumb.Item>
-                    </Breadcrumb> */}
+                <Layout>
 
-                                       {/*  <div style={{ padding: 24, minHeight: 380, background: colorBgContainer }}>Content</div> */}
-                    
-                    <Routes>
+                    <Content style={{ padding: /* '0 50px' */20, minHeight: 380, background: colorBgContainer }}>
 
-                        {/* <Route path="/" element={<RedirectOnce />} /> */}
-                        <Route path="/" element={<Navigate to="/menu" />} />
-                        <Route path="/menu" element={<Menu/>} />
-                        <Route path="/grafica/humedad" element={<GraficaHumedad/>} />
-                        <Route path="/grafica/temperatura" element={<GraficaTemp/>} />
-                        <Route path="/grafica/Eco2" element={<GraficaEco2/>} />
-                        <Route path="/grafica/Tvoc" element={<GraficaTvoc/>} />
-                        <Route path="/grafica" element={<Navigate to="/grafica/humedad" />} />
-                        <Route path="/foodInfo/:id" element={<FoodInfo/>}/>
+                        {/*<Breadcrumb separator=">" style={{ margin: '16px 0' }}>
+                            <Breadcrumb.Item>啊吧啊吧</Breadcrumb.Item>
+                            <Breadcrumb.Item>啊吧啊吧</Breadcrumb.Item>
+                        </Breadcrumb> */}
 
-                    </Routes>
-                    
-                    
-                </Content>
+                        {/*<div style={{ padding: 24, minHeight: 380, background: colorBgContainer }}>Content</div> */}
+
+                        <Routes>
+
+                            {/* <Route path="/" element={<RedirectOnce />} /> */}
+                            <Route path="/" element={<Navigate to="/menu" />} />
+                            <Route path="/menu" element={<Menu />} />
+                            <Route path="/grafica" element={<Navigate to="/grafica/humedad" />} />
+                            <Route path="/grafica/humedad" element={<GraficaHumedad />} />
+                            <Route path="/grafica/temperatura" element={<GraficaTemp />} />
+                            <Route path="/grafica/Eco2" element={<GraficaEco2 />} />
+                            <Route path="/grafica/Tvoc" element={<GraficaTvoc />} />
+                            <Route path="/grafica" element={<Navigate to="/grafica/humedad" />} />
+                            <Route path="/foodInfo/:id" element={<FoodInfo />} />
+
+                        </Routes>
+
+
+                    </Content>
+
+                </Layout>
+
+                <Footer style={{ textAlign: 'center' }}>TFG UPM ETSISI 2022 - 2023</Footer>
 
             </Layout>
-
-            <Footer style={{ textAlign: 'center' }}>TFG UPM ETSISI 2022 - 2023</Footer>
-
-        </Layout>
         </BrowserRouter>
     )
 }
