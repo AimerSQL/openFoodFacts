@@ -14,7 +14,7 @@ import GraficaTemp from '../componente/grafica/GraficaTemp'
 import GraficaEco2 from '../componente/grafica/GraficaEco2'
 import GraficaTvoc from '../componente/grafica/GraficaTvoc'
 import Menu from '../componente/Menu'
-import FoodInfo from '../componente/foodInfo'
+import FoodInfo from '../componente/FoodInfo'
 const { Content, Footer } = Layout;
 
 export default function DashboardVisitor(props) {

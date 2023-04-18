@@ -3,12 +3,12 @@ import { Container } from 'react-bootstrap';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import axios from 'axios';
-
 import { useParams } from 'react-router-dom';
 
-function Food() {
+function FoodInfo() {
   const [productos, setProductos] = useState([]);
   const { id } = useParams();
+  const fallbackImage = 'https://media-cldnry.s-nbcnews.com/image/upload/t_fit-1240w,f_auto,q_auto:best/rockcms/2022-03/plant-based-food-mc-220323-be3500.jpg';
 
   useEffect(() => {
     getfood(id);
@@ -17,18 +17,27 @@ function Food() {
   const getfood = async (id) => {
     await axios.get(`http://localhost:4000/food/${id}`).then(response => {
       setProductos(response.data);
-    })
-  }
+    });
+  };
 
   const product = productos[0];
-  const imgURL = product ? product.img : '';
 
   return (
     <>
-
       <Container>
         <Row className="mt-2">
-          <Col><img src={imgURL} className="rounded mx-auto d-block" alt="" /></Col>
+          <Col>
+            {product ? (
+              <img
+                src={product.img || fallbackImage}
+                onError={(e) => (e.target.src = fallbackImage)}
+                className="rounded mx-auto d-block"
+                alt=""
+              />
+            ) : (
+              <img src={fallbackImage} className="rounded mx-auto d-block" alt="" />
+            )}
+          </Col>
           <Col>
             <Row className="mb-2"><p>Codigo de barra: {product ? product.id : ''}</p></Row>
             <Row className="mb-2"><p>Nombre: {product ? product.product_name : ''}</p></Row>
@@ -48,4 +57,4 @@ function Food() {
   );
 }
 
-export default Food;
+export default FoodInfo;

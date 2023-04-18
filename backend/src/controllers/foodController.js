@@ -14,7 +14,7 @@ foodController.getFoods = async (req, res) => {
     let transportLike = 0;
     const cod = (req.params.id).replace(/,/g,'');
     const productos = await axios.get('https://world.openfoodfacts.org/api/v0/product/' + cod + '.json');
-    await votModel.find().then(data => {
+    /* await votModel.find().then(data => {
         data.forEach(element => {
             if (element.vot[cod]["en:manufacturing"] == true) {
                 manufacturingLike++;
@@ -36,7 +36,7 @@ foodController.getFoods = async (req, res) => {
             }
             totalProductos++;
         });
-    });
+    }); */
 
     data.push({
         id: req.params.id,
@@ -46,12 +46,12 @@ foodController.getFoods = async (req, res) => {
         brand: productos["data"]["product"]["brands"],
         etiquetas: productos["data"]["product"]["labels_old"],
         country: productos["data"]["product"]["countries"],
-        manufacturing: Math.round((manufacturingLike / totalProductos) * 100),
+        /* manufacturing: Math.round((manufacturingLike / totalProductos) * 100),
         packaging: Math.round((packagingLike / totalProductos) * 100),
         palmoil: Math.round((palmoilLike / totalProductos) * 100),
         size: Math.round((sizeLike / totalProductos) * 100),
         storage: Math.round((storageLike / totalProductos) * 100),
-        transport: Math.round((transportLike / totalProductos) * 100)
+        transport: Math.round((transportLike / totalProductos) * 100) */
     });
 
     res.json(data);
