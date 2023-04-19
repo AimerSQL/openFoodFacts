@@ -3,6 +3,8 @@ const axios = require('axios');
 
 
 const votModel = require('../models/votModel');
+const productModel = require('../models/productModel')
+
 foodController.getFoods = async (req, res) => {
     const data = [];
     let totalProductos = 0;
@@ -12,7 +14,7 @@ foodController.getFoods = async (req, res) => {
     let sizeLike = 0;
     let storageLike = 0;
     let transportLike = 0;
-    const cod = (req.params.id).replace(/,/g,'');
+    const cod = (req.params.id).replace(/,/g, '');
     const productos = await axios.get('https://world.openfoodfacts.org/api/v0/product/' + cod + '.json');
     /* await votModel.find().then(data => {
         data.forEach(element => {
@@ -56,7 +58,7 @@ foodController.getFoods = async (req, res) => {
 
     res.json(data);
 }
-foodController.getAllFoods = async (req, res) => {
+/*foodController.getAllFoods = async (req, res) => {
     const data = [];
     const producto = await votModel.find();
     const cod = Object.keys(producto[0].vot);
@@ -74,6 +76,27 @@ foodController.getAllFoods = async (req, res) => {
         })
     }
     res.json(data);
+}*/
+
+foodController.getAllFoods = async (req, res) => {
+    try {
+        const productos = await productModel.find().limit(100);
+        const filteredProductos = productos.map(producto => {
+            return {
+                _id: producto._id ? producto._id : "",
+                product_name: producto.product_name ? producto.product_name : "",
+                brand: producto.brand ? producto.brand : "",
+                countries_en: producto.countries_en ? producto.countries_en : "",
+                ingretients_text: producto.ingretients_text ? producto.ingretients_text : "",
+                image_url: producto.image_url ? producto.image_url : "",
+                categories: producto.categories ? producto.categories : ""
+            };
+        });
+        res.json(filteredProductos);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'error get' });
+    }
 }
 
 module.exports = foodController;

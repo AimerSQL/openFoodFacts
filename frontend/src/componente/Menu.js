@@ -11,7 +11,7 @@ const Menu = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get('http://localhost:4000/food');
+                const response = await axios.get('http://localhost:4000/products');
                 setTimeout(() => {
                     setProductos(response.data);
                     setLoading(false);
@@ -19,6 +19,7 @@ const Menu = () => {
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
+            console.log(productos)
         };
 
         fetchData();
@@ -74,10 +75,10 @@ const Menu = () => {
                                             paddingTop: '20px',
                                         }}
                                     >
-                                        {p.img ? (
+                                        {p.image_url ? (
                                             <img
                                                 alt="example"
-                                                src={p.img}
+                                                src={p.image_url}
                                                 style={{ maxHeight: '100%', maxWidth: '100%', objectFit: 'contain' }}
                                             />
                                         ) : (
