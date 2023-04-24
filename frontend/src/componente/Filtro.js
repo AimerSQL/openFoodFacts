@@ -1,62 +1,62 @@
 import React, { useState } from 'react';
-import { Form, Select, Button, Card } from 'antd';
+import { Form, Input, Button, Card } from 'antd';
 import './Filtro.css';
+import axios from 'axios';
+import CircularJSON from 'circular-json';
 
 const FilterForm = ({ onFilterSubmit }) => {
   const [form] = Form.useForm();
   const [categories, setCategories] = useState('');
-  const [brand, setBrand] = useState('');
+  const [brands, setBrands] = useState('');
   const [countries, setCountries] = useState('');
 
   const handleSubmit = () => {
-    onFilterSubmit({ categories, brand, countries });
+    const data = {
+      categories: 'some category',
+      brand: 'some brand',
+      countries: 'some countries'
+    };
+
+    const dataString = CircularJSON.stringify(data);
+    axios.post('/api/filtered-products', dataString, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(response => {
+        onFilterSubmit(response.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
   };
 
   return (
     <Card title="筛选器" bordered={true} className="filter-form-card">
-      <Form layout="vertical" form={form} onFinish={handleSubmit}>
+      <Form layout="vertical" form={form}>
         <Form.Item label="Categorías" name="categories" className="form-item">
-          <Select
-            className="select"
-            style={{ width: 200 }}
-            placeholder="选择分类"
+          <Input
+            placeholder="Basic usage"
             onChange={(value) => setCategories(value)}
-          >
-            {/* 在这里添加分类选项 */}
-            <Select.Option value="category1">分类1</Select.Option>
-            <Select.Option value="category2">分类2</Select.Option>
-          </Select>
+          />
         </Form.Item>
 
         <Form.Item label="Marca" name="brand" className="form-item">
-          <Select
-            className="select"
-            style={{ width: 200 }}
-            placeholder="选择品牌"
-            onChange={(value) => setBrand(value)}
-          >
-            {/* 在这里添加品牌选项 */}
-            <Select.Option value="brand1">品牌1</Select.Option>
-            <Select.Option value="brand2">品牌2</Select.Option>
-          </Select>
+          <Input
+            placeholder="Basic usage"
+            onChange={(value) => setBrands(value)}
+          />
         </Form.Item>
 
         <Form.Item label="Paises de venta" name="countries" className="form-item">
-          <Select
-            className="select"
-            style={{ width: 200 }}
-            placeholder="选择销售国家"
+          <Input
+            placeholder="Basic usage"
             onChange={(value) => setCountries(value)}
-            allowClear
-          >
-            {/* 在这里添加国家选项 */}
-            <Select.Option value="country1">国家1</Select.Option>
-            <Select.Option value="country2">国家2</Select.Option>
-          </Select>
+          />
         </Form.Item>
 
         <Form.Item className="form-item">
-          <Button type="primary" htmlType="submit">
+          <Button type="primary" onClick={handleSubmit}>
             提交
           </Button>
         </Form.Item>

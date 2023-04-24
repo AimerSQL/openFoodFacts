@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const foodController = require('./controllers/foodController'); // 引入 foodController 模块
+const foodController = require('./controllers/foodController');
+const productController = require('./controllers/productController'); // 引入 productController 模块
 
 /**
  * @swagger
@@ -8,6 +9,33 @@ const foodController = require('./controllers/foodController'); // 引入 foodCo
  *   get:
  *     summary: 获取产品列表
  *     description: 获取所有产品的列表
+ *     responses:
+ *       200:
+ *         description: 成功获取产品列表
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/products'
+ *
+ * /filtered-products:
+ *   post:
+ *     summary: 获取产品列表
+ *     description: 根据筛选条件获取产品的列表
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               categories:
+ *                 type: string
+ *               brands:
+ *                 type: string
+ *               countries:
+ *                 type: string
  *     responses:
  *       200:
  *         description: 成功获取产品列表
@@ -49,6 +77,10 @@ const foodController = require('./controllers/foodController'); // 引入 foodCo
 
 router.get('/products', async (req, res) => {
     await foodController.getAllFoods(req, res);
+});
+
+router.post('/filtered-products', async (req, res) => {
+    await productController.getFilteredProducts(req, res);
 });
 
 module.exports = router;

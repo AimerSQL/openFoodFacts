@@ -1,7 +1,7 @@
 .filter-form-card {
   border-width: 5px;
-  border-color: #91d5ff;
   border-style: solid;
+  max-width: 300px;
 }
 
 .form-item {
