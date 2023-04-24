@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Form, Input, Button, Card } from 'antd';
 import './Filtro.css';
 import axios from 'axios';
-import CircularJSON from 'circular-json';
+//import CircularJSON from 'circular-json';
 
 const FilterForm = ({ onFilterSubmit }) => {
   const [form] = Form.useForm();
@@ -12,19 +12,15 @@ const FilterForm = ({ onFilterSubmit }) => {
 
   const handleSubmit = () => {
     const data = {
-      categories: 'some category',
-      brand: 'some brand',
-      countries: 'some countries'
+      categories: 'Produits laitiers',
+      brands: '',
+      countries: '',
     };
 
-    const dataString = CircularJSON.stringify(data);
-    axios.post('/api/filtered-products', dataString, {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
+    //const dataString = CircularJSON.stringify(data);
+    axios.post('http://localhost:4000/filtered-products', data)
       .then(response => {
-        onFilterSubmit(response.data);
+        console.log(response.data);
       })
       .catch(error => {
         console.log(error);
@@ -32,7 +28,7 @@ const FilterForm = ({ onFilterSubmit }) => {
   };
 
   return (
-    <Card title="筛选器" bordered={true} className="filter-form-card">
+    <Card title="Filtro" bordered={true} className="filter-form-card">
       <Form layout="vertical" form={form}>
         <Form.Item label="Categorías" name="categories" className="form-item">
           <Input
@@ -57,7 +53,7 @@ const FilterForm = ({ onFilterSubmit }) => {
 
         <Form.Item className="form-item">
           <Button type="primary" onClick={handleSubmit}>
-            提交
+            buscar
           </Button>
         </Form.Item>
       </Form>

@@ -7,11 +7,11 @@ const productController = require('./controllers/productController'); // 引入 
  * @swagger
  * /products:
  *   get:
- *     summary: 获取产品列表
- *     description: 获取所有产品的列表
+ *     summary: get products
+ *     description: get products
  *     responses:
  *       200:
- *         description: 成功获取产品列表
+ *         description: successful get
  *         content:
  *           application/json:
  *             schema:
@@ -21,8 +21,8 @@ const productController = require('./controllers/productController'); // 引入 
  *
  * /filtered-products:
  *   post:
- *     summary: 获取产品列表
- *     description: 根据筛选条件获取产品的列表
+ *     summary: get filter products
+ *     description: get filter products
  *     requestBody:
  *       required: true
  *       content:
@@ -38,7 +38,7 @@ const productController = require('./controllers/productController'); // 引入 
  *                 type: string
  *     responses:
  *       200:
- *         description: 成功获取产品列表
+ *         description: get products
  *         content:
  *           application/json:
  *             schema:
