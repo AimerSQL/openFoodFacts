@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const foodController = require('./controllers/foodController');
-const productController = require('./controllers/productController'); // 引入 productController 模块
+const productController = require('./controllers/productController');
 
 /**
  * @swagger
@@ -18,7 +18,31 @@ const productController = require('./controllers/productController'); // 引入 
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/products'
- *
+  * /products/{productId}:
+ *   get:
+ *     summary: Get a product by ID
+ *     description: Returns a single product by its ID
+ *     parameters:
+ *       - in: path
+ *         name: productId
+ *         description: ID of the product to retrieve
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/products'
+ *       404:
+ *         description: Product not found
+ *       500:
+ *         description: Internal server error
+ * 
+
+ * 
  * /filtered-products:
  *   post:
  *     summary: get filter products
@@ -73,14 +97,31 @@ const productController = require('./controllers/productController'); // 引入 
  *         countries_en:
  *           type: string
  *           description: The country of origin of the product
+ * 
+ *     Product:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: string
+ *           description: The product ID
+ * 
  */
 
 router.get('/products', async (req, res) => {
     await foodController.getAllFoods(req, res);
 });
 
+router.get('/products/:productId', async (req, res) => {
+    await productController.getProductById(req, res);
+  
+  });
+
 router.post('/filtered-products', async (req, res) => {
     await productController.getFilteredProducts(req, res);
 });
 
+
 module.exports = router;
+
+
+

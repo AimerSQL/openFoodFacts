@@ -15,6 +15,7 @@ import GraficaEco2 from '../componente/grafica/GraficaEco2'
 import GraficaTvoc from '../componente/grafica/GraficaTvoc'
 import Menu from '../componente/Menu'
 import FoodInfo from '../componente/FoodInfo'
+import FilteredProducts from '../componente/FilteredProducts'
 const { Content, Footer } = Layout;
 
 export default function DashboardVisitor(props) {
@@ -51,8 +52,8 @@ export default function DashboardVisitor(props) {
                             <Route path="/grafica/Tvoc" element={<GraficaTvoc />} />
                             <Route path="/grafica" element={<Navigate to="/grafica/humedad" />} />
                             <Route path="/foodInfo/:id" element={<FoodInfo />} />
+                            <Route path="/filtered-products" element={<FilteredProducts />} />
                             <Route path="/foodInfo" element={<Navigate to="/menu" />} />
-
                         </Routes>
 
 

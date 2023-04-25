@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import upmEtsisiLogo from '../fotos/upmEtsisiLogo.jpg';
 import { AreaChartOutlined, PictureOutlined, SearchOutlined } from '@ant-design/icons';
 import { Layout, Menu, Input } from 'antd';
-import { useNavigate, useLocation, Navigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const { Header } = Layout;
 const { Search } = Input;

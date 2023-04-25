@@ -1,28 +1,30 @@
 const Product = require('../models/productModel');
-
+const mongoose = require('mongoose');
 const productController = {};
 
 productController.getFilteredProducts = async (req, res) => {
   try {
-    const { categories, brand, countries } = req.body;
+    const { categories, brands, countries } = req.body;
 
-    console.log(req.body)
     const query = {};
+    const andConditions = [];
 
     if (categories) {
-      const categoryArray = categories.split(',').map(category => category.trim());
-      query.categories = { $in: categoryArray.map(category => new RegExp(category, 'i')) };
+      andConditions.push({ categories: { $regex: new RegExp(categories, 'i') } });
     }
-
-    if (brand) {
-      query.brands = { $regex: new RegExp(brand, 'i') };
+    
+    if (brands) {
+      andConditions.push({ brands: { $regex: new RegExp(brands, 'i') } });
     }
-
+    
     if (countries) {
-      query.countries_en = { $regex: new RegExp(countries, 'i') };
+      andConditions.push({ countries: { $regex: new RegExp(countries, 'i') } });
+    }
+    
+    if (andConditions.length > 0) {
+      query.$and = andConditions;
     }
 
-    console.log(query)
     const products = await Product.find(query);
 
     res.json({
@@ -34,5 +36,20 @@ productController.getFilteredProducts = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
+
+
+productController.getProductById = async (req, res) => {
+  try {
+    const id = mongoose.Types.ObjectId(req.params.productId);
+    const product = await Product.findById(id);
+    if (!product) {
+      return res.status(404).json({ error: 'Product not found' });
+    }
+    res.json(product);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send('Server Error');
+  }
+}
 
 module.exports = productController;

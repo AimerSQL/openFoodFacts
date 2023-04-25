@@ -2,25 +2,27 @@ import React, { useState } from 'react';
 import { Form, Input, Button, Card } from 'antd';
 import './Filtro.css';
 import axios from 'axios';
-//import CircularJSON from 'circular-json';
+import { useNavigate, useLocation } from 'react-router-dom';
+
 
 const FilterForm = ({ onFilterSubmit }) => {
   const [form] = Form.useForm();
-  const [categories, setCategories] = useState('');
-  const [brands, setBrands] = useState('');
-  const [countries, setCountries] = useState('');
+  const navigate = useNavigate();
+
 
   const handleSubmit = () => {
+    const categoriesValue = form.getFieldValue("categories");
+    const brandsValue = form.getFieldValue("brand");
+    const countriesValue = form.getFieldValue("countries");
     const data = {
-      categories: 'Produits laitiers',
-      brands: '',
-      countries: '',
+      categories: categoriesValue,
+      brands: brandsValue,
+      countries: countriesValue,
     };
 
-    //const dataString = CircularJSON.stringify(data);
     axios.post('http://localhost:4000/filtered-products', data)
       .then(response => {
-        console.log(response.data);
+        navigate('/filtered-products', { state: response.data });
       })
       .catch(error => {
         console.log(error);
@@ -31,24 +33,15 @@ const FilterForm = ({ onFilterSubmit }) => {
     <Card title="Filtro" bordered={true} className="filter-form-card">
       <Form layout="vertical" form={form}>
         <Form.Item label="Categorías" name="categories" className="form-item">
-          <Input
-            placeholder="Basic usage"
-            onChange={(value) => setCategories(value)}
-          />
+          <Input placeholder="Basic usage" />
         </Form.Item>
 
         <Form.Item label="Marca" name="brand" className="form-item">
-          <Input
-            placeholder="Basic usage"
-            onChange={(value) => setBrands(value)}
-          />
+          <Input placeholder="Basic usage" />
         </Form.Item>
 
         <Form.Item label="Paises de venta" name="countries" className="form-item">
-          <Input
-            placeholder="Basic usage"
-            onChange={(value) => setCountries(value)}
-          />
+          <Input placeholder="Basic usage" />
         </Form.Item>
 
         <Form.Item className="form-item">
