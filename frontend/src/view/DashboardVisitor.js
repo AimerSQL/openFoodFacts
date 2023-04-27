@@ -53,7 +53,6 @@ export default function DashboardVisitor(props) {
                             <Route path="/grafica" element={<Navigate to="/grafica/humedad" />} />
                             <Route path="/foodInfo/:id" element={<FoodInfo />} />
                             <Route path="/filtered-products" element={<FilteredProducts />} />
-                            <Route path="/foodInfo" element={<Navigate to="/menu" />} />
                         </Routes>
 
 

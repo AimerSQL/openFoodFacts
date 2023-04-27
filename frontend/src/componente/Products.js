@@ -2,9 +2,12 @@ import { useState } from "react";
 import { Row, Col, Card, Pagination } from "antd";
 import { Link } from "react-router-dom";
 
+
 function Products({ productos }) {
     const [currentPage, setCurrentPage] = useState(1);
     const [hoveredCard, setHoveredCard] = useState(null);
+
+
     const handleMouseEnter = (id) => {
         setHoveredCard(id);
     };
@@ -12,7 +15,7 @@ function Products({ productos }) {
     const handleMouseLeave = () => {
         setHoveredCard(null);
     };
-    //console.log(productos)
+
     return (
 
         <Col xs={24} sm={24} md={18} lg={18} xl={18}>
@@ -95,7 +98,7 @@ function Products({ productos }) {
                     </Col>
                 ))}
             </Row>
-            <Row>
+            {/* <Row>
                 <Col
                     xs={{ span: 24 }}
                     sm={{ span: 24 }}
@@ -108,13 +111,9 @@ function Products({ productos }) {
                         marginTop: "20px",
                     }}
                 >
-                    <Pagination
-                        current={currentPage}
-                        onChange={(page) => setCurrentPage(page)}
-                        total={500} // 这里需要替换为从服务器获取的产品总数
-                    />
+                   
                 </Col>
-            </Row>
+            </Row> */}
         </Col>
 
     );

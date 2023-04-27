@@ -5,7 +5,7 @@ import Products from './Products';
 const FilteredProducts = () => {
     const location = useLocation();
     const data = location.state;
-    //console.log(data.count)
+    
     return (
         <>
             <Products productos={data.products} />

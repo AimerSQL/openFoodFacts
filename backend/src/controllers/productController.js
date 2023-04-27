@@ -5,9 +5,12 @@ const productController = {};
 productController.getFilteredProducts = async (req, res) => {
   try {
     const { categories, brands, countries } = req.body;
-
     const query = {};
     const andConditions = [];
+
+    if (countries) {
+      andConditions.push({ countries_en: { $regex: new RegExp(countries, 'i') } });
+    }
 
     if (categories) {
       andConditions.push({ categories: { $regex: new RegExp(categories, 'i') } });
@@ -17,9 +20,7 @@ productController.getFilteredProducts = async (req, res) => {
       andConditions.push({ brands: { $regex: new RegExp(brands, 'i') } });
     }
     
-    if (countries) {
-      andConditions.push({ countries: { $regex: new RegExp(countries, 'i') } });
-    }
+
     
     if (andConditions.length > 0) {
       query.$and = andConditions;

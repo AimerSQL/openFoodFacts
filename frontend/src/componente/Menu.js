@@ -25,7 +25,7 @@ const Menu = () => {
     };
 
     useEffect(() => {
-        fetchData(currentPage, 18);
+        fetchData(currentPage, 12);
     }, [currentPage]);
 
     const handleMouseEnter = (id) => {
@@ -61,8 +61,24 @@ const Menu = () => {
                         <Filtro />
                     </div>
                 </Col>
-                <Products productos={productos} />
+                <Products productos={productos.data} />
             </Row>
+
+
+            <Row>
+                <Col xs={24} sm={24} md={24} lg={24} xl={24} style={{ textAlign: 'center', marginTop: '20px', marginLeft: '12%' }}>
+                    <Pagination
+                        current={currentPage}
+                        onChange={(page) => setCurrentPage(page)}
+                        total={productos.totalCount}
+                        showSizeChanger={false}
+                        defaultPageSize={12}
+                    />
+                </Col>
+            </Row>
+
+
+
         </>
     );
 };
