@@ -20,7 +20,6 @@ productController.getFilteredProducts = async (req, res) => {
       andConditions.push({ brands: { $regex: new RegExp(brands, 'i') } });
     }
     
-
     
     if (andConditions.length > 0) {
       query.$and = andConditions;

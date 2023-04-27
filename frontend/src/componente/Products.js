@@ -15,7 +15,6 @@ function Products({ productos }) {
     const handleMouseLeave = () => {
         setHoveredCard(null);
     };
-
     return (
 
         <Col xs={24} sm={24} md={18} lg={18} xl={18}>
