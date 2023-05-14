@@ -15,12 +15,12 @@ productController.getFilteredProducts = async (req, res) => {
     if (categories) {
       andConditions.push({ categories: { $regex: new RegExp(categories, 'i') } });
     }
-    
+
     if (brands) {
       andConditions.push({ brands: { $regex: new RegExp(brands, 'i') } });
     }
-    
-    
+
+
     if (andConditions.length > 0) {
       query.$and = andConditions;
     }
@@ -28,7 +28,7 @@ productController.getFilteredProducts = async (req, res) => {
     const products = await Product.find(query);
 
     res.json({
-      count: products.length, // 添加 count 属性
+      count: products.length,
       products: products
     });
   } catch (err) {
@@ -45,7 +45,28 @@ productController.getProductById = async (req, res) => {
     if (!product) {
       return res.status(404).json({ error: 'Product not found' });
     }
-    res.json(product);
+
+    const filteredProduct = {
+      _id: product._id ? product._id : "",
+      product_name: product.product_name ? product.product_name : "",
+      brand: product.brands ? product.brands : "",
+      countries_en: product.countries_en ? product.countries_en : "",
+      ingretients_text: product.ingretients_text ? product.ingretients_text : "",
+      image_url: product.image_url ? product.image_url : "",
+      categories: product.categories ? product.categories : "",
+      energy_100g: product.energy_100g,
+      fat_100g: product.fat_100g,
+      carbohydrates_100g: product.carbohydrates_100g,
+      sugars_100g: product.sugars_100g,
+      fiber_100g: product.fiber_100g,
+      proteins_100g: product.proteins_100g,
+      salt_100g: product.salt_100g,
+      sodium_100g: product.sodium_100g,
+    };
+
+    console.log(filteredProduct)
+    res.json(filteredProduct);
+
   } catch (error) {
     console.error(error.message);
     res.status(500).send('Server Error');
