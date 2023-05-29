@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Card } from 'antd';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import Valoracion from './rate';
 
 function FoodInfo() {
   const [productos, setProductos] = useState([]);
@@ -27,11 +28,11 @@ function FoodInfo() {
   const tabList = [
     {
       key: 'tab1',
-      tab: 'Informacion del producto',
+      tab: 'Información del producto',
     },
     {
       key: 'tab2',
-      tab: 'Informacion nutricional',
+      tab: 'Información nutricional',
     },
   ];
 
@@ -66,7 +67,11 @@ function FoodInfo() {
   return (
     <>
       <div style={{ display: 'flex', alignItems: 'center' }}>
-        <img style={{ width: '200px' }} src={imgURL} />
+        <div>
+          <img style={{ width: '200px' }} src={imgURL} />
+          <Valoracion></Valoracion>
+        </div>
+
         <Card
           style={{
             width: '100%',

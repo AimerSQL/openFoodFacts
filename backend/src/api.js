@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const foodController = require('./controllers/foodController');
 const productController = require('./controllers/productController');
+const rateController = require('./controllers/rateController');
 
 /**
  * @swagger
@@ -113,11 +114,15 @@ router.get('/products', async (req, res) => {
 
 router.get('/products/:productId', async (req, res) => {
     await productController.getProductById(req, res);
-  
-  });
+
+});
 
 router.post('/filtered-products', async (req, res) => {
     await productController.getFilteredProducts(req, res);
+});
+
+router.get('/rate-products', async (req, res) => {
+    await rateController.getProductRate(req, res);
 });
 
 

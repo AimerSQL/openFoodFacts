@@ -48,6 +48,18 @@ const FilterForm = ({ onFilterSubmit }) => {
           <Input placeholder="Basic usage" />
         </Form.Item>
 
+        <Form.Item label="Paises de venta" name="countries" className="form-item">
+          <Input placeholder="Basic usage" />
+        </Form.Item>
+
+        <Form.Item label="Paises de venta" name="countries" className="form-item">
+          <Input placeholder="Basic usage" />
+        </Form.Item>
+
+        <Form.Item label="Paises de venta" name="countries" className="form-item">
+          <Input placeholder="Basic usage" />
+        </Form.Item>
+
         <Form.Item className="form-item">
           <Button type="primary" onClick={handleSubmit}>
             buscar

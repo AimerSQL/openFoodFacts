@@ -64,7 +64,6 @@ productController.getProductById = async (req, res) => {
       sodium_100g: product.sodium_100g,
     };
 
-    console.log(filteredProduct)
     res.json(filteredProduct);
 
   } catch (error) {
