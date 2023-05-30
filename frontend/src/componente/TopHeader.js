@@ -74,7 +74,12 @@ export default function TopHeader() {
   };
 
   const onSearch = (value) => {
-    navigate(`/foodInfo/${value}`);
+    if (value) {
+      navigate(`/foodInfo/${value}`);
+    }
+    else {
+      navigate(`/menu`);
+    }
   };
 
   const renderMenu = (menuList) => {

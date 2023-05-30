@@ -42,7 +42,30 @@ const rateController = require('./controllers/rateController');
  *       500:
  *         description: Internal server error
  * 
-  * /rate-products/{productId}:
+ * /products/barcode/{barcode}:
+ *   get:
+ *     summary: Get a product by barcode
+ *     description: Returns a single product by its barcode
+ *     parameters:
+ *       - in: path
+ *         name: barcode
+ *         description: barcode of the product to retrieve
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/products'
+ *       404:
+ *         description: Product not found
+ *       500:
+ *         description: Internal server error
+ * 
+ * /rate-products/{productId}:
  *   get:
  *     summary: Get a product rate by ID
  *     description: Get a product rate by ID
@@ -152,6 +175,11 @@ router.get('/products', async (req, res) => {
 
 router.get('/products/:productId', async (req, res) => {
     await productController.getProductById(req, res);
+
+});
+
+router.get('/products/barcode/:barcode', async (req, res) => {
+    await productController.getProductByBarcode(req, res);
 
 });
 

@@ -13,7 +13,7 @@ app.use(express.json());
 
 // 设置 Swagger UI
 app.use('/api-docs', require('swagger-ui-express').serve, require('swagger-ui-express').setup(swaggerSpec));
-//app.use('/food', require('./routers/food')); //obtener codigo de barra
+
 // 使用 api.js 中的路由
 app.use(apiRoutes);
 

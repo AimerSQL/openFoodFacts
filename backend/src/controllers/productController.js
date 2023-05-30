@@ -1,4 +1,5 @@
 const Product = require('../models/productModel');
+const Barcode = require('../models/barcodeModel');
 const mongoose = require('mongoose');
 const productController = {};
 
@@ -62,6 +63,49 @@ productController.getProductById = async (req, res) => {
       proteins_100g: product.proteins_100g,
       salt_100g: product.salt_100g,
       sodium_100g: product.sodium_100g,
+    };
+
+    res.json(filteredProduct);
+
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send('Server Error');
+  }
+}
+
+productController.getProductByBarcode = async (req, res) => {
+  try {
+    const barcode = req.params.barcode;
+    const product = await Barcode.findOne({ barcode: barcode });
+
+    if (!product) {
+      return res.status(404).json({ error: 'Product not found' });
+    }
+
+    const productName = product.product_name;
+
+    const foundProduct = await Product.findOne({ product_name: productName });
+
+    if (!foundProduct) {
+      return res.status(404).json({ error: 'Product not found' });
+    }
+
+    const filteredProduct = {
+      _id: foundProduct._id ? foundProduct._id : "",
+      product_name: foundProduct.product_name ? foundProduct.product_name : "",
+      brand: foundProduct.brands ? foundProduct.brands : "",
+      countries_en: foundProduct.countries_en ? foundProduct.countries_en : "",
+      ingretients_text: foundProduct.ingretients_text ? foundProduct.ingretients_text : "",
+      image_url: foundProduct.image_url ? foundProduct.image_url : "",
+      categories: foundProduct.categories ? foundProduct.categories : "",
+      energy_100g: foundProduct.energy_100g,
+      fat_100g: foundProduct.fat_100g,
+      carbohydrates_100g: foundProduct.carbohydrates_100g,
+      sugars_100g: foundProduct.sugars_100g,
+      fiber_100g: foundProduct.fiber_100g,
+      proteins_100g: foundProduct.proteins_100g,
+      salt_100g: foundProduct.salt_100g,
+      sodium_100g: foundProduct.sodium_100g,
     };
 
     res.json(filteredProduct);

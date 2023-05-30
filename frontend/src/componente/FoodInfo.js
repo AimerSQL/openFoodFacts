@@ -3,18 +3,29 @@ import { Card } from 'antd';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import Valoracion from './rate';
-
+import EmptyPage from './empty';
 function FoodInfo() {
   const [productos, setProductos] = useState([]);
   const [rate, setRate] = useState([]);
   const [loading, setLoading] = useState(true);
   const { id } = useParams();
+  
+  const hasLetter = (id) => {
+    const regex = /[a-zA-Z]/;
+    return regex.test(id);
+  };
 
   const getfood = async (id) => {
-    const response = await axios.get(`http://localhost:4000/products/${id}`);
+    let response;
+    if (hasLetter(id)) {
+      response = await axios.get(`http://localhost:4000/products/${id}`);
+    } else {
+      response = await axios.get(`http://localhost:4000/products/barcode/${id}`);
+    }
     setProductos(response.data);
     setLoading(false);
   };
+
   
   const getrate = async (id) => {
     const response = await axios.get(`http://localhost:4000/rate-products/${id}`);
@@ -78,25 +89,29 @@ function FoodInfo() {
 
   return (
     <>
-      <div style={{ display: 'flex', alignItems: 'center' }}>
-        <div>
-          <img style={{ width: '200px' }} src={imgURL} />
+      {productos.product_name ? (
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <div>
+            <img style={{ width: '200px' }} src={imgURL} />
+          </div>
+  
+          <Card
+            style={{
+              width: '100%',
+              marginLeft: '20px',
+            }}
+            title=""
+            hoverable
+            tabList={tabList}
+            activeTabKey={activeTabKey1}
+            onTabChange={onTab1Change}
+          >
+            {contentList[activeTabKey1]}
+          </Card>
         </div>
-
-        <Card
-          style={{
-            width: '100%',
-            marginLeft: '20px',
-          }}
-          title=""
-          hoverable
-          tabList={tabList}
-          activeTabKey={activeTabKey1}
-          onTabChange={onTab1Change}
-        >
-          {contentList[activeTabKey1]}
-        </Card>
-      </div>
+      ) : (
+        <EmptyPage />
+      )}
     </>
   );
 }
