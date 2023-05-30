@@ -15,7 +15,7 @@ const productSchema = new Schema({
     sodium_100g: { type: Number },
     image_url: { type: String },
     categories: [{ type: String }],
-
+    nutriscore_grade: { type: String },
 
 }, {
     collection: 'productos'

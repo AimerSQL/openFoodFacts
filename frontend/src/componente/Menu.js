@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Row, Col, Skeleton, Pagination } from 'antd';
+import { Row, Col, Skeleton, Pagination } from 'antd';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
 import Products from './Products';
 import Filtro from './Filtro';
 

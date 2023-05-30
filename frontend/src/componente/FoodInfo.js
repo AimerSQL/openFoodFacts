@@ -49,7 +49,7 @@ function FoodInfo() {
     },
     {
       key: 'tab2',
-      tab: 'Información nutricional',
+      tab: 'Información nutricional (100 g / 100 ml)',
     },
     {
       key: 'tab3',
@@ -59,22 +59,22 @@ function FoodInfo() {
 
   const contentList = {
     tab1: <div>
-      <p>Nombre: {product.product_name}</p>
-      <p>Marca: {product.brand}</p>
-      <p>Pais de origen: {product.countries_en}</p>
-      <p>Ingredientes: {product.ingretients_text}</p>
-      <p>Categorias: {product.categories}</p>
+      <p>Nombre: {product.product_name ? product.product_name : "?"}</p>
+      <p>Marca: {product.brand ? product.brand : "?"}</p>
+      <p>Pais de origen: {product.countries_en ? product.countries_en : "?"}</p>
+      <p>Ingredientes: {product.ingretients_text ? product.ingretients_text : "?"}</p>
+      <p>Categorias: {product.categories ? product.categories : "?"}</p>
     </div>,
 
     tab2: <div>
-      <p>Energía: {product.energy_100g}</p>
-      <p>Grasas: {product.fat_100g}</p>
-      <p>Hidratos de carbono: {product.carbohydrates_100g}</p>
-      <p>Azúcares: {product.sugars_100g}</p>
-      <p>Fibra alimentaria: {product.fiber_100g}</p>
-      <p>Proteínas: {product.proteins_100g}</p>
-      <p>Sal: {product.salt_100g}</p>
-      <p>Sodio: {product.sodium_100g}</p>
+      <p>Energía: {product.energy_100g ? product.energy_100g : "?"} Kj</p>
+      <p>Grasas: {product.fat_100g ? product.fat_100g : "?"} g</p>
+      <p>Hidratos de carbono: {product.carbohydrates_100g ? product.carbohydrates_100g : "?"} g</p>
+      <p>Azúcares: {product.sugars_100g ? product.sugars_100g : "?"} g</p>
+      <p>Fibra alimentaria: {product.fiber_100g ? product.fiber_100g : "?"} g</p>
+      <p>Proteínas: {product.proteins_100g ? product.proteins_100g : "?"} g</p>
+      <p>Sal: {product.salt_100g ? product.salt_100g : "?"} g</p>
+      <p>Sodio: {product.sodium_100g ? product.sodium_100g : "?"} g</p>
     </div>,
 
     tab3: <Valoracion rate={rate}></Valoracion>,

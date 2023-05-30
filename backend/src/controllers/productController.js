@@ -5,7 +5,7 @@ const productController = {};
 
 productController.getFilteredProducts = async (req, res) => {
   try {
-    const { categories, brands, countries } = req.body;
+    const { categories, brands, countries, name, nutriScore } = req.body;
     const query = {};
     const andConditions = [];
 
@@ -20,7 +20,14 @@ productController.getFilteredProducts = async (req, res) => {
     if (brands) {
       andConditions.push({ brands: { $regex: new RegExp(brands, 'i') } });
     }
+    
+    if (name) {
+      andConditions.push({ product_name: { $regex: new RegExp(name, 'i') } });
+    }
 
+    if (nutriScore) {
+      andConditions.push({ nutriscore_grade: { $regex: new RegExp(nutriScore, 'i') } });
+    }
 
     if (andConditions.length > 0) {
       query.$and = andConditions;
@@ -63,6 +70,7 @@ productController.getProductById = async (req, res) => {
       proteins_100g: product.proteins_100g,
       salt_100g: product.salt_100g,
       sodium_100g: product.sodium_100g,
+      nutri_score: product.nutriscore_grade,
     };
 
     res.json(filteredProduct);
