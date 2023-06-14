@@ -13,6 +13,7 @@ import GraficaHumedad from '../componente/grafica/GraficaHumedad'
 import GraficaTemp from '../componente/grafica/GraficaTemp'
 import GraficaEco2 from '../componente/grafica/GraficaEco2'
 import GraficaTvoc from '../componente/grafica/GraficaTvoc'
+import Grafica from '../componente/grafica/Grafica'
 import Menu from '../componente/Menu'
 import FoodInfo from '../componente/FoodInfo'
 import FilteredProducts from '../componente/FilteredProducts'
@@ -46,11 +47,15 @@ export default function DashboardVisitor(props) {
                             <Route path="/" element={<Navigate to="/menu" />} />
                             <Route path="/menu" element={<Menu />} />
                             <Route path="/grafica" element={<Navigate to="/grafica/humedad" />} />
-                            <Route path="/grafica/humedad" element={<GraficaHumedad />} />
+{/*                             <Route path="/grafica/humedad" element={<GraficaHumedad />} />
                             <Route path="/grafica/temperatura" element={<GraficaTemp />} />
                             <Route path="/grafica/Eco2" element={<GraficaEco2 />} />
                             <Route path="/grafica/Tvoc" element={<GraficaTvoc />} />
-                            <Route path="/grafica" element={<Navigate to="/grafica/humedad" />} />
+                            <Route path="/grafica" element={<Navigate to="/grafica/humedad" />} /> */}
+                            <Route path="/grafica/humedad" element={<Grafica dataType="humedad" title="Humedad" />} />
+                            <Route path="/grafica/temperatura" element={<Grafica dataType="temperatura" title="Temperatura" />} />
+                            <Route path="/grafica/Eco2" element={<Grafica dataType="eco2" title="Eco2" />} />
+                            <Route path="/grafica/Tvoc" element={<Grafica dataType="tvoc" title="Tvoc" />} />
                             <Route path="/foodInfo/:id" element={<FoodInfo />} />
                             <Route path="/filtered-products" element={<FilteredProducts />} />
                         </Routes>

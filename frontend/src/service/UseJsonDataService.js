@@ -18,7 +18,7 @@ const useJsonData = () => {
           return acc;
         }, []);
 
-        allData.sort((a, b) => new Date(a.time_index) - new Date(b.time_index));
+        /* allData.sort((a, b) => new Date(a.time_index) - new Date(b.time_index)); */
 
         setData(allData);
       } catch (error) {

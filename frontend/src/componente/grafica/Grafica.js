@@ -1,90 +1,107 @@
-import React, { Component } from 'react'
-import { Bar, Line } from 'react-chartjs-2';
-import Chart from 'chart.js/auto';
-//import Menu from '../menu';
+import React, { useState, useEffect } from 'react';
+import { Line } from '@ant-design/charts';
+import useJsonData from '../../service/UseJsonDataService';
+import { Skeleton, DatePicker, Row, Col, Button } from 'antd';
+import moment from 'moment';
 
-export default class produccion extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            data: null
-        };
-    }
+const { RangePicker } = DatePicker;
 
-    componentDidMount() {
-        // Leer el archivo CSV
-        fetch('./1.csv')
-            .then(response => response.text())
-            .then(csv => {
-                // Parsear el CSV
-                const rows = csv.split('\n');
-                const labels = [];
-                const valuesHumedad = [];
-                const valuesTemperatura = [];
-                const titleHumedad = rows[0].split(',')[7]
-                const titleTemperatura = rows[0].split(',')[8]
-                rows.slice(1).forEach(row => {
-                    const columns = row.split(',');
-                    const timestamp = columns[2];
-                    const date = new Date(parseInt(timestamp));
-                    const day = date.getDate();
-                    const month = date.getMonth() + 1; // Los meses en JavaScript empiezan en 0
-                    const year = date.getFullYear();
-                    const hour = date.getHours();
-                    const minutes = date.getMinutes();
-                    const formattedDate = `${day}/${month}/${year} ${hour}:${minutes}`;
-                    labels.push(formattedDate);
-                    valuesHumedad.push(parseInt(columns[7]));
-                    valuesTemperatura.push(parseInt(columns[8]));
-                });
-                // Crear los datos de la gráfica
-                const data = {
-                    labels: labels,
-                    datasets: [
-                        {
-                            label: titleHumedad,
-                            backgroundColor: 'rgba(75,192,192,1)',
-                            borderColor: 'rgba(0,0,0,1)',
-                            borderWidth: 1,
-                            data: valuesHumedad
-                        },
-                        {
-                            label: titleTemperatura,
-                            backgroundColor: 'rgba(75,255,255,1)',
-                            borderColor: 'rgba(0,0,255,1)',
-                            borderWidth: 1,
-                            data: valuesTemperatura
-                        }
-                    ]
-                };
-                // Actualizar el estado con los datos de la gráfica
-                this.setState({ data: data });
-            });
-    }
+const Grafica = ({ dataType, title }) => {
+    const data = useJsonData();
+    const [dates, setDates] = useState([null, null]);
 
-    render() {
+    const [earliestDate, setEarliestDate] = useState(null);
+
+    useEffect(() => {
+        if (data) {
+          const earliestData = data.reduce((prev, current) => {
+            return (prev.time_index < current.time_index) ? prev : current;
+          });
+    
+          setEarliestDate(moment(earliestData.time_index));
+        }
+      }, [data]);
+
+    if (!data) {
         return (
-            <>
-                {/* <Menu></Menu> */}
-                <div>
-                    {this.state.data?.labels && (
-                        <Line
-                            data={this.state.data}
-                            options={{
-                                title: {
-                                    display: true,
-                                    text: 'Gráfica de datos',
-                                    fontSize: 20
-                                },
-                                legend: {
-                                    display: true,
-                                    position: 'right'
-                                }
-                            }}
-                        />
-                    )}
-                </div>
-            </>
+            <div
+                style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    flexDirection: 'column',
+                    paddingTop: '20px',
+                }}
+            >
+                <Skeleton active paragraph={{ rows: 6 }} />
+                <Skeleton active paragraph={{ rows: 6 }} />
+                <Skeleton active paragraph={{ rows: 6 }} />
+            </div>
         );
     }
-}
+
+    const filteredData = data.filter(item => {
+        const date = moment(item.time_index);
+        return (!dates[0] || date.isSameOrAfter(dates[0])) && (!dates[1] || date.isSameOrBefore(dates[1]));
+    });
+
+    const chartData = filteredData.map((item, index) => {
+        // 如果index小于10，则在控制台中打印当前的time_index值
+        if (index <5) {
+            console.log(item.time_index);
+        }
+        return {
+            date: item.time_index,
+            [dataType]: parseFloat(item[dataType]),
+            entityId: item.entity_id,
+        };
+    });
+
+    const config = {
+        data: chartData,
+        xField: 'date',
+        yField: dataType,
+        seriesField: 'entityId',
+        xAxis: {
+            type: 'time',
+        },
+        slider: {
+            start: 0.3,
+            end: 0.5,
+          },
+        legend: {
+            custom: true,
+            items: [
+              { id: 'nodo1', name: 'nodo1', value: 'nodo1', marker: { symbol: 'square', style: { fill: '#5AD8A6' } } },
+              { id: 'nodo2', name: 'nodo2', value: 'nodo2', marker: { symbol: 'square', style: { fill: '#5D7092' } } },
+              { id: 'nodo3', name: 'nodo3', value: 'nodo3', marker: { symbol: 'square', style: { fill: '#5B8FF9' } } },
+            ],
+        },
+    };
+
+    return (
+        <div
+            style={{
+                paddingTop: '10px',
+            }}
+        >
+            <Row className="text-center">
+                <span className="text-style">{title}</span>
+            </Row>
+            <Row justify="center" align="middle" style={{ height: '100%' }}>
+                <Col>
+                    <RangePicker 
+                        showTime 
+                        value={dates}
+                        onCalendarChange={val => setDates(val)}
+                    />
+                </Col>
+                <Col>
+                    <Button/>
+                </Col>
+            </Row>
+            <Line {...config} />
+        </div>
+    );
+};
+
+export default Grafica;
