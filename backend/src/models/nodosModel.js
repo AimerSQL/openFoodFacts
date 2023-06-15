@@ -7,6 +7,7 @@ const nodosSchema = new Schema({
     tvoc: { type: Number },
     eco2: { type: Number },
     humedad: { type: Number },
+    temperatura: { type: Number },
 
 }, {
     collection: 'nodo1'

@@ -22,12 +22,23 @@ const nodosController = require('./controllers/nodosController');
  *                 $ref: '#/components/schemas/products'
  * 
  * /nodos:
- *   get:
- *     summary: get nodos
- *     description: get nodos
+ *   post:
+ *     summary: post nodos
+ *     description: post nodos
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               start:
+ *                 type: string
+ *               end:
+ *                 type: string
  *     responses:
  *       200:
- *         description: successful get
+ *         description: successful psot
  *         content:
  *           application/json:
  *             schema:
@@ -188,6 +199,8 @@ const nodosController = require('./controllers/nodosController');
  *           type: integer
  *         humedad:
  *           type: integer
+ *         temperatura:
+ *           type: integer
  * 
  *     Product:
  *       type: object
@@ -220,7 +233,7 @@ router.get('/rate-products/:productId', async (req, res) => {
     await rateController.getProductRate(req, res);
 });
 
-router.get('/nodos', async (req, res) => {
+router.post('/nodos', async (req, res) => {
     await nodosController.getNodos(req, res);
 });
 

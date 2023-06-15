@@ -1,4 +1,4 @@
-import React from 'react';
+/* import React from 'react';
 import { Line } from '@ant-design/charts';
 import { Skeleton } from 'antd';
 import useJsonData from '../../service/UseJsonDataService';
@@ -99,4 +99,4 @@ const GraficaEco2 = () => {
   );
 };
 
-export default GraficaEco2;
+export default GraficaEco2; */

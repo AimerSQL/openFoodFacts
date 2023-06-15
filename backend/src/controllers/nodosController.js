@@ -5,24 +5,49 @@ const axios = require('axios');
 const nodosModel = require('../models/nodosModel')
 
 nodosController.getNodos = async (req, res) => {
-    try {
+  try {
+    const { start, end } = req.body;
+    const nodos = await nodosModel.find(
+      {
+        time_index: {
+          $gte: new Date(parseInt(start)),  // 大于或等于开始日期
+          $lte: new Date(parseInt(end)),  // 小于或等于结束日期 
+        }
+      }
+    )
 
-        const nodos = await nodosModel.find()
+/*     const filteredNodos = nodos.map((nodo) => ({
+      entity_id: nodo.entity_id,
+      time_index: nodo.time_index,
+      tvoc: nodo.tvoc,
+      eco2: nodo.eco2,
+      humedad: nodo.humedad,
+      temperatura: nodo.temperatura
+    }));
 
-      const filteredNodos = nodos.map((nodo) => ({
+    res.json(filteredNodos); */
+
+    const groupedNodos = nodos.reduce((result, nodo) => {
+      if (!result[nodo.entity_id]) {
+        result[nodo.entity_id] = [];
+      }
+      result[nodo.entity_id].push({
         entity_id: nodo.entity_id,
         time_index: nodo.time_index,
         tvoc: nodo.tvoc,
         eco2: nodo.eco2,
         humedad: nodo.humedad,
-      }));
+        temperatura: nodo.temperatura
+      });
+      return result;
+    }, {});
 
-      res.json(filteredNodos);
-
-    } catch (err) {
-      console.error(err);
-      res.status(500).json({ message: "error get" });
-    }
-  };
+    res.json(groupedNodos);
+    console.log(filteredNodos.length)
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "error get" });
+  }
+};
 
 module.exports = nodosController;

@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Line } from '@ant-design/charts';
+import { Chart, Utils } from 'chart.js';
+import { Line } from 'react-chartjs-2';
 import useJsonData from '../../service/UseJsonDataService';
 import { SearchOutlined } from '@ant-design/icons';
 import { Skeleton, DatePicker, Row, Col, Button, Space } from 'antd';
+import axios from 'axios';
 import moment from 'moment';
 
 const { RangePicker } = DatePicker;
@@ -11,6 +13,8 @@ const Grafica = ({ dataType, title }) => {
     const data = useJsonData();
     const [dates, setDates] = useState(null);
     const [value, setValue] = useState(null);
+    const [chartData, setChartData] = useState(null);
+
 
     const [earliestDate, setEarliestDate] = useState(null);
 
@@ -41,7 +45,7 @@ const Grafica = ({ dataType, title }) => {
         );
     }
 
-    const chartData = data.map((item, index) => {
+/*     const chartData = data.map((item, index) => {
         // 如果index小于10，则在控制台中打印当前的time_index值
         if (index < 5) {
             console.log(item.time_index);
@@ -51,9 +55,9 @@ const Grafica = ({ dataType, title }) => {
             [dataType]: parseFloat(item[dataType]),
             entityId: item.entity_id,
         };
-    });
+    }); */
 
-    const config = {
+/*     const config = {
         data: chartData,
         xField: 'date',
         yField: dataType,
@@ -61,10 +65,10 @@ const Grafica = ({ dataType, title }) => {
         xAxis: {
             type: 'time',
         },
-        /*         slider: {
+              slider: {
                     start: 0.3,
                     end: 0.5,
-                  }, */
+                  }, 
         legend: {
             custom: true,
             items: [
@@ -73,7 +77,56 @@ const Grafica = ({ dataType, title }) => {
                 { id: 'nodo3', name: 'nodo3', value: 'nodo3', marker: { symbol: 'square', style: { fill: '#5B8FF9' } } },
             ],
         },
-    };
+    }; */      
+    const DATA_COUNT = 7;
+const NUMBER_CFG = {count: DATA_COUNT, min: -100, max: 100};
+    const data1 = {
+        labels: dataType,
+        datasets: [
+          {
+            label: 'Dataset 1',
+            data: [1,2,1,1,1,],
+/*             borderColor: Utils.CHART_COLORS.red,
+            backgroundColor: Utils.transparentize(Utils.CHART_COLORS.red, 0.5), */
+            yAxisID: 'y',
+          },
+          {
+            label: 'Dataset 2',
+            data: [1,2,1,1,1,],
+/*             borderColor: Utils.CHART_COLORS.blue,
+            backgroundColor: Utils.transparentize(Utils.CHART_COLORS.blue, 0.5), */
+            yAxisID: 'y',
+          }
+        ]
+      };
+    const config = {
+        type: 'line',
+        data: data1,
+        options: {
+          responsive: true,
+          interaction: {
+            mode: 'index',
+            intersect: false,
+          },
+          stacked: false,
+          plugins: {
+            title: {
+              display: true,
+              text: 'Chart.js Line Chart - Multi Axis'
+            }
+          },
+          scales: {
+            y: {
+              type: 'linear',
+              display: true,
+              position: 'left',
+            },
+          }
+        },
+      };
+
+
+
 
     const disabledDate = (current) => {
         if (!dates) {
@@ -89,6 +142,34 @@ const Grafica = ({ dataType, title }) => {
             setDates([null, null]);
         } else {
             setDates(null);
+        }
+    };
+
+/*     const fetchDataInRange = async (start, end) => {
+        // Assuming that useJsonData() returns a function that fetches data
+        const fetchedData = await useJsonData(start, end);
+        setData(fetchedData);
+    }; */
+
+    const handleButtonClick = () => {
+        if (value && value.length === 2) {
+            const [start, end] = value;
+            const startTimestamp = start.toDate().getTime();
+            const endTimestamp = end.toDate().getTime();
+
+            const data = {
+                start: startTimestamp,
+                end: endTimestamp
+              };
+
+            axios.post('http://localhost:4000/nodos', data)
+            .then(response => {
+             setChartData(response)
+             console.log(chartData + "hola")
+            })
+            .catch(error => {
+              console.log(error);
+            });
         }
     };
 
@@ -128,11 +209,12 @@ const Grafica = ({ dataType, title }) => {
                                 alignItems: 'center',
                                 justifyContent: 'center',
                             }}
+                            onClick={handleButtonClick}
                         />
                     </Col>
                 </Space>
             </Row>
-            <Line {...config} />
+            <Line data={config.data} options={config.options} />
         </div>
     );
 };

@@ -1,4 +1,4 @@
-import React from 'react';
+/* import React from 'react';
 import './Grafica.css';
 import { Line } from '@ant-design/charts';
 import { Skeleton } from 'antd';
@@ -106,4 +106,4 @@ const GraficaTvoc = () => {
   );
 };
 
-export default GraficaTvoc;
+export default GraficaTvoc; */
