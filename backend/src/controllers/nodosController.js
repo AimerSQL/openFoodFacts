@@ -42,8 +42,12 @@ nodosController.getNodos = async (req, res) => {
       return result;
     }, {});
 
-    res.json(groupedNodos);
-    console.log(filteredNodos.length)
+    res.json({
+        nodo1: groupedNodos.nodo1,
+        nodo2: groupedNodos.nodo2,
+        nodo3: groupedNodos.nodo3,
+      });
+
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "error get" });
