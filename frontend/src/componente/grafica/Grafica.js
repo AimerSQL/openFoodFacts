@@ -87,7 +87,7 @@ const Grafica = ({ dataType, title }) => {
     }));
   }
 
-  const config = {
+  /*const config = {
     data: chartData,
     xField: 'date',
     yField: dataType,
@@ -103,7 +103,26 @@ const Grafica = ({ dataType, title }) => {
           { id: 'nodo3', name: 'nodo3', value: 'nodo3', marker: { symbol: 'square', style: { fill: '#5B8FF9' } } },
         ],
     },
+};*/
+const config = {
+  data: chartData,
+  xField: 'date',
+  yField: dataType,
+  seriesField: 'entityId',
+  xAxis: {
+    type: 'time',
+},
+legend: {
+    custom: true,
+    items: [
+      { id: 'nodo1', name: 'nodo1', value: 'nodo1', marker: { symbol: 'square', style: { fill: '#5AD8A6' } } },
+      { id: 'nodo2', name: 'nodo2', value: 'nodo2', marker: { symbol: 'square', style: { fill: '#5D7092' } } },
+      { id: 'nodo3', name: 'nodo3', value: 'nodo3', marker: { symbol: 'square', style: { fill: '#5B8FF9' } } },
+    ],
+},
+  stepType: 'hvh',
 };
+
 
   return (
     <div
