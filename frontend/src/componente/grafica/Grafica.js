@@ -104,15 +104,14 @@ const Grafica = ({ dataType, title }) => {
     }
   };
 
-
   let chartData = [];
-  /*if (data) {
-    chartData = data.map((item) => ({
+  if (nodo1Data) {
+    chartData = nodo1Data.map((item) => ({
       date: item.time_index,
       [dataType]: parseFloat(item[dataType]),
       entityId: item.entity_id,
     }));
-  }*/
+  }
 
   const config = {
     data: chartData,
