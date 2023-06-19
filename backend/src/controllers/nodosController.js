@@ -27,7 +27,7 @@ nodosController.getNodos = async (req, res) => {
 
     res.json(filteredNodos); */
 
-    const groupedNodos = nodos.reduce((result, nodo) => {
+    /*const groupedNodos = nodos.reduce((result, nodo) => {
       if (!result[nodo.entity_id]) {
         result[nodo.entity_id] = [];
       }
@@ -40,13 +40,9 @@ nodosController.getNodos = async (req, res) => {
         temperatura: nodo.temperatura
       });
       return result;
-    }, {});
+    }, {});*/
 
-    res.json({
-        nodo1: groupedNodos.nodo1,
-        nodo2: groupedNodos.nodo2,
-        nodo3: groupedNodos.nodo3,
-      });
+    res.json(nodos);
 
   } catch (err) {
     console.error(err);

@@ -14,37 +14,13 @@ const Grafica = ({ dataType, title }) => {
   //const data = response.data.nodo1;
   const [dates, setDates] = useState(null);
   const [value, setValue] = useState(null);
-  const [nodo1Data, setNodo1Data] = useState(null);
-  const [nodo2Data, setNodo2Data] = useState(null);
-  const [nodo3Data, setNodo3Data] = useState(null);
-  const [data1, setData1] = useState(null);
-  const data = nodo1Data ? nodo1Data : [];
+  const [nodoData, setNodoData] = useState();
+
+  let data =  [];
   
 
-/*   useEffect(() => {
-    if (nodo1Data && nodo2Data) {
-      const chartData = {
-        labels: ['1', '2', '3', '4', '5', '6'], // 示例标签数据，请根据实际情况修改
-        datasets: [
-          {
-            label: 'nodo1',
-            backgroundColor: 'rgba(75,192,192,1)',
-            borderColor: 'rgba(0,0,0,1)',
-            borderWidth: 1,
-            data: nodo1Data,
-          },
-          {
-            label: 'nodo2',
-            backgroundColor: 'rgba(75,255,255,1)',
-            borderColor: 'rgba(0,0,255,1)',
-            borderWidth: 1,
-            data: nodo2Data,
-          },
-        ],
-      };
-      setData1(chartData);
-    }
-  }, [nodo1Data, nodo2Data]); */
+   useEffect(() => {
+  }, []); 
 
   if (!data) {
     return (
@@ -94,9 +70,7 @@ const Grafica = ({ dataType, title }) => {
       axios
         .post('http://localhost:4000/nodos', requestData)
         .then((response) => {
-          setNodo1Data(response.data.nodo1);
-          setNodo2Data(response.data.nodo2);
-          setNodo3Data(response.data.nodo3);
+          setNodoData(response.data);
         })
         .catch((error) => {
           console.log(error);
@@ -105,8 +79,8 @@ const Grafica = ({ dataType, title }) => {
   };
 
   let chartData = [];
-  if (nodo1Data) {
-    chartData = nodo1Data.map((item) => ({
+  if (nodoData) {
+    chartData = nodoData.map((item) => ({
       date: item.time_index,
       [dataType]: parseFloat(item[dataType]),
       entityId: item.entity_id,
@@ -147,9 +121,9 @@ const Grafica = ({ dataType, title }) => {
               showTime
               value={dates || value}
               disabledDate={disabledDate}
-              onCalendarChange={(val) => {
+              /*onCalendarChange={(val) => {
                 setDates(val);
-              }}
+              }}*/
               onChange={(val) => {
                 setValue(val);
               }}
