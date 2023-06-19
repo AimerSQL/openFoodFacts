@@ -18,7 +18,7 @@ const Grafica = ({ dataType, title }) => {
   const [nodo2Data, setNodo2Data] = useState(null);
   const [nodo3Data, setNodo3Data] = useState(null);
   const [data1, setData1] = useState(null);
-
+  const data = nodo1Data ? nodo1Data : [];
   
 
 /*   useEffect(() => {
@@ -104,15 +104,15 @@ const Grafica = ({ dataType, title }) => {
     }
   };
 
-  const data = nodo1Data;
+
   let chartData = [];
-  if (data) {
+  /*if (data) {
     chartData = data.map((item) => ({
       date: item.time_index,
       [dataType]: parseFloat(item[dataType]),
       entityId: item.entity_id,
     }));
-  }
+  }*/
 
   const config = {
     data: chartData,
