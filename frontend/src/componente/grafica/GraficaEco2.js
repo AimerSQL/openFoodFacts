@@ -1,4 +1,4 @@
-/* import React from 'react';
+import React from 'react';
 import { Line } from '@ant-design/charts';
 import { Skeleton } from 'antd';
 import useJsonData from '../../service/UseJsonDataService';
@@ -28,7 +28,7 @@ const GraficaEco2 = () => {
     eco2: parseFloat(item.eco2),
     entityId: item.entity_id,
   }));
-
+/* 
   const calculateStats = (data, entityId) => {
     const filteredData = data.filter((item) => item.entityId === entityId);
     const minValue = Math.min(...filteredData.map((item) => item.eco2));
@@ -39,7 +39,7 @@ const GraficaEco2 = () => {
 
   const nodo1Stats = calculateStats(chartData, 'nodo1');
   const nodo2Stats = calculateStats(chartData, 'nodo2');
-  const nodo3Stats = calculateStats(chartData, 'nodo3');
+  const nodo3Stats = calculateStats(chartData, 'nodo3'); */
 
   const config_1 = {
     data: chartData,
@@ -99,4 +99,4 @@ const GraficaEco2 = () => {
   );
 };
 
-export default GraficaEco2; */
+export default GraficaEco2;

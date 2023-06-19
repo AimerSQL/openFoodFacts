@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { Line } from 'react-chartjs-2';
+import { Line } from '@ant-design/charts';
 import useJsonData from '../../service/UseJsonDataService';
 import { SearchOutlined } from '@ant-design/icons';
 import { Skeleton, DatePicker, Row, Col, Button, Space } from 'antd';
+import './Grafica.css';
 import axios from 'axios';
+import moment from 'moment';
 
 const { RangePicker } = DatePicker;
 
 const Grafica = ({ dataType, title }) => {
-  const data = useJsonData();
+  //const data = useJsonData();
+  //const data = response.data.nodo1;
   const [dates, setDates] = useState(null);
   const [value, setValue] = useState(null);
   const [nodo1Data, setNodo1Data] = useState(null);
@@ -16,7 +19,9 @@ const Grafica = ({ dataType, title }) => {
   const [nodo3Data, setNodo3Data] = useState(null);
   const [data1, setData1] = useState(null);
 
-  useEffect(() => {
+  
+
+/*   useEffect(() => {
     if (nodo1Data && nodo2Data) {
       const chartData = {
         labels: ['1', '2', '3', '4', '5', '6'], // 示例标签数据，请根据实际情况修改
@@ -39,7 +44,7 @@ const Grafica = ({ dataType, title }) => {
       };
       setData1(chartData);
     }
-  }, [nodo1Data, nodo2Data]);
+  }, [nodo1Data, nodo2Data]); */
 
   if (!data) {
     return (
@@ -99,6 +104,34 @@ const Grafica = ({ dataType, title }) => {
     }
   };
 
+  const data = nodo1Data;
+  let chartData = [];
+  if (data) {
+    chartData = data.map((item) => ({
+      date: item.time_index,
+      [dataType]: parseFloat(item[dataType]),
+      entityId: item.entity_id,
+    }));
+  }
+
+  const config = {
+    data: chartData,
+    xField: 'date',
+    yField: dataType,
+    seriesField: 'entityId',
+    xAxis: {
+        type: 'time',
+    },
+    legend: {
+        custom: true,
+        items: [
+          { id: 'nodo1', name: 'nodo1', value: 'nodo1', marker: { symbol: 'square', style: { fill: '#5AD8A6' } } },
+          { id: 'nodo2', name: 'nodo2', value: 'nodo2', marker: { symbol: 'square', style: { fill: '#5D7092' } } },
+          { id: 'nodo3', name: 'nodo3', value: 'nodo3', marker: { symbol: 'square', style: { fill: '#5B8FF9' } } },
+        ],
+    },
+};
+
   return (
     <div
       style={{
@@ -139,7 +172,7 @@ const Grafica = ({ dataType, title }) => {
           </Col>
         </Space>
       </Row>
-      <div>
+{/*       <div>
         {data1 && (
           <Line
             data={data1}
@@ -156,7 +189,8 @@ const Grafica = ({ dataType, title }) => {
             }}
           />
         )}
-      </div>
+      </div> */}
+      <Line {...config} />
     </div>
   );
 };
