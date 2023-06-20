@@ -30,9 +30,10 @@ const Grafica = ({ dataType, title }) => {
       axios
         .post('http://localhost:4000/nodos', requestData)
         .then((response) => {
-          const sortedNodo1Data = response.data.nodo1.sort((a, b) => new Date(a.time_index) - new Date(b.time_index));
-          const sortedNodo2Data = response.data.nodo2.sort((a, b) => new Date(a.time_index) - new Date(b.time_index));
-          const sortedNodo3Data = response.data.nodo3.sort((a, b) => new Date(a.time_index) - new Date(b.time_index));
+          console.log(response.data)
+          const sortedNodo1Data = response.data.nodos.nodo1.sort((a, b) => new Date(a.time_index) - new Date(b.time_index));
+          const sortedNodo2Data = response.data.nodos.nodo2.sort((a, b) => new Date(a.time_index) - new Date(b.time_index));
+          const sortedNodo3Data = response.data.nodos.nodo3.sort((a, b) => new Date(a.time_index) - new Date(b.time_index));
 
 /*           setNodoData(response.data);
           setNodo1Data(response.data.nodo1);

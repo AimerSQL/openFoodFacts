@@ -1,4 +1,4 @@
-/* const nodosController = {};
+const nodosController = {};
 const axios = require('axios');
 
 
@@ -16,16 +16,15 @@ nodosController.getNodos = async (req, res) => {
       }
     )
 
-     const filteredNodos = nodos.map((nodo) => ({
+    /*const filteredNodos = nodos.map((nodo) => ({
       entity_id: nodo.entity_id,
       time_index: nodo.time_index,
       tvoc: nodo.tvoc,
       eco2: nodo.eco2,
       humedad: nodo.humedad,
       temperatura: nodo.temperatura
-    }));
+    }));*/
 
-    res.json(filteredNodos); 
 
     const groupedNodos = nodos.reduce((result, nodo) => {
       if (!result[nodo.entity_id]) {
@@ -42,7 +41,40 @@ nodosController.getNodos = async (req, res) => {
       return result;
     }, {});
 
-    res.json(groupedNodos);
+    const averagedNodos = Object.values(groupedNodos).map((nodosArray) => {
+      const sumNodos = nodosArray.reduce(
+        (sum, nodo) => {
+          sum.tvoc += nodo.tvoc;
+          sum.eco2 += nodo.eco2;
+          sum.humedad += nodo.humedad;
+          sum.temperatura += nodo.temperatura;
+          return sum;
+        },
+        {
+          tvoc: 0,
+          eco2: 0,
+          humedad: 0,
+          temperatura: 0,
+        }
+      );
+
+      const averageNodo = {
+        entity_id: nodosArray[0].entity_id,
+        time_index: nodosArray[0].time_index,
+        tvoc: sumNodos.tvoc / nodosArray.length,
+        eco2: sumNodos.eco2 / nodosArray.length,
+        humedad: sumNodos.humedad / nodosArray.length,
+        temperatura: sumNodos.temperatura / nodosArray.length,
+      };
+
+      return averageNodo;
+    });
+
+res.json({
+  avg: averagedNodos,
+  nodos: groupedNodos
+});
+
 
   } catch (err) {
     console.error(err);
@@ -50,55 +82,47 @@ nodosController.getNodos = async (req, res) => {
   }
 };
 
-module.exports = nodosController; */
-const nodosController = {};
+module.exports = nodosController;
+
+/*const nodosController = {};
 const axios = require('axios');
-const nodosModel = require('../models/nodosModel')
+const nodosModel = require('../models/nodosModel');
 
 nodosController.getNodos = async (req, res) => {
   try {
     const { start, end } = req.body;
-
     // Perform aggregation to get statistical data
     const nodos = await nodosModel.aggregate([
       {
         $match: {
           time_index: {
-            $gte: new Date(parseInt(start)),  // greater than or equal to the start date
-            $lte: new Date(parseInt(end)),  // less than or equal to the end date 
+            $gte: parseInt(start),  // greater than or equal to the start date
+            $lte: parseInt(end),  // less than or equal to the end date 
           }
         }
       },
       {
         $group: {
-          _id: '$entity_id',
-          count: { $sum: 1 },
-          avgHumedad: { $avg: '$humedad' },
-          maxHumedad: { $max: '$humedad' },
-          minHumedad: { $min: '$humedad' },
+          _id: '$entity_type',
+          eco: {
+            $sum: '$eco2'
+          },
+          humedad: {
+            $sum: '$humedad'
+          },
+          count: {
+            $sum: 1
+          }
         }
       }
     ]);
+    
 
-    // Perform a separate query to get the data
-    const nodosData = await nodosModel.find({
-      time_index: {
-        $gte: new Date(parseInt(start)),  // greater than or equal to the start date
-        $lte: new Date(parseInt(end)),  // less than or equal to the end date 
-      }
-    }).select('entity_id time_index tvoc eco2 humedad temperatura');
-
-    // Add the data to the corresponding nodo
-    const result = nodos.map(nodo => {
-      nodo.data = nodosData.filter(data => data.entity_id.toString() === nodo._id.toString());
-      return nodo;
-    });
-
-    res.json(result);
+    res.json(nodos);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ message: 'Server error' });
   }
 };
 
-module.exports = nodosController;
+module.exports = nodosController;*/
