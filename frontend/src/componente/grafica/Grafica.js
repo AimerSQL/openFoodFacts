@@ -1,60 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { Line } from '@ant-design/charts';
-import useJsonData from '../../service/UseJsonDataService';
+import { DatePicker, Row, Col, Button, Space, Table, Tag } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
-import { Skeleton, DatePicker, Row, Col, Button, Space } from 'antd';
-import './Grafica.css';
 import axios from 'axios';
 import moment from 'moment';
+import ReactEcharts from 'echarts-for-react';
+import './Grafica.css'
 
 const { RangePicker } = DatePicker;
 
 const Grafica = ({ dataType, title }) => {
-  //const data = useJsonData();
-  //const data = response.data.nodo1;
   const [dates, setDates] = useState(null);
   const [value, setValue] = useState(null);
   const [nodoData, setNodoData] = useState();
-
-  let data =  [];
-  
-
-   useEffect(() => {
-  }, []); 
-
-  if (!data) {
-    return (
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          flexDirection: 'column',
-          paddingTop: '20px',
-        }}
-      >
-        <Skeleton active paragraph={{ rows: 6 }} />
-        <Skeleton active paragraph={{ rows: 6 }} />
-        <Skeleton active paragraph={{ rows: 6 }} />
-      </div>
-    );
-  }
-
-  const disabledDate = (current) => {
-    if (!dates) {
-      return false;
-    }
-    const tooLate = dates[0] && current.diff(dates[0], 'days') >= 7;
-    const tooEarly = dates[1] && dates[1].diff(current, 'days') >= 7;
-    return !!tooEarly || !!tooLate;
-  };
-
-  const onOpenChange = (open) => {
-    if (open) {
-      setDates([null, null]);
-    } else {
-      setDates(null);
-    }
-  };
+  const [nodo1Data, setNodo1Data] = useState();
+  const [nodo2Data, setNodo2Data] = useState();
+  const [nodo3Data, setNodo3Data] = useState();
 
   const handleButtonClick = () => {
     if (value && value.length === 2) {
@@ -70,7 +30,19 @@ const Grafica = ({ dataType, title }) => {
       axios
         .post('http://localhost:4000/nodos', requestData)
         .then((response) => {
-          setNodoData(response.data);
+          const sortedNodo1Data = response.data.nodo1.sort((a, b) => new Date(a.time_index) - new Date(b.time_index));
+          const sortedNodo2Data = response.data.nodo2.sort((a, b) => new Date(a.time_index) - new Date(b.time_index));
+          const sortedNodo3Data = response.data.nodo3.sort((a, b) => new Date(a.time_index) - new Date(b.time_index));
+
+/*           setNodoData(response.data);
+          setNodo1Data(response.data.nodo1);
+          setNodo2Data(response.data.nodo2);
+          setNodo3Data(response.data.nodo3); */
+          setNodo1Data(sortedNodo1Data);
+          setNodo2Data(sortedNodo2Data);
+          setNodo3Data(sortedNodo3Data);
+
+      
         })
         .catch((error) => {
           console.log(error);
@@ -79,57 +51,112 @@ const Grafica = ({ dataType, title }) => {
   };
 
   let chartData = [];
-  if (nodoData) {
-    chartData = nodoData.map((item) => ({
-      date: item.time_index,
+  let chartData1 = [];
+  let chartData2 = [];
+  let chartData3 = [];
+  if (nodo1Data || nodo2Data || nodo3Data) {
+/*     chartData = nodoData.map((item) => ({
+      date: moment(item.time_index).format('YYYY-MM-DD HH:mm:ss'),
+      [dataType]: parseFloat(item[dataType]),
+      entityId: item.entity_id,
+    })); */
+    chartData1 = nodo1Data.map((item) => ({
+      date: moment(item.time_index).format('YYYY-MM-DD HH:mm:ss'),
+      [dataType]: parseFloat(item[dataType]),
+      entityId: item.entity_id,
+    }));
+    chartData2 = nodo2Data.map((item) => ({
+      date: moment(item.time_index).format('YYYY-MM-DD HH:mm:ss'),
+      [dataType]: parseFloat(item[dataType]),
+      entityId: item.entity_id,
+    }));
+    chartData3 = nodo3Data.map((item) => ({
+      date: moment(item.time_index).format('YYYY-MM-DD HH:mm:ss'),
       [dataType]: parseFloat(item[dataType]),
       entityId: item.entity_id,
     }));
   }
 
-  /*const config = {
-    data: chartData,
-    xField: 'date',
-    yField: dataType,
-    seriesField: 'entityId',
-    xAxis: {
-        type: 'time',
-    },
-    legend: {
-        custom: true,
-        items: [
-          { id: 'nodo1', name: 'nodo1', value: 'nodo1', marker: { symbol: 'square', style: { fill: '#5AD8A6' } } },
-          { id: 'nodo2', name: 'nodo2', value: 'nodo2', marker: { symbol: 'square', style: { fill: '#5D7092' } } },
-          { id: 'nodo3', name: 'nodo3', value: 'nodo3', marker: { symbol: 'square', style: { fill: '#5B8FF9' } } },
-        ],
-    },
-};*/
-const config = {
-  data: chartData,
-  xField: 'date',
-  yField: dataType,
-  seriesField: 'entityId',
-  xAxis: {
-    type: 'time',
-},
-legend: {
-    custom: true,
-    items: [
-      { id: 'nodo1', name: 'nodo1', value: 'nodo1', marker: { symbol: 'square', style: { fill: '#5AD8A6' } } },
-      { id: 'nodo2', name: 'nodo2', value: 'nodo2', marker: { symbol: 'square', style: { fill: '#5D7092' } } },
-      { id: 'nodo3', name: 'nodo3', value: 'nodo3', marker: { symbol: 'square', style: { fill: '#5B8FF9' } } },
-    ],
-},
-  stepType: 'hvh',
-};
+  const getOption = () => {
+    return {
+      tooltip: {
+        trigger: 'axis'
+      },
+      legend: {
+        data: ['Nodo 1', 'Nodo 2', 'Nodo 3']
+      },
+      xAxis: {
+        data: chartData1.map(item => item.date),
+        type: 'category'
+      },
+      yAxis: {
+        type: 'value'
+      },
+      series: [{
+        name: 'Nodo 1',
+        data: chartData1.map(item => item[dataType]),
+        type: 'line',
+        step: 'start',
+        itemStyle: {
+          opacity: 0,
+        },
+        smooth: true
+      },
+      {
+        name: 'Nodo 2',
+        data: chartData2.map(item => item[dataType]),
+        type: 'line',
+        step: 'start',
+        itemStyle: {
+          opacity: 0,
+        },
+        smooth: true
+      },
+      {
+        name: 'Nodo 3',
+        data: chartData3.map(item => item[dataType]),
+        type: 'line',
+        step: 'start',
+        itemStyle: {
+          opacity: 0,
+        },
+        smooth: true
+      }
+    ]
+    }
+  }
 
+  const columns = [
+    {
+      title: 'Nodos',
+      dataIndex: 'nodos',
+      key: 'nodos',
+    },
+    {
+      title: 'Numero de datos',
+      dataIndex: 'numero',
+      key: 'numero',
+    },
+    {
+      title: 'Max',
+      dataIndex: 'max',
+      key: 'max',
+    },
+    {
+      title: 'Min',
+      dataIndex: 'min',
+      key: 'min',
+    },
+    {
+      title: 'Mean',
+      dataIndex: 'mean',
+      key: 'mean',
+    },
+
+  ];
 
   return (
-    <div
-      style={{
-        paddingTop: '10px',
-      }}
-    >
+    <div>
       <Row className="text-center" style={{ marginBottom: '20px' }}>
         <span className="text-style">{title}</span>
       </Row>
@@ -138,15 +165,10 @@ legend: {
           <Col>
             <RangePicker
               showTime
-              value={dates || value}
-              disabledDate={disabledDate}
-              /*onCalendarChange={(val) => {
-                setDates(val);
-              }}*/
+              value={value}
               onChange={(val) => {
                 setValue(val);
               }}
-              onOpenChange={onOpenChange}
             />
           </Col>
           <Col>
@@ -164,25 +186,8 @@ legend: {
           </Col>
         </Space>
       </Row>
-{/*       <div>
-        {data1 && (
-          <Line
-            data={data1}
-            options={{
-              title: {
-                display: true,
-                text: 'Gráfica de datos',
-                fontSize: 20,
-              },
-              legend: {
-                display: true,
-                position: 'right',
-              },
-            }}
-          />
-        )}
-      </div> */}
-      <Line {...config} />
+      <ReactEcharts option={getOption()} />
+      <Table columns={columns}/>
     </div>
   );
 };
