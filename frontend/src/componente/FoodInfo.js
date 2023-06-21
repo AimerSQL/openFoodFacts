@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Result } from 'antd';
+import { Card, Result, Spin } from 'antd';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import Valoracion from './rate';
@@ -33,10 +33,19 @@ function FoodInfo() {
   };
 
   useEffect(() => {
-    getfood(id);
-    getrate(id);
-  }, [id]);
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        await Promise.all([getfood(id), getrate(id)]);
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+        console.error(error);
+      }
+    };
 
+    fetchData();
+  }, [id]);
   const handleFallbackImage = (e) => {
     e.target.src = 'https://media-cldnry.s-nbcnews.com/image/upload/t_fit-1240w,f_auto,q_auto:best/rockcms/2022-03/plant-based-food-mc-220323-be3500.jpg';
   };
@@ -88,6 +97,11 @@ function FoodInfo() {
 
 
   return (
+    loading ? (
+      <div style={{ display: 'flex', justifyContent: 'center', height: '300px', alignItems: 'center' }}>
+        <Spin size="large" />
+      </div>
+    ) :
     <>
       {productos.product_name ? (
         <div style={{ display: 'flex', height: '50vh' }}>
