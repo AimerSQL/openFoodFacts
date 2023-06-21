@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Card } from 'antd';
+import { Card, Result } from 'antd';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import Valoracion from './rate';
@@ -9,7 +9,7 @@ function FoodInfo() {
   const [rate, setRate] = useState([]);
   const [loading, setLoading] = useState(true);
   const { id } = useParams();
-  
+
   const hasLetter = (id) => {
     const regex = /[a-zA-Z]/;
     return regex.test(id);
@@ -26,12 +26,12 @@ function FoodInfo() {
     setLoading(false);
   };
 
-  
+
   const getrate = async (id) => {
     const response = await axios.get(`http://localhost:4000/rate-products/${id}`);
     setRate(response.data);
   };
-  
+
   useEffect(() => {
     getfood(id);
     getrate(id);
@@ -90,30 +90,40 @@ function FoodInfo() {
   return (
     <>
       {productos.product_name ? (
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <div>
-            <img style={{ width: '200px' }} src={imgURL} />
+        <div style={{ display: 'flex', height: '50vh' }}>
+          <div style={{ flex: '3', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <div style={{ width: '300px', height: '300px', padding: '10px' }}>
+              <img style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center' }} src={imgURL} />
+            </div>
           </div>
-  
-          <Card
-            style={{
-              width: '100%',
-              marginLeft: '20px',
-            }}
-            title=""
-            hoverable
-            tabList={tabList}
-            activeTabKey={activeTabKey1}
-            onTabChange={onTab1Change}
-          >
-            {contentList[activeTabKey1]}
-          </Card>
+          <div style={{ flex: '7', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <Card
+              style={{
+                width: '80%',
+                marginLeft: '10%',
+                marginRight: '10%'
+              }}
+              title=""
+              hoverable
+              tabList={tabList}
+              activeTabKey={activeTabKey1}
+              onTabChange={onTab1Change}
+            >
+              {contentList[activeTabKey1]}
+            </Card>
+          </div>
         </div>
       ) : (
-        <EmptyPage />
+        <Result
+          status="404"
+          title="404"
+          subTitle="Sorry, there is no data for the selected date range."
+        />
       )}
     </>
   );
+
+
 }
 
 export default FoodInfo;
