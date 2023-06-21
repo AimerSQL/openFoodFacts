@@ -247,10 +247,8 @@ const Grafica = ({ dataType, title }) => {
             <Table columns={columns} dataSource={dataStat} pagination={false} bordered={true} style={{ width: '85%' }} />
           </div>
         ) : (
-          <Result
-            status="404"
-            title="404"
-            subTitle="Sorry, there is no data for the selected date range."
+          <span
+            
           />
         )
       )}
