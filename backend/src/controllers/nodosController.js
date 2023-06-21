@@ -61,18 +61,41 @@ nodosController.getNodos = async (req, res) => {
       const averageNodo = {
         entity_id: nodosArray[0].entity_id,
         time_index: nodosArray[0].time_index,
-        tvoc: sumNodos.tvoc / nodosArray.length,
-        eco2: sumNodos.eco2 / nodosArray.length,
-        humedad: sumNodos.humedad / nodosArray.length,
-        temperatura: sumNodos.temperatura / nodosArray.length,
+        tvoc: Math.round(sumNodos.tvoc / nodosArray.length),
+        eco2: Math.round(sumNodos.eco2 / nodosArray.length),
+        humedad: Math.round(sumNodos.humedad / nodosArray.length),
+        temperatura: Math.round(sumNodos.temperatura / nodosArray.length),
       };
 
       return averageNodo;
     });
 
+    const maxMinNodos = Object.values(groupedNodos).map((nodosArray) => {
+      const maxNodo = {
+        entity_id: nodosArray[0].entity_id,
+        time_index: nodosArray[0].time_index,
+        tvoc: Math.max(...nodosArray.map(nodo => nodo.tvoc)),
+        eco2: Math.max(...nodosArray.map(nodo => nodo.eco2)),
+        humedad: Math.max(...nodosArray.map(nodo => nodo.humedad)),
+        temperatura: Math.max(...nodosArray.map(nodo => nodo.temperatura)),
+      };
+    
+      const minNodo = {
+        entity_id: nodosArray[0].entity_id,
+        time_index: nodosArray[0].time_index,
+        tvoc: Math.min(...nodosArray.map(nodo => nodo.tvoc)),
+        eco2: Math.min(...nodosArray.map(nodo => nodo.eco2)),
+        humedad: Math.min(...nodosArray.map(nodo => nodo.humedad)),
+        temperatura: Math.min(...nodosArray.map(nodo => nodo.temperatura)),
+      };
+    
+      return { maxNodo, minNodo };
+    });
+
 res.json({
   avg: averagedNodos,
-  nodos: groupedNodos
+  nodos: groupedNodos,
+  maxMin: maxMinNodos
 });
 
 

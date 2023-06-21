@@ -72,6 +72,7 @@ const Menu = () => {
                         total={productos.totalCount}
                         showSizeChanger={false}
                         defaultPageSize={12}
+                        showQuickJumper={true}
                     />
                 </Col>
             </Row>

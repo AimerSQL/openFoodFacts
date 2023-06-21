@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import upmEtsisiLogo from '../fotos/upmEtsisiLogo.jpg';
-import { AreaChartOutlined, PictureOutlined, SearchOutlined } from '@ant-design/icons';
+import { AreaChartOutlined, PictureOutlined } from '@ant-design/icons';
 import { Layout, Menu, Input } from 'antd';
 import { useNavigate, useLocation } from 'react-router-dom';
 
@@ -24,20 +24,6 @@ const items = [
     key: '/grafica',
     icon: <AreaChartOutlined />,
     children: [
-      /* {
-          type: 'group',
-          label: '图图',
-          children: [
-              {
-                  label: 'Humedad',
-                  key: 'setting:1',
-              },
-              {
-                  label: 'Temperatura',
-                  key: 'setting:2',
-              },
-          ],
-      }, */
       {
         label: 'Humedad',
         key: '/grafica/humedad',
@@ -116,7 +102,7 @@ export default function TopHeader() {
 
       {< div style={{ float: 'right', marginRight: 20, color: "#F8F8FF" }}>
         <Search
-          placeholder="Introduce algo....."
+          placeholder="Introduce Código de Barra"
           allowClear
           enterButton="Buscar"
           size="large"
