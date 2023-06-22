@@ -31,7 +31,7 @@ const FilteredProducts = () => {
                 <Products productos={currentProducts} />
             </Row>
             <Row>
-                <Col xs={24} sm={24} md={24} lg={24} xl={24} style={{ textAlign: 'center', marginTop: '20px', marginLeft: '12%' }}>
+                <Col xs={24} sm={24} md={18} lg={18} xl={18} style={{ textAlign: 'center', marginTop: '20px', marginLeft: '25%' }}>
                     <Pagination
                         current={currentPage}
                         pageSize={productsPerPage}
