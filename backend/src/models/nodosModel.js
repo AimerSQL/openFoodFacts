@@ -10,7 +10,7 @@ const nodosSchema = new Schema({
     temperatura: { type: Number },
 
 }, {
-    collection: 'nodo1'
+    collection: 'nodos'
 }, {
     timestamps: true
 });

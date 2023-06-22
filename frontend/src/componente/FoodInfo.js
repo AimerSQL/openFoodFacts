@@ -212,47 +212,45 @@ function FoodInfo() {
 
 
   return (
-    loading ? (
-      <div style={{ display: 'flex', justifyContent: 'center', height: '300px', alignItems: 'center' }}>
-        <Spin size="large" />
-      </div>
-    ) :
-      <>
-        {productos.product_name ? (
-          <div style={{ display: 'flex', height: '70vh' }}>
-            <div style={{ flex: '3', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-              <div style={{ width: '300px', height: '300px', padding: '10px' }}>
-                <img style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center' }} src={imgURL} />
-              </div>
-            </div>
-            <div style={{ flex: '7', display: 'flex', justifyContent: 'center', marginTop: '3%', alignItems: 'center' }}>
-              <Card
-                style={{
-                  width: '80%',
-                  height: '110%',
-                  marginLeft: '10%',
-                  marginRight: '10%'
-
-
-                }}
-                title=""
-                hoverable
-                tabList={tabList}
-                activeTabKey={activeTabKey1}
-                onTabChange={onTab1Change}
-              >
-                {contentList[activeTabKey1]}
-              </Card>
+    <>
+      {loading ? (
+        <div style={{ display: 'flex', justifyContent: 'center', height: '300px', alignItems: 'center' }}>
+          <Spin size="large" />
+        </div>
+      ) :  productos.product_name ? (
+        <div style={{ display: 'flex', height: '70vh' }}>
+          <div style={{ flex: '3', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <div style={{ width: '300px', height: '300px', padding: '10px' }}>
+              <img style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center' }} src={imgURL} />
             </div>
           </div>
-
-        ) : (
-          <Result404
-            subTitle={'Código de barras incorrecto, introduce otra vez! '}
-          />
-        )}
-      </>
+          <div style={{ flex: '7', display: 'flex', justifyContent: 'center', marginTop: '3%', alignItems: 'center' }}>
+            <Card
+              style={{
+                width: '80%',
+                height: '110%',
+                marginLeft: '10%',
+                marginRight: '10%'
+              }}
+              title=""
+              hoverable
+              tabList={tabList}
+              activeTabKey={activeTabKey1}
+              onTabChange={onTab1Change}
+            >
+              {contentList[activeTabKey1]}
+            </Card>
+          </div>
+        </div>
+      ) : (
+        <Result404
+          subTitle={'Código de barras incorrecto, introduce otra vez! '}
+        />
+      )}
+    </>
   );
+  
+  
 
 
 }
