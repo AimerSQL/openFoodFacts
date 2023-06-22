@@ -1,24 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Result, Spin, Rate } from 'antd';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import Result404 from './Result404';
 
 function FoodInfo() {
   const [productos, setProductos] = useState([]);
   const [rate, setRate] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { id } = useParams();
-
+  const { id  } = useParams();
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const productName = queryParams.get('productName');
   const hasLetter = (id) => {
     const regex = /[a-zA-Z]/;
     return regex.test(id);
   };
 
-  const getfood = async (id) => {
+  const getfood = async (id,productName ) => {
     let response;
-    if (hasLetter(id)) {
-      response = await axios.get(`http://localhost:4000/products/${id}`);
+    if (hasLetter(id)) {  
+      response = await axios.get(`http://localhost:4000/products/${id}?productName=${encodeURIComponent(productName)}`);
     } else {
       response = await axios.get(`http://localhost:4000/products/barcode/${id}`);
     }
@@ -37,7 +39,7 @@ function FoodInfo() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        await Promise.all([getfood(id), getrate(id)]);
+        await Promise.all([getfood(id,productName ), getrate(id)]);
         setLoading(false);
       } catch (error) {
         setLoading(false);

@@ -22,7 +22,7 @@ function Products({ productos }) {
                 {productos.map((p) => (
                     <Col xs={24} sm={12} md={8} lg={8} xl={8}>
                         <Link
-                            to={`/foodInfo/${p._id}`}
+                            to={`/foodInfo/${p._id}?productName=${encodeURIComponent(p.product_name)}`}
                             style={{
                                 textDecoration: "none",
                             }}
