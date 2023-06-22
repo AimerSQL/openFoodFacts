@@ -37,7 +37,7 @@ const items = [
         key: '/grafica/eco2',
       },
       {
-        label: 'TVOC',
+        label: 'Tvoc',
         key: '/grafica/tvoc',
       },
 

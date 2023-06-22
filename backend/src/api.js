@@ -222,7 +222,6 @@ router.get('/products/:productId', async (req, res) => {
 
 router.get('/products/barcode/:barcode', async (req, res) => {
     await productController.getProductByBarcode(req, res);
-
 });
 
 router.post('/filtered-products', async (req, res) => {

@@ -6,8 +6,10 @@ import moment from 'moment'
 import dayjs from 'dayjs';
 import ReactEcharts from 'echarts-for-react';
 import './Grafica.css'
+import Result404 from '../Result404';
 
 const { RangePicker } = DatePicker;
+
 
 const Grafica = ({ dataType, title }) => {
   const [dates, setDates] = useState([dayjs('2021-08-01 18:00:00'), dayjs('2021-08-01 18:00:00').add(2, 'months')]);
@@ -59,7 +61,7 @@ const Grafica = ({ dataType, title }) => {
             const dataStatBack = Object.keys(maxMin).map((key, index) => {
               return {
                 key: index,
-                nodos: key,
+                nodos: 'Nodo' + ' ' + (Number(key) + 1),
                 max: maxMin[key].maxNodo[dataType],
                 min: maxMin[key].minNodo[dataType],
                 mean: avg[index][dataType]
@@ -118,6 +120,13 @@ const Grafica = ({ dataType, title }) => {
     }));
   }
 
+  const dataTypeToUnit = {
+    humedad: '%H',
+    temperatura: '°C',
+    eco2: 'ppm',
+    tvoc: 'ppm'
+  };
+
   const getOption = () => {
     return {
       tooltip: {
@@ -131,7 +140,12 @@ const Grafica = ({ dataType, title }) => {
         type: 'category'
       },
       yAxis: {
-        type: 'value'
+        type: 'value',
+        axisLabel: {
+          formatter: (value) => {
+            return  `${value} ${dataTypeToUnit[dataType]}`;
+          },
+        },
       },
       series: [{
         name: 'Nodo 1',
@@ -181,6 +195,7 @@ const Grafica = ({ dataType, title }) => {
       key: 'max',
       align: 'center',
       width: 100,
+      render: max => `${max} ${dataTypeToUnit[dataType]}`,
     },
     {
       title: 'Min',
@@ -188,6 +203,7 @@ const Grafica = ({ dataType, title }) => {
       key: 'min',
       align: 'center',
       width: 100,
+      render: min => `${min} ${dataTypeToUnit[dataType]}`,
     },
     {
       title: 'Mean',
@@ -195,6 +211,7 @@ const Grafica = ({ dataType, title }) => {
       key: 'mean',
       align: 'center',
       width: 100,
+      render: mean => `${mean} ${dataTypeToUnit[dataType]}`,
     },
 
   ];
@@ -244,10 +261,8 @@ const Grafica = ({ dataType, title }) => {
         nodo1Data || nodo2Data || nodo3Data ? (
           <ReactEcharts option={getOption()} />
         ) : (
-          <Result
-            status="404"
-            title="404"
-            subTitle="Sorry, there is no data for the selected date range."
+          <Result404
+            subTitle={'No hay datos entre ese rango! Por favor, seleccione una franja horaria entre el 2021-07-20 y el 2022-01-01 .'}
           />
         )
       )}

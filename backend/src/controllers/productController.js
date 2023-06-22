@@ -100,6 +100,7 @@ productController.getProductByBarcode = async (req, res) => {
 
     const filteredProduct = {
       _id: foundProduct._id ? foundProduct._id : "",
+      barcode: barcode,
       product_name: foundProduct.product_name ? foundProduct.product_name : "",
       brand: foundProduct.brands ? foundProduct.brands : "",
       countries_en: foundProduct.countries_en ? foundProduct.countries_en : "",
