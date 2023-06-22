@@ -10,7 +10,7 @@ import './Grafica.css'
 const { RangePicker } = DatePicker;
 
 const Grafica = ({ dataType, title }) => {
-  const [dates, setDates] = useState(null);
+  const [dates, setDates] = useState([dayjs('2021-08-01 18:00:00'), dayjs('2021-08-01 18:00:00').add(2, 'months')]);
   const [value, setValue] = useState([
     dayjs('2021-08-01 18:00:00'),
     dayjs('2021-08-01 19:00:00')
@@ -25,6 +25,15 @@ const Grafica = ({ dataType, title }) => {
   useEffect(() => {
     handleButtonClick();
   }, [value, dataType]);
+
+  const disabledDate = (current) => {
+    if (!dates) {
+      return false;
+    }
+    const tooLate = dates[0] && current.diff(dates[0], "months") >= 2;
+    const tooEarly = dates[1] && dates[1].diff(current, "months") >= 2;
+    return !!tooEarly || !!tooLate;
+  };
 
   const handleButtonClick = () => {
     if (value && value.length === 2) {
@@ -204,6 +213,11 @@ const Grafica = ({ dataType, title }) => {
               onChange={(val) => {
                 setValue(val);
               }}
+              onCalendarChange={(val) => {
+                setDates(val);
+              }}
+              disabledDate={disabledDate}
+
             />
           </Col>
           <Col>
@@ -217,6 +231,7 @@ const Grafica = ({ dataType, title }) => {
                 justifyContent: 'center',
               }}
               onClick={handleButtonClick}
+              showOk={false}
             />
           </Col>
         </Space>
