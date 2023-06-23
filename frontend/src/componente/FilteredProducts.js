@@ -20,12 +20,12 @@ const FilteredProducts = () => {
     const handlePageChange = (page) => {
         setCurrentPage(page);
     };
-    console.log(data.count)
+
     return (
         data.count !== 0 ? (
             <>
                 <Row>
-                    <Col xs={24} sm={24} md={6} lg={6} xl={6}>
+                    <Col xs={6} sm={6} md={6} lg={6} xl={6}>
                         <div style={{ marginRight: '20px' }}>
                             <Filtro />
                         </div>
@@ -33,7 +33,7 @@ const FilteredProducts = () => {
                     <Products productos={currentProducts} />
                 </Row>
                 <Row>
-                    <Col xs={24} sm={24} md={18} lg={18} xl={18} style={{ textAlign: 'center', marginTop: '20px', marginLeft: '25%' }}>
+                    <Col xs={18} sm={18} md={18} lg={18} xl={18} style={{ textAlign: 'center', marginTop: '20px', marginLeft: '25%' }}>
                         <Pagination
                             current={currentPage}
                             pageSize={productsPerPage}
@@ -47,18 +47,17 @@ const FilteredProducts = () => {
             </>
         ) : <>
             <Row>
-                <Col xs={12} sm={12} md={6} lg={6} xl={6}>
+                <Col xs={6} sm={6} md={6} lg={6} xl={6}>
                     <div style={{ marginRight: '20px' }}>
                         <Filtro />
                     </div>
                 </Col>
                 <Products productos={currentProducts} />
-
-                <Col xs={12} sm={12} md={18} lg={18} xl={18}>
-                    <Result404
-                        subTitle={'NO SE HA ENCONTRADO NINGUN PRODUCTO'}
-
-                    />
+            </Row>
+            <Row>
+                <Col xs={18} sm={18} md={18} lg={18} xl={18} style={{ textAlign: 'center', marginTop: '-30%', marginLeft: '20%', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                <Result404
+                        subTitle={'NO SE HA ENCONTRADO NINGUN PRODUCTO'}/>
                 </Col>
             </Row>
         </>

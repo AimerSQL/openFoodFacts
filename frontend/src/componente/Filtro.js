@@ -30,7 +30,7 @@ const FilterForm = ({ onFilterSubmit }) => {
         categories: categoriesValue,
         brands: brandsValue,
         countries: countriesValue,
-        name:nameValue,
+        name: nameValue,
         nutriScore: selectedNutriScore,
       };
 
@@ -48,26 +48,26 @@ const FilterForm = ({ onFilterSubmit }) => {
   return (
     <Card title="Filtro" bordered={true} className="filter-form-card">
       <Form layout="vertical" form={form}>
-      <Form.Item label="Name" name="name" className="form-item">
-          <Input placeholder="Basic usage" />
+        <Form.Item label="Nombre" name="name" className="form-item">
+          <Input />
         </Form.Item>
 
         <Form.Item label="Categorías" name="categories" className="form-item">
-          <Input placeholder="Basic usage" />
+          <Input />
         </Form.Item>
 
         <Form.Item label="Marca" name="brands" className="form-item">
-          <Input placeholder="Basic usage" />
+          <Input />
         </Form.Item>
 
         <Form.Item label="Paises de venta" name="countries" className="form-item">
-          <Input placeholder="Basic usage" />
+          <Input />
         </Form.Item>
 
         <p>Grado de nutrición</p>
         <Select
+          style={{ width: '75%' }}
           showSearch
-          placeholder="nutricion"
           optionFilterProp="children"
           onChange={handleNutriScoreChange}
           onSearch={onSearch}
