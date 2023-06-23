@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { DatePicker, Row, Col, Button, Space, Table, Spin, Result } from 'antd';
+import { DatePicker, Row, Col, Button, Space, Table, Spin, Tooltip } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import moment from 'moment'
@@ -127,6 +127,13 @@ const Grafica = ({ dataType, title }) => {
     tvoc: 'ppm'
   };
 
+  const titleToTooltip = {
+    'Humedad': 'Humedad',
+    'Temperatura': 'Temperatura',
+    'Eco2': 'Dióxido de Carbono Equivalente',
+    'Tvoc': 'Total de Compuestos Orgánicos Volátiles'
+  };
+
   const getOption = () => {
     return {
       tooltip: {
@@ -143,7 +150,7 @@ const Grafica = ({ dataType, title }) => {
         type: 'value',
         axisLabel: {
           formatter: (value) => {
-            return  `${value} ${dataTypeToUnit[dataType]}`;
+            return `${value} ${dataTypeToUnit[dataType]}`;
           },
         },
       },
@@ -219,7 +226,9 @@ const Grafica = ({ dataType, title }) => {
   return (
     <div>
       <Row className="text-center" style={{ marginBottom: '20px' }}>
-        <span className="text-style">{title}</span>
+        <Tooltip placement="right" color= "blue" title={titleToTooltip[title]}>
+          <span className="text-style">{title}</span>
+        </Tooltip>
       </Row>
       <Row justify="center" align="middle" style={{ height: '100%', marginBottom: '20px' }}>
         <Space size="middle">
@@ -278,7 +287,7 @@ const Grafica = ({ dataType, title }) => {
           </div>
         ) : (
           <span
-            
+
           />
         )
       )}
