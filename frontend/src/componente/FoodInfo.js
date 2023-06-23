@@ -12,21 +12,30 @@ function FoodInfo() {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const productName = queryParams.get('productName');
+  
   const hasLetter = (id) => {
     const regex = /[a-zA-Z]/;
     return regex.test(id);
   };
 
-  const getfood = async (id,productName ) => {
-    let response;
-    if (hasLetter(id)) {  
-      response = await axios.get(`http://localhost:4000/products/${id}?productName=${encodeURIComponent(productName)}`);
-    } else {
-      response = await axios.get(`http://localhost:4000/products/barcode/${id}`);
+  const getfood = async (id, productName) => {
+    try {
+      let response;
+      if (hasLetter(id)) {
+        response = await axios.get(`http://localhost:4000/products/${id}?productName=${encodeURIComponent(productName)}`);
+      } else {
+        response = await axios.get(`http://localhost:4000/products/barcode/${id}`);
+      }
+  
+      setLoading(false);
+      setProductos(response.data);
+    } catch (error) {
+      console.log("error get", error);
+      setLoading(false);
+      setProductos([]);
     }
-    setProductos(response.data);
-    setLoading(false);
   };
+  
 
 
 

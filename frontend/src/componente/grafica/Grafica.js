@@ -143,7 +143,7 @@ const Grafica = ({ dataType, title }) => {
         type: 'value',
         axisLabel: {
           formatter: (value) => {
-            return  `${value} ${dataTypeToUnit[dataType]}`;
+            return `${value} ${dataTypeToUnit[dataType]}`;
           },
         },
       },
@@ -219,7 +219,7 @@ const Grafica = ({ dataType, title }) => {
   return (
     <div>
       <Row className="text-center" style={{ marginBottom: '20px' }}>
-        <span className="text-style">{title}</span>
+          <span className="text-style">{title}</span>
       </Row>
       <Row justify="center" align="middle" style={{ height: '100%', marginBottom: '20px' }}>
         <Space size="middle">
@@ -278,7 +278,7 @@ const Grafica = ({ dataType, title }) => {
           </div>
         ) : (
           <span
-            
+
           />
         )
       )}
