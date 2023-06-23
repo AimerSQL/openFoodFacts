@@ -51,6 +51,10 @@ productController.getProductById = async (req, res) => {
     const productName = req.query.productName;
     const barcode = await Barcode.findOne({ product_name: productName });
     const id = mongoose.Types.ObjectId(req.params.productId);
+    const hasLetters = /[a-zA-Z]/.test(id);
+    if(hasLetters) {
+      console.log("hola")
+    }
     const product = await Product.findById(id);
     if (!product) {
       return res.status(404).json({ error: 'Product not found' });
