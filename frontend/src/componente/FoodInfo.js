@@ -83,38 +83,38 @@ function FoodInfo() {
     tab1:
       <div>
         <p>
-          <span style={{ fontWeight: 'bold', fontSize: '18px' }}>Nombre:</span>{" "}
-          <span style={{ display: "flex", alignItems: "center", fontSize: '18px' }}>
+          <span style={{ fontWeight: 'bold', fontSize: '15px' }}>Nombre:</span>{" "}
+          <span style={{ display: "flex", alignItems: "center", fontSize: '15px' }}>
             {product.product_name ? product.product_name : "?"}
           </span>
         </p>
         <p>
-          <span style={{ fontWeight: 'bold', fontSize: '18px' }}>Barcode:</span>{" "}
-          <span style={{ display: "flex", alignItems: "center", fontSize: '18px' }}>
+          <span style={{ fontWeight: 'bold', fontSize: '15px' }}>Barcode:</span>{" "}
+          <span style={{ display: "flex", alignItems: "center", fontSize: '15px' }}>
             {product.barcode ? product.barcode : "?"}
           </span>
         </p>
         <p>
-          <span style={{ fontWeight: 'bold', fontSize: '18px' }}>Marca:</span>{" "}
-          <span style={{ display: "flex", alignItems: "center", fontSize: '18px'  }}>
+          <span style={{ fontWeight: 'bold', fontSize: '15px' }}>Marca:</span>{" "}
+          <span style={{ display: "flex", alignItems: "center", fontSize: '15px'  }}>
             {product.brand ? product.brand : "?"}
           </span>
         </p>
         <p>
-          <span style={{ fontWeight: 'bold', fontSize: '18px' }}>Pais de origen:</span>{" "}
-          <span style={{ display: "flex", alignItems: "center", fontSize: '18px'  }}>
+          <span style={{ fontWeight: 'bold', fontSize: '15px' }}>Pais de origen:</span>{" "}
+          <span style={{ display: "flex", alignItems: "center", fontSize: '15px'  }}>
             {product.countries_en ? product.countries_en : "?"}
           </span>
         </p>
         <p>
-          <span style={{ fontWeight: 'bold', fontSize: '18px' }}>Ingredientes:</span>{" "}
-          <span style={{ display: "flex", alignItems: "center", fontSize: '18px'  }}>
+          <span style={{ fontWeight: 'bold', fontSize: '15px' }}>Ingredientes:</span>{" "}
+          <span style={{ display: "flex", alignItems: "center", fontSize: '15px'  }}>
             {product.ingretients_text ? product.ingretients_text : "?"}
           </span>
         </p>
         <p>
-          <span style={{ fontWeight: 'bold', fontSize: '18px' }}>Categorias:</span>{" "}
-          <span style={{ display: "flex", alignItems: "center", fontSize: '18px'  }}>
+          <span style={{ fontWeight: 'bold', fontSize: '15px' }}>Categorias:</span>{" "}
+          <span style={{ display: "flex", alignItems: "center", fontSize: '15px'  }}>
             {product.categories != "" ? product.categories : "?"}
           </span>
         </p>
@@ -123,50 +123,50 @@ function FoodInfo() {
     tab2:
       <div>
         <p>
-          <span style={{ fontWeight: 'bold', fontSize: '18px' }}>Energía:</span>{" "}
-          <span style={{ display: "flex", alignItems: "center", fontSize: '18px'  }}>
+          <span style={{ fontWeight: 'bold', fontSize: '15px' }}>Energía:</span>{" "}
+          <span style={{ display: "flex", alignItems: "center", fontSize: '15px'  }}>
             {product.energy_100g ? product.energy_100g : "?"} KJ
           </span>
         </p>
         <p>
-          <span style={{ fontWeight: 'bold', fontSize: '18px' }}>Grasas:</span>{" "}
-          <span style={{ display: "flex", alignItems: "center", fontSize: '18px'  }}>
+          <span style={{ fontWeight: 'bold', fontSize: '15px' }}>Grasas:</span>{" "}
+          <span style={{ display: "flex", alignItems: "center", fontSize: '15px'  }}>
             {product.fat_100g ? product.fat_100g : "?"} g
           </span>
         </p>
         <p>
-          <span style={{ fontWeight: 'bold', fontSize: '18px' }}>Hidratos de carbono:</span>{" "}
-          <span style={{ display: "flex", alignItems: "center", fontSize: '18px'  }}>
+          <span style={{ fontWeight: 'bold', fontSize: '15px' }}>Hidratos de carbono:</span>{" "}
+          <span style={{ display: "flex", alignItems: "center", fontSize: '15px'  }}>
             {product.carbohydrates_100g ? product.carbohydrates_100g : "?"} g
           </span>
         </p>
         <p>
-          <span style={{ fontWeight: 'bold', fontSize: '18px' }}>Azúcares:</span>{" "}
-          <span style={{ display: "flex", alignItems: "center", fontSize: '18px'  }}>
+          <span style={{ fontWeight: 'bold', fontSize: '15px' }}>Azúcares:</span>{" "}
+          <span style={{ display: "flex", alignItems: "center", fontSize: '15px'  }}>
             {product.sugars_100g ? product.sugars_100g : "?"} g
           </span>
         </p>
         <p>
-          <span style={{ fontWeight: 'bold', fontSize: '18px' }}>Fibra alimentaria:</span>{" "}
-          <span style={{ display: "flex", alignItems: "center", fontSize: '18px'  }}>
+          <span style={{ fontWeight: 'bold', fontSize: '15px' }}>Fibra alimentaria:</span>{" "}
+          <span style={{ display: "flex", alignItems: "center", fontSize: '15px'  }}>
             {product.fiber_100g ? product.fiber_100g : "?"} g
           </span>
         </p>
         <p>
-          <span style={{ fontWeight: 'bold', fontSize: '18px' }}>Proteínas:</span>{" "}
-          <span style={{ display: "flex", alignItems: "center", fontSize: '18px'  }}>
+          <span style={{ fontWeight: 'bold', fontSize: '15px' }}>Proteínas:</span>{" "}
+          <span style={{ display: "flex", alignItems: "center", fontSize: '15px'  }}>
             {product.proteins_100g ? product.proteins_100g : "?"} g
           </span>
         </p>
         <p>
-          <span style={{ fontWeight: 'bold', fontSize: '18px' }}>Sal:</span>{" "}
-          <span style={{ display: "flex", alignItems: "center", fontSize: '18px'  }}>
+          <span style={{ fontWeight: 'bold', fontSize: '15px' }}>Sal:</span>{" "}
+          <span style={{ display: "flex", alignItems: "center", fontSize: '15px'  }}>
             {product.salt_100g ? product.salt_100g : "?"} g
           </span>
         </p>
         <p>
-          <span style={{ fontWeight: 'bold', fontSize: '18px' }}>Sodio:</span>{" "}
-          <span style={{ display: "flex", alignItems: "center", fontSize: '18px'  }}>
+          <span style={{ fontWeight: 'bold', fontSize: '15px' }}>Sodio:</span>{" "}
+          <span style={{ display: "flex", alignItems: "center", fontSize: '15px'  }}>
             {product.sodium_100g ? product.sodium_100g : "?"} g
           </span>
         </p>
