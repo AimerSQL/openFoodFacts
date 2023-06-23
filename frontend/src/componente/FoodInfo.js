@@ -175,37 +175,37 @@ function FoodInfo() {
     tab3:
       <div>
         <p>
-          <span style={{ fontWeight: 'bold', fontSize: '18px' }}>Manufacturing:</span>{" "}
+          <span style={{ fontWeight: 'bold', fontSize: '15px' }}>Manufacturing:</span>{" "}
           <span style={{ display: "flex", alignItems: "center" }}>
             <Rate disabled defaultValue={rate.manufacturingLike} />
           </span>
         </p>
         <p>
-          <span style={{ fontWeight: 'bold', fontSize: '18px' }}>Packaging:</span>{" "}
+          <span style={{ fontWeight: 'bold', fontSize: '15px' }}>Packaging:</span>{" "}
           <span style={{ display: "flex", alignItems: "center" }}>
             <Rate disabled defaultValue={rate.palmoilLike} />
           </span>
         </p>
         <p>
-          <span style={{ fontWeight: 'bold', fontSize: '18px' }}>Palmoil:</span>{" "}
+          <span style={{ fontWeight: 'bold', fontSize: '15px' }}>Palmoil:</span>{" "}
           <span style={{ display: "flex", alignItems: "center" }}>
             <Rate disabled defaultValue={rate.palmoilLike} />
           </span>
         </p>
         <p>
-          <span style={{ fontWeight: 'bold', fontSize: '18px' }}>Size:</span>{" "}
+          <span style={{ fontWeight: 'bold', fontSize: '15px' }}>Size:</span>{" "}
           <span style={{ display: "flex", alignItems: "center" }}>
             <Rate disabled defaultValue={rate.sizeLike} />
           </span>
         </p>
         <p>
-          <span style={{ fontWeight: 'bold', fontSize: '18px' }}>Storage:</span>{" "}
+          <span style={{ fontWeight: 'bold', fontSize: '15px' }}>Storage:</span>{" "}
           <span style={{ display: "flex", alignItems: "center" }}>
             <Rate disabled defaultValue={rate.storageLike} />
           </span>
         </p>
         <p>
-          <span style={{ fontWeight: 'bold', fontSize: '18px' }}>Transport:</span>{" "}
+          <span style={{ fontWeight: 'bold', fontSize: '15px' }}>Transport:</span>{" "}
           <span style={{ display: "flex", alignItems: "center" }}>
             <Rate disabled defaultValue={rate.transportLike} />
           </span>
@@ -239,7 +239,8 @@ function FoodInfo() {
                 width: '80%',
                 height: '110%',
                 marginLeft: '10%',
-                marginRight: '10%'
+                marginRight: '10%',
+                overflowY: 'auto'
               }}
               title=""
               hoverable

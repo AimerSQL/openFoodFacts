@@ -226,7 +226,7 @@ const Grafica = ({ dataType, title }) => {
   return (
     <div>
       <Row className="text-center" style={{ marginBottom: '20px' }}>
-        <Tooltip placement="right" color= "blue" title={titleToTooltip[title]}>
+        <Tooltip placement="right" color= "blue" title={titleToTooltip[title]} overlayStyle={{ whiteSpace: 'nowrap', maxWidth: 'none' }}>
           <span className="text-style">{title}</span>
         </Tooltip>
       </Row>
