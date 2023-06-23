@@ -12,7 +12,7 @@ function FoodInfo() {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const productName = queryParams.get('productName');
-  
+
   const hasLetter = (id) => {
     const regex = /[a-zA-Z]/;
     return regex.test(id);
@@ -115,7 +115,7 @@ function FoodInfo() {
         <p>
           <span style={{ fontWeight: 'bold', fontSize: '18px' }}>Categorias:</span>{" "}
           <span style={{ display: "flex", alignItems: "center", fontSize: '18px'  }}>
-            {product.categories/* .length > 0 */ ? product.categories : "?"}
+            {product.categories != "" ? product.categories : "?"}
           </span>
         </p>
       </div>,
