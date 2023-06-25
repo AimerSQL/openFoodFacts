@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 
 
 function Products({ productos }) {
-    const [currentPage, setCurrentPage] = useState(1);
     const [hoveredCard, setHoveredCard] = useState(null);
 
 
@@ -97,22 +96,6 @@ function Products({ productos }) {
                     </Col>
                 ))}
             </Row>
-            {/* <Row>
-                <Col
-                    xs={{ span: 24 }}
-                    sm={{ span: 24 }}
-                    md={{ span: 24 }}
-                    lg={{ span: 24 }}
-                    xl={{ span: 24 }}
-                    style={{
-                        display: "flex",
-                        justifyContent: "center",
-                        marginTop: "20px",
-                    }}
-                >
-                   
-                </Col>
-            </Row> */}
         </Col>
 
     );

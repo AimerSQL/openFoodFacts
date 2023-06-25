@@ -5,10 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import { Select } from 'antd';
 import Servicios from '../service/Servicios';
 
-/* const onSearch = (value) => {
-  console.log('search:', value);
-}; */
-
 const Filtro = ({ onLoading }) => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
@@ -75,7 +71,6 @@ const Filtro = ({ onLoading }) => {
           allowClear
           optionFilterProp="children"
           onChange={handleNutriScoreChange}
-          /* onSearch={onSearch} */
           filterOption={(input, option) =>
             (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
           }
