@@ -254,7 +254,7 @@ function FoodInfo() {
         </div>
       ) : (
         <Result404
-          subTitle={'Código de barras incorrecto, introduce otra vez! '}
+          subTitle={'No hay datos!'}
         />
       )}
     </>
