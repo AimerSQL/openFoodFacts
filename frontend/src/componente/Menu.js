@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Row, Col, Skeleton, Pagination } from 'antd';
+ import { Row, Col, Skeleton, Pagination, Spin} from 'antd';
 import Products from './Products';
 import Filtro from './Filtro';
 import Servicios from '../service/Servicios';
@@ -8,6 +8,12 @@ const Menu = () => {
     const [productos, setProductos] = useState([]);
     const [loading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
+    const [loadingFiltered, setLoadingFiltered] = useState(false);
+    
+    const handleLoadingFiltered = (isLoaded) => {
+        setLoadingFiltered(isLoaded);
+      };
+    
 
     const fetchData = async (page, limit) => {
         setLoading(true);
@@ -47,10 +53,13 @@ const Menu = () => {
             <Row>
                 <Col xs={24} sm={24} md={6} lg={6} xl={6}>
                     <div style={{ marginRight: '20px' }}>
-                        <Filtro />
+                    <Filtro onLoading={handleLoadingFiltered}/>
                     </div>
                 </Col>
-                <Products productos={productos.data} />
+                {loadingFiltered ? (<div style={{ marginTop: '-150px', marginLeft: '70vh', display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+                        <Spin size="large" />
+                    </div>):(
+                <Products productos={productos.data} />)}
             </Row>
 
 
