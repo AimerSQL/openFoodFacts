@@ -14,11 +14,6 @@ const items = [
     icon: <PictureOutlined />,
     label: <b>Menu</b>,
   },
-  /*     {
-          key: '/Buscar',
-          icon: <SearchOutlined />,
-          label: <b>Buscar</b>,
-      }, */
   {
     label: <b>Grafica</b>,
     key: '/grafica',

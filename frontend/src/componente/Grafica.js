@@ -1,23 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import { DatePicker, Row, Col, Button, Space, Table, Spin, Tooltip } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
-import axios from 'axios';
 import moment from 'moment'
 import dayjs from 'dayjs';
 import ReactEcharts from 'echarts-for-react';
 import './Grafica.css'
-import Result404 from '../Result404';
+import Result404 from './Result404';
+import Servicios from '../service/Servicios';
 
 const { RangePicker } = DatePicker;
 
 
 const Grafica = ({ dataType, title }) => {
-  const [dates, setDates] = useState([dayjs('2021-08-01 18:00:00'), dayjs('2021-08-01 18:00:00').add(2, 'months')]);
+  const [dates, setDates] = useState([
+    dayjs('2021-08-01 18:00:00'),
+    dayjs('2021-08-02 18:00:00').add(2, 'months')]);
   const [value, setValue] = useState([
     dayjs('2021-08-01 18:00:00'),
-    dayjs('2021-08-01 19:00:00')
+    dayjs('2021-08-02 18:00:00')
   ]);
-  const [nodoData, setNodoData] = useState();
+
   const [nodo1Data, setNodo1Data] = useState();
   const [nodo2Data, setNodo2Data] = useState();
   const [nodo3Data, setNodo3Data] = useState();
@@ -49,15 +51,13 @@ const Grafica = ({ dataType, title }) => {
         end: endTimestamp,
       };
 
-      axios
-        .post('http://localhost:4000/nodos', requestData)
+      Servicios.getNodos(requestData)
         .then((response) => {
-          console.log(response.data)
-          if (response.data) {
-            const sortedNodo1Data = response.data.nodos.nodo1.sort((a, b) => new Date(a.time_index) - new Date(b.time_index));
-            const sortedNodo2Data = response.data.nodos.nodo2.sort((a, b) => new Date(a.time_index) - new Date(b.time_index));
-            const sortedNodo3Data = response.data.nodos.nodo3.sort((a, b) => new Date(a.time_index) - new Date(b.time_index));
-            const { avg, maxMin } = response.data;
+          if (response) {
+            const sortedNodo1Data = response.nodos.nodo1.sort((a, b) => new Date(a.time_index) - new Date(b.time_index));
+            const sortedNodo2Data = response.nodos.nodo2.sort((a, b) => new Date(a.time_index) - new Date(b.time_index));
+            const sortedNodo3Data = response.nodos.nodo3.sort((a, b) => new Date(a.time_index) - new Date(b.time_index));
+            const { avg, maxMin } = response;
             const dataStatBack = Object.keys(maxMin).map((key, index) => {
               return {
                 key: index,
@@ -73,7 +73,6 @@ const Grafica = ({ dataType, title }) => {
             setNodo2Data(sortedNodo2Data);
             setNodo3Data(sortedNodo3Data);
           } else {
-            // No data or invalid data, reset the states
             setDataStat([]);
             setNodo1Data(null);
             setNodo2Data(null);
@@ -93,16 +92,10 @@ const Grafica = ({ dataType, title }) => {
     }
   };
 
-  let chartData = [];
   let chartData1 = [];
   let chartData2 = [];
   let chartData3 = [];
   if (nodo1Data || nodo2Data || nodo3Data) {
-    /*     chartData = nodoData.map((item) => ({
-          date: moment(item.time_index).format('YYYY-MM-DD HH:mm:ss'),
-          [dataType]: parseFloat(item[dataType]),
-          entityId: item.entity_id,
-        })); */
     chartData1 = nodo1Data.map((item) => ({
       date: moment(item.time_index).format('YYYY-MM-DD HH:mm:ss'),
       [dataType]: parseFloat(item[dataType]),
@@ -226,7 +219,7 @@ const Grafica = ({ dataType, title }) => {
   return (
     <div>
       <Row className="text-center" style={{ marginBottom: '20px' }}>
-        <Tooltip placement="right" color= "blue" title={titleToTooltip[title]} overlayStyle={{ whiteSpace: 'nowrap', maxWidth: 'none' }}>
+        <Tooltip placement="right" color="blue" title={titleToTooltip[title]} overlayStyle={{ whiteSpace: 'nowrap', maxWidth: 'none' }}>
           <span className="text-style">{title}</span>
         </Tooltip>
       </Row>

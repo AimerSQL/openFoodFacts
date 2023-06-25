@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Skeleton, Pagination } from 'antd';
-import axios from 'axios';
 import Products from './Products';
 import Filtro from './Filtro';
 import Servicios from '../service/Servicios';
@@ -12,7 +11,7 @@ const Menu = () => {
 
     const fetchData = async (page, limit) => {
         setLoading(true);
-        Servicios.getProductos(page,limit).then(data => {
+        Servicios.getProducts(page,limit).then(data => {
             setProductos(data);
             setLoading(false);  
         }).catch((error) => {

@@ -2,7 +2,7 @@ import axios from 'axios'
 
 
 class Servicios {
-  getProductos = async (page, limit) => {
+  getProducts = async (page, limit) => {
     const response = await axios.get(`http://localhost:4000/products?page=${page}&limit=${limit}`);
     return response.data;
   } 
@@ -17,6 +17,20 @@ class Servicios {
     return response.data;
   } 
 
+  getFoodRate = async (id) => {
+    const response = await axios.get(`http://localhost:4000/rate-products/${id}`);
+    return response.data;
+  } 
+
+  getNodos = async (date) => {
+    const response = await axios.post('http://localhost:4000/nodos', date)
+    return response.data;
+  } 
+
+  getFilteredProducts = async (filter) => {
+    const response = await axios.post('http://localhost:4000/filtered-products', filter)
+    return response.data;
+  } 
 }
 
 export default new Servicios();

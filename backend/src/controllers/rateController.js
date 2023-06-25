@@ -1,5 +1,4 @@
 const votModel = require('../models/votModel');
-const mongoose = require('mongoose');
 const rateController = {};
 
 rateController.getProductRate = async (req, res) => {

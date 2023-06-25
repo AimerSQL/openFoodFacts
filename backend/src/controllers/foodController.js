@@ -1,5 +1,4 @@
 const foodController = {};
-const axios = require('axios');
 
 
 const productModel = require('../models/productModel')

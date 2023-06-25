@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Result, Spin, Rate } from 'antd';
-import axios from 'axios';
+import { Card, Spin, Rate } from 'antd';
 import { useParams, useLocation } from 'react-router-dom';
 import Result404 from './Result404';
 import Servicios from '../service/Servicios';
@@ -8,7 +7,7 @@ import Servicios from '../service/Servicios';
 function FoodInfo() {
   const [productos, setProductos] = useState([]);
   const [rate, setRate] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const { id } = useParams();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -20,39 +19,42 @@ function FoodInfo() {
     return regex.test(id);
   };
 
-  const getfood = async (id, productName) => {
-      let data;
+  const getFood = async (id, productName) => {
       if (hasLetter(id)) {
-        data = Servicios.getFoodInfoById(id, productName).catch((error) => {
-          console.error('Error fetching data:', error);
+        Servicios.getFoodInfoById(id, productName).then(data => {
+          setProductos(data);
           setLoading(false);
+      }).catch((error) => {
+          console.error('Error fetching data:', error);
           setProductos([]);
+          setLoading(false);
       })
       } else {
-        data = Servicios.getFoodInfoByBarcode(id).catch((error) => {
-          console.error('Error fetching data:', error);
+        Servicios.getFoodInfoByBarcode(id).then(data => {
+          setProductos(data);
           setLoading(false);
+      }).catch((error) => {
+          console.error('Error fetching data:', error);
           setProductos([]);
+          setLoading(false);
       })
 
-      setLoading(false);
-      setProductos(data);
+
     }
   };
 
-
-
-
-  const getrate = async (id) => {
-    const response = await axios.get(`http://localhost:4000/rate-products/${id}`);
-    setRate(response.data);
-  };
+  const getRate = async (id) => {
+    Servicios.getFoodRate(id).then(data => {
+      setRate(data);
+  }).catch((error) => {
+    console.error('Error fetching data:', error);
+})}
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        await Promise.all([getfood(id, productName), getrate(id)]);
+        await Promise.all([getFood(id, productName), getRate(id)]);
         setLoading(false);
       } catch (error) {
         setLoading(false);
@@ -230,7 +232,7 @@ function FoodInfo() {
         <div style={{ display: 'flex', justifyContent: 'center', height: '300px', alignItems: 'center' }}>
           <Spin size="large" />
         </div>
-      ) : productos.product_name ? (
+      ) : productos ? (
         <div style={{ display: 'flex', height: '70vh' }}>
           <div style={{ flex: '3', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             <div style={{ width: '300px', height: '300px', padding: '10px' }}>
