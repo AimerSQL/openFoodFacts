@@ -3,7 +3,7 @@ import { Card, Spin, Rate } from 'antd';
 import { useParams, useLocation } from 'react-router-dom';
 import Result404 from './Result404';
 import Servicios from '../service/Servicios';
-
+import axios from 'axios'
 function FoodInfo() {
   const [productos, setProductos] = useState([]);
   const [rate, setRate] = useState([]);
@@ -12,33 +12,26 @@ function FoodInfo() {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const productName = queryParams.get('productName');
-
   const hasLetter = (id) => {
     const regex = /[a-zA-Z]/;
     return regex.test(id);
   };
 
   const getFood = async (id, productName) => {
+    try {
+      let response;
       if (hasLetter(id)) {
-        Servicios.getFoodInfoById(id, productName).then(data => {
-            setProductos(data);
-            setLoading(false);
-      }).catch((error) => {
-          setProductos([]);
-          console.error('Error fetching data:', error);
-          setLoading(false);
-      })
+        response = await axios.get(`http://localhost:4000/products/${id}?productName=${encodeURIComponent(productName)}`);
       } else {
-        Servicios.getFoodInfoByBarcode(id).then(data => {
-          setProductos(data);
-          setLoading(false);
-      }).catch((error) => {
-          setProductos([]);
-          console.error('Error fetching data:', error);
-          setLoading(false);
-      })
+        response = await axios.get(`http://localhost:4000/products/barcode/${id}`);
+      }
 
-
+      setLoading(false);
+      setProductos(response.data);
+    } catch (error) {
+      console.log("error get", error);
+      setLoading(false);
+      setProductos([]);
     }
   };
 
@@ -228,7 +221,7 @@ function FoodInfo() {
         <div style={{ display: 'flex', justifyContent: 'center', height: '300px', alignItems: 'center' }}>
           <Spin size="large" />
         </div>
-      ) : productos ? (
+      ) : productos.product_name != null ? (
         <div style={{ display: 'flex', height: '70vh' }}>
           <div style={{ flex: '3', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             <div style={{ width: '300px', height: '300px', padding: '10px' }}>
