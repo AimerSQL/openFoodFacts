@@ -3,11 +3,12 @@ import axios from "axios";
 class Servicios {
   token = localStorage.getItem("token");
   getProducts = async (page, limit) => {
+    const token = localStorage.getItem("token");
     const response = await axios.get(
       `http://localhost:4000/products?page=${page}&limit=${limit}`,
       {
         headers: {
-          Authorization: `Bearer ${this.token}`,
+          Authorization: `Bearer ${token}`,
         },
       }
     );
@@ -75,11 +76,7 @@ class Servicios {
   };
 
   getUserCredentical = async (userdata) => {
-    const response = await axios.post("http://localhost:4000/user", userdata, {
-      headers: {
-        Authorization: `Bearer ${this.token}`,
-      },
-    });
+    const response = await axios.post("http://localhost:4000/user", userdata);
     return response.data;
   };
 }
