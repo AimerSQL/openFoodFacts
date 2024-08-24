@@ -326,7 +326,7 @@ router.post("/nodos", authenticateToken, async (req, res) => {
   await nodosController.getNodos(req, res);
 });
 
-router.post("/user", authenticateToken, async (req, res) => {
+router.post("/user", async (req, res) => {
   await userController.getUserIdentical(req, res);
 });
 
