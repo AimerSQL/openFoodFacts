@@ -1,9 +1,13 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const foodController = require('./controllers/foodController');
-const productController = require('./controllers/productController');
-const rateController = require('./controllers/rateController');
-const nodosController = require('./controllers/nodosController');
+const foodController = require("./controllers/foodController");
+const productController = require("./controllers/productController");
+const rateController = require("./controllers/rateController");
+const nodosController = require("./controllers/nodosController");
+const userController = require("./controllers/userController");
+const jwt = require("jsonwebtoken");
+
+const JWT_SECRET = "your_secret_key";
 
 /**
  * @swagger
@@ -11,6 +15,8 @@ const nodosController = require('./controllers/nodosController');
  *   get:
  *     summary: get products
  *     description: get products
+ *     security:
+ *      - bearerAuth: []
  *     responses:
  *       200:
  *         description: successful get
@@ -20,11 +26,13 @@ const nodosController = require('./controllers/nodosController');
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/products'
- * 
+ *
  * /nodos:
  *   post:
  *     summary: post nodos
  *     description: post nodos
+ *     security:
+ *      - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -45,11 +53,13 @@ const nodosController = require('./controllers/nodosController');
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/nodos'
- * 
-  * /products/{productId}:
+ *
+ * /products/{productId}:
  *   get:
  *     summary: Get a product by ID
  *     description: Returns a single product by its ID
+ *     security:
+ *      - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: productId
@@ -68,11 +78,13 @@ const nodosController = require('./controllers/nodosController');
  *         description: Product not found
  *       500:
  *         description: Internal server error
- * 
+ *
  * /products/barcode/{barcode}:
  *   get:
  *     summary: Get a product by barcode
  *     description: Returns a single product by its barcode
+ *     security:
+ *      - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: barcode
@@ -91,11 +103,13 @@ const nodosController = require('./controllers/nodosController');
  *         description: Product not found
  *       500:
  *         description: Internal server error
- * 
+ *
  * /rate-products/{productId}:
  *   get:
  *     summary: Get a product rate by ID
  *     description: Get a product rate by ID
+ *     security:
+ *      - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: productId
@@ -114,12 +128,14 @@ const nodosController = require('./controllers/nodosController');
  *         description: rate not found
  *       500:
  *         description: Internal server error
- * 
- * 
+ *
+ *
  * /filtered-products:
  *   post:
  *     summary: get filter products
  *     description: get filter products
+ *     security:
+ *      - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -142,7 +158,54 @@ const nodosController = require('./controllers/nodosController');
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/products'
- * 
+ *
+ * /user:
+ *   post:
+ *     summary: get user
+ *     description: get user
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: User found successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "User found"
+ *       404:
+ *         description: User not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "User not found"
+ *       500:
+ *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Server error"
+ *
  * components:
  *   schemas:
  *     products:
@@ -170,7 +233,7 @@ const nodosController = require('./controllers/nodosController');
  *         countries_en:
  *           type: string
  *           description: The country of origin of the product
- * 
+ *
  *     rate:
  *       type: object
  *       properties:
@@ -201,42 +264,70 @@ const nodosController = require('./controllers/nodosController');
  *           type: integer
  *         temperatura:
  *           type: integer
- * 
+ *
  *     Product:
  *       type: object
  *       properties:
  *         id:
  *           type: string
  *           description: The product ID
- * 
+ *
+ *   securitySchemes:
+ *     bearerAuth:
+ *       type: http
+ *       scheme: bearer
+ *       bearerFormat: JWT
  */
 
-router.get('/products', async (req, res) => {
-    await foodController.getAllFoods(req, res);
+function authenticateToken(req, res, next) {
+  const authHeader = req.headers["authorization"];
+
+  // 检查 Authorization 头是否存在
+  if (authHeader == null) {
+    return res.status(401).json({ message: "No token provided" });
+  }
+
+  // 提取 token 部分（去掉 Bearer 前缀）
+  const token = authHeader && authHeader.split(" ")[1];
+
+  jwt.verify(token, JWT_SECRET, (err, user) => {
+    if (err) return res.status(403).json({ message: err });
+
+    req.user = user;
+    next();
+  });
+}
+
+router.get("/products", authenticateToken, async (req, res) => {
+  await foodController.getAllFoods(req, res);
 });
 
-router.get('/products/:productId', async (req, res) => {
-    await productController.getProductById(req, res);
-
+router.get("/products/:productId", authenticateToken, async (req, res) => {
+  await productController.getProductById(req, res);
 });
 
-router.get('/products/barcode/:barcode', async (req, res) => {
+router.get(
+  "/products/barcode/:barcode",
+  authenticateToken,
+  async (req, res) => {
     await productController.getProductByBarcode(req, res);
+  }
+);
+
+router.post("/filtered-products", authenticateToken, async (req, res) => {
+  await productController.getFilteredProducts(req, res);
 });
 
-router.post('/filtered-products', async (req, res) => {
-    await productController.getFilteredProducts(req, res);
+router.get("/rate-products/:productId", authenticateToken, async (req, res) => {
+  await rateController.getProductRate(req, res);
 });
 
-router.get('/rate-products/:productId', async (req, res) => {
-    await rateController.getProductRate(req, res);
+router.post("/nodos", authenticateToken, async (req, res) => {
+  await nodosController.getNodos(req, res);
 });
 
-router.post('/nodos', async (req, res) => {
-    await nodosController.getNodos(req, res);
+router.post("/user", authenticateToken, async (req, res) => {
+  await userController.getUserIdentical(req, res);
 });
 
 module.exports = router;
-
-
-
