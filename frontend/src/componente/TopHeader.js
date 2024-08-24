@@ -1,46 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import upmEtsisiLogo from '../fotos/upmEtsisiLogo.jpg';
-import { AreaChartOutlined, PictureOutlined } from '@ant-design/icons';
-import { Layout, Menu, Input } from 'antd';
-import { useNavigate, useLocation } from 'react-router-dom';
-
+import React, { useState, useEffect } from "react";
+import upmEtsisiLogo from "../fotos/upmEtsisiLogo.jpg";
+import { AreaChartOutlined, PictureOutlined } from "@ant-design/icons";
+import { Layout, Menu, Input } from "antd";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import i18n from "../i18n";
 const { Header } = Layout;
 const { Search } = Input;
 
-
-const items = [
-  {
-    key: '/menu',
-    icon: <PictureOutlined />,
-    label: <b>Menu</b>,
-  },
-  {
-    label: <b>Grafica</b>,
-    key: '/grafica',
-    icon: <AreaChartOutlined />,
-    children: [
-      {
-        label: 'Humedad',
-        key: '/grafica/humedad',
-      },
-      {
-        label: 'Temperatura',
-        key: '/grafica/temperatura',
-      },
-      {
-        label: 'eCo2',
-        key: '/grafica/eco2',
-      },
-      {
-        label: 'Tvoc',
-        key: '/grafica/tvoc',
-      },
-
-    ],
-  },
-]
-
 export default function TopHeader() {
+  const { t } = useTranslation();
+
+  const changeLanguage = (lng) => {
+    i18n.changeLanguage(lng);
+  };
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -57,8 +30,7 @@ export default function TopHeader() {
   const onSearch = (value) => {
     if (value) {
       navigate(`/foodInfo/${value}`);
-    }
-    else {
+    } else {
       navigate(`/menu`);
     }
   };
@@ -81,21 +53,64 @@ export default function TopHeader() {
     });
   };
 
+  const items = [
+    {
+      key: "/menu",
+      icon: <PictureOutlined />,
+      label: <b>{t("menu")}</b>,
+    },
+    {
+      label: <b>{t("grafica")}</b>,
+      key: "/grafica",
+      icon: <AreaChartOutlined />,
+      children: [
+        {
+          label: t("humedad"),
+          key: "/grafica/humedad",
+        },
+        {
+          label: t("temperatura"),
+          key: "/grafica/temperatura",
+        },
+        {
+          label: t("eco2"),
+          key: "/grafica/eco2",
+        },
+        {
+          label: t("tvoc"),
+          key: "/grafica/tvoc",
+        },
+      ],
+    },
+  ];
+
   return (
     <Header>
-
-      <img src={upmEtsisiLogo}
-        alt={'upmEtsisiLogo'}
-        title={'upmEtsisiLogo'}
+      <img
+        src={upmEtsisiLogo}
+        alt={"upmEtsisiLogo"}
+        title={"upmEtsisiLogo"}
         style={{
-          float: 'left',
+          float: "left",
           width: 174,
           height: 60,
-          margin: '2px 3px 0px -46px',
-          background: 'rgba(255, 255, 255, 0.2)',
-        }} />
-
-      {< div style={{ float: 'right', marginRight: 20, color: "#F8F8FF" }}>
+          margin: "2px 3px 0px -46px",
+          background: "rgba(255, 255, 255, 0.2)",
+        }}
+      />
+      <div
+        style={{
+          float: "left",
+          width: 174,
+          height: 60,
+          margin: "2px 3px 0px -46px",
+          background: "rgba(255, 255, 255, 0.2)",
+        }}
+      >
+        <button onClick={() => changeLanguage("en")}>English</button>
+        <button onClick={() => changeLanguage("es")}>Español</button>
+      </div>
+      <div style={{ float: "right", marginRight: 20, color: "#F8F8FF" }}>
         <Search
           placeholder="Introduce Código de Barra"
           allowClear
@@ -103,11 +118,12 @@ export default function TopHeader() {
           size="large"
           onSearch={onSearch}
           style={{
-            margin: '12px',
+            margin: "12px",
           }}
-          inputProps={{ inputMode: 'numeric', pattern: "[0-9]*" }}
+          inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
         />
-      </div>}
+      </div>
+
       <Menu
         theme="dark"
         mode="horizontal"
@@ -117,7 +133,6 @@ export default function TopHeader() {
       >
         {renderMenu(items)}
       </Menu>
-    </Header >)
-
+    </Header>
+  );
 }
-
