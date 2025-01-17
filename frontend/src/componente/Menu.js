@@ -31,6 +31,25 @@ const Menu = () => {
         fetchData(currentPage, 12);
     }, [currentPage]);
 
+    const handleDelete = async (productId) => {
+        try {
+            // 调用后端 API 删除产品
+            await Servicios.deleteProduct(productId); 
+    
+            // 删除成功后更新前端状态
+            setProductos((prevProductos) => {
+                const updatedData = prevProductos.data.filter(product => product.id !== productId);
+                return {
+                    ...prevProductos,
+                    data: updatedData,
+                    totalCount: prevProductos.totalCount - 1,
+                };
+            });
+        } catch (error) {
+            console.error('Error deleting product:', error);
+        }
+    };
+
     if (loading) {
         return (
             <div
@@ -59,7 +78,7 @@ const Menu = () => {
                 {loadingFiltered ? (<div style={{ marginTop: '-150px', marginLeft: '70vh', display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
                         <Spin size="large" />
                     </div>):(
-                <Products productos={productos.data} />)}
+                <Products productos={productos.data} onDelete={handleDelete} />)}
             </Row>
 
 

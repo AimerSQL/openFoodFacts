@@ -130,4 +130,22 @@ productController.getProductByBarcode = async (req, res) => {
   }
 }
 
+productController.deleteProductById = async (req, res) => {
+  try {
+    const id = mongoose.Types.ObjectId(req.params.productId);
+
+    // 删除产品
+    const deletedProduct = await Product.findByIdAndDelete(id);
+
+    if (!deletedProduct) {
+      return res.status(404).json({ error: 'Product not found' });
+    }
+
+    res.json({ message: 'Product deleted successfully', product: deletedProduct });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
 module.exports = productController;

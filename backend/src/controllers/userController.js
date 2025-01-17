@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const User = require("../models/userModel");
-const userController = {};
+const  userController = {};
 
 // 假设你有一个密钥用于签发 JWT
 const JWT_SECRET = "your_secret_key";

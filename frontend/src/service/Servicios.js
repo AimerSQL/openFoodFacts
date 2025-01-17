@@ -76,9 +76,21 @@ class Servicios {
   };
 
   getUserCredentical = async (userdata) => {
+    console.log('111');
     const response = await axios.post("http://localhost:4000/user", userdata);
     return response.data;
   };
+
+  deleteProduct = async (productId) => {
+    try {
+      const response = await axios.delete(`http://localhost:4000/products/${productId}`);
+      return response.data;
+    } catch (error) {
+      throw new Error('Error deleting product:', error);
+    }
+  };
+  
 }
+
 
 export default new Servicios();

@@ -1,10 +1,7 @@
 import "./DashboardVisitor.css";
-
 import React from "react";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
-
 import TopHeader from "../componente/TopHeader";
-
 import { Layout, theme } from "antd";
 import Grafica from "../componente/Grafica";
 import Menu from "../componente/Menu";
@@ -15,15 +12,18 @@ import Register from "../componente/Register";
 import PrivateRoute from "../componente/PrivateRoute";
 const { Content, Footer } = Layout;
 
+
 export default function DashboardVisitor(props) {
+
   const {
     token: { colorBgContainer },
   } = theme.useToken();
+ 
 
   return (
     <BrowserRouter>
       <Layout>
-        <TopHeader />
+      <TopHeader />
 
         <Layout>
           <Content
@@ -71,7 +71,7 @@ export default function DashboardVisitor(props) {
         </Layout>
 
         <Footer style={{ textAlign: "center" }}>
-          TFG UPM ETSISI 2022 - 2023
+        TFM UPM Ingeniero Web 2024 - 2025
         </Footer>
       </Layout>
     </BrowserRouter>

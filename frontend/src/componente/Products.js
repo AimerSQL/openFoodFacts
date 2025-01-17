@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { Row, Col, Card, Pagination } from "antd";
+import { Row, Col, Card, Pagination,Button } from "antd";
 import { Link } from "react-router-dom";
+import { CloseOutlined } from '@ant-design/icons';
 
-
-function Products({ productos }) {
+function Products({ productos ,onDelete }) {
     const [hoveredCard, setHoveredCard] = useState(null);
 
 
@@ -89,6 +89,21 @@ function Products({ productos }) {
                                     style={{
                                         textAlign: "center",
                                         color: "#F0F2F5",
+                                    }}
+                                />
+                                <Button
+                                    type="text"
+                                    icon={<CloseOutlined />}
+                                    onClick={(e) => {
+                                        e.preventDefault(); // Prevent navigation to product details
+                                        e.stopPropagation();
+                                        onDelete(p._id);
+                                    }}
+                                    style={{
+                                        position: "absolute",
+                                        top: "10px",
+                                        right: "10px",
+                                        color: "red",
                                     }}
                                 />
                             </Card>

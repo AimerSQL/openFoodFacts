@@ -13,6 +13,7 @@ function Login() {
   };
 
   const handleLogin = () => {
+    console.log("Sending login request", data);
     // 使用 Servicios 发送登录请求
     Servicios.getUserCredentical(data)
       .then((response) => {
