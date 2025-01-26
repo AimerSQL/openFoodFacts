@@ -132,14 +132,11 @@ productController.getProductByBarcode = async (req, res) => {
 };
 
 productController.deleteProductById = async (req, res) => {
-  const productId = req.params.id;
-  
+  const productId = req.params.productId;
   try {
     
-    const objectId = new ObjectId(productId);
-    console.log('', objectId);
-    const result = await db.collection('products').deleteOne({ _id: objectId (productId) });
-    console.log('', result);
+    const objectId = ObjectId(productId);
+    const result = await Product.deleteOne({ _id:objectId });
 
     if (result.deletedCount === 0) {
       console.log('', result.deletedCount);

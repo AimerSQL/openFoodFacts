@@ -99,10 +99,7 @@ const Menu = () => {
 
     const handleDelete = async (productId) => {
         try {
-            console.log("Deleting product with ID:", productId);
-            await axios.delete(`http://localhost:4000/products/${productId}`);
-    
-            // 删除成功后更新前端状态
+           Servicios.deleteProduct(productId)
             setProductos((prevProductos) => {
                 const updatedData = prevProductos.data.filter(product => product._id !== productId);
                 return {
