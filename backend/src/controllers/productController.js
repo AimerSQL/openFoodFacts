@@ -2,6 +2,7 @@ const Product = require('../models/productModel');
 const Barcode = require('../models/barcodeModel');
 const mongoose = require('mongoose');
 const productController = {};
+const { ObjectId } = require('mongodb');
 
 productController.getFilteredProducts = async (req, res) => {
   try {
@@ -84,7 +85,7 @@ productController.getProductById = async (req, res) => {
     console.error(error.message);
     res.status(500).send('Server Error');
   }
-}
+};
 
 productController.getProductByBarcode = async (req, res) => {
   try {
@@ -128,24 +129,53 @@ productController.getProductByBarcode = async (req, res) => {
     console.error(error.message);
     res.status(500).send('Server Error');
   }
-}
+};
 
 productController.deleteProductById = async (req, res) => {
+  const productId = req.params.id;
+  
   try {
-    const id = mongoose.Types.ObjectId(req.params.productId);
+    
+    const objectId = new ObjectId(productId);
+    console.log('', objectId);
+    const result = await db.collection('products').deleteOne({ _id: objectId (productId) });
+    console.log('', result);
 
-    // 删除产品
-    const deletedProduct = await Product.findByIdAndDelete(id);
-
-    if (!deletedProduct) {
-      return res.status(404).json({ error: 'Product not found' });
+    if (result.deletedCount === 0) {
+      console.log('', result.deletedCount);
+      return res.status(404).send({ error: 'Product not found' });
     }
-
-    res.json({ message: 'Product deleted successfully', product: deletedProduct });
+    res.status(200).send(result);
   } catch (error) {
-    console.error(error.message);
-    res.status(500).json({ message: 'Server error' });
+    console.error('Error deleting product:', error);
+    res.status(500).send({ error: 'Error deleting product' });
   }
 };
+
+// productController.deleteProductByBarcode = async (req, res) => {
+//   try {
+//     const barcode = req.params.barcode;
+
+//     // 查找该barcode对应的产品
+//     const product = await Barcode.findOne({ barcode: barcode });
+
+//     if (!product) {
+//       return res.status(404).json({ error: 'Product not found' });
+//     }
+
+//     // 删除相关的Product数据
+//     const deletedProduct = await Product.findOneAndDelete({ product_name: product.product_name });
+
+//     if (!deletedProduct) {
+//       return res.status(404).json({ error: 'Product not found in Product collection' });
+//     }
+
+//     res.json({ message: 'Product successfully deleted', product: deletedProduct });
+
+//   } catch (error) {
+//     console.error(error.message);
+//     res.status(500).send('Server Error');
+//   }
+// };
 
 module.exports = productController;

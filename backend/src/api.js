@@ -332,8 +332,15 @@ router.post("/user", async (req, res) => {
 });
 
 router.delete('/products/:productId',async(req,res) => {
+  console.log('111');
   await productController.deleteProductById(req,res);
 });
-// router.delete('/products/:productId', productController.deleteProductById);
+//router.delete('/products/:productId', productController.deleteProductById);
+
+// router.delete( "/products/barcode/:barcode",
+// authenticateToken,
+// async (req, res) => {
+//   await productController.deleteProductByBarcode(req, res);
+// });
 
 module.exports = router;
