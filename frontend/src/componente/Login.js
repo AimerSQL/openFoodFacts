@@ -20,7 +20,9 @@ function Login() {
         // 检查响应是否成功
         if (response.success) {
           // 登录成功，存储 token
+          localStorage.removeItem('currentPage');
           localStorage.setItem("token", response.token);
+          console.log("", response.token);
           console.log("Login successful");
           // 导航到受保护的页面
           navigate("/menu");

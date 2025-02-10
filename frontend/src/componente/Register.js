@@ -1,15 +1,32 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios"; 
 
 function Register() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const handleRegister = () => {
-    // 注册逻辑
-    alert("Registration logic here!");
-    navigate("/login");
+  const handleRegister = async () => {
+    try {
+      // 发送注册请求到后端
+      console.log("",username,password);
+      const response = await axios.post("http://localhost:4000/register", {
+        username,
+        password,
+      });
+
+      // 如果注册成功，跳转到登录页面
+      if (response.status === 200) {
+        alert("Registration successful!");
+        navigate("/login");
+      } else {
+        alert("Registration failed: " + response.data.message);
+      }
+    } catch (error) {
+      console.error("There was an error with the registration:", error);
+      alert("An error occurred during registration.");
+    }
   };
 
   return (

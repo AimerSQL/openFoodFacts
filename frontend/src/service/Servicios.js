@@ -76,8 +76,12 @@ class Servicios {
   };
 
   getUserCredentical = async (userdata) => {
+    try {
     const response = await axios.post("http://localhost:4000/user", userdata);
     return response.data;
+  }catch(error){
+    alert("Contraseña o nombre de usuario incorrecto.");
+  }
   };
 
   deleteProduct = async (productId) => {
@@ -89,20 +93,14 @@ class Servicios {
       throw new Error('Error deleting product:', error);
     }
   };
-  
-  // deleteProductByBarcode = async (id) => {
-  //   const response = await axios.delete(
-  //     `http://localhost:4000/products/barcode/${id}`,
-  //     {
-  //       headers: {
-  //         Authorization: `Bearer ${this.token}`,
-  //       },
-  //     }
-  //   );
-  //   return response.data;
-  // };
-  
-  
+  userRegister = async (userdata) => {
+    const response = await axios.post("http://localhost:4000/register", userdata, {
+      headers: {
+        Authorization: `Bearer ${this.token}`,
+      },
+    });
+    return response.data;
+  }
 }
 
 

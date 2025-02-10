@@ -149,30 +149,5 @@ productController.deleteProductById = async (req, res) => {
   }
 };
 
-// productController.deleteProductByBarcode = async (req, res) => {
-//   try {
-//     const barcode = req.params.barcode;
-
-//     // 查找该barcode对应的产品
-//     const product = await Barcode.findOne({ barcode: barcode });
-
-//     if (!product) {
-//       return res.status(404).json({ error: 'Product not found' });
-//     }
-
-//     // 删除相关的Product数据
-//     const deletedProduct = await Product.findOneAndDelete({ product_name: product.product_name });
-
-//     if (!deletedProduct) {
-//       return res.status(404).json({ error: 'Product not found in Product collection' });
-//     }
-
-//     res.json({ message: 'Product successfully deleted', product: deletedProduct });
-
-//   } catch (error) {
-//     console.error(error.message);
-//     res.status(500).send('Server Error');
-//   }
-// };
 
 module.exports = productController;

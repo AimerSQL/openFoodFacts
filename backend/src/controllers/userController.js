@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const User = require("../models/userModel");
 const  userController = {};
+const { ObjectId } = require('mongodb'); 
 
 // 假设你有一个密钥用于签发 JWT
 const JWT_SECRET = "your_secret_key";
@@ -56,5 +57,28 @@ userController.getUserIdentical = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+userController.userRegiser = async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    // 检查用户名是否已经存在
+    const existingUser = await User.findOne({ username });
+    if (existingUser) {
+      return res.status(400).json({ message: "Username already taken" });
+    }
 
+    // 密码加密
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const objectId = new ObjectId("60d5ec495d4f4d0f7828b925");  // 这里需要传入有效的 ObjectId 字符串
+    const role = "user";
+    const newUser = new User({ _id: objectId, username, password: hashedPassword,role });
+
+    await newUser.save();
+    
+
+    res.status(201).json({ message: "User registered successfully!" });
+  } catch (error) {
+    console.error("Error during registration:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+}
 module.exports = userController;

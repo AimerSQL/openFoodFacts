@@ -279,6 +279,8 @@ const JWT_SECRET = "your_secret_key";
  *       bearerFormat: JWT
  */
 
+
+
 function authenticateToken(req, res, next) {
   const authHeader = req.headers["authorization"];
 
@@ -297,6 +299,20 @@ function authenticateToken(req, res, next) {
     next();
   });
 }
+
+router.post("/login", async (req, res) => {
+  const { username, password } = req.body;
+
+  // 假设你已经验证了用户名和密码
+  const user = { username };  // 假设你已经找到了用户
+
+  // 生成有效期为10分钟的 token
+  const accessToken = jwt.sign(user, JWT_SECRET, { expiresIn: "10m" });
+
+  // 返回 token 给客户端
+  res.json({ accessToken });
+});
+
 
 router.get("/products", authenticateToken, async (req, res) => {
   await foodController.getAllFoods(req, res);
@@ -332,14 +348,13 @@ router.post("/user", async (req, res) => {
 });
 
 router.delete('/products/:productId',async(req,res) => {
+  console.log('111');
   await productController.deleteProductById(req,res);
 });
-//router.delete('/products/:productId', productController.deleteProductById);
 
-// router.delete( "/products/barcode/:barcode",
-// authenticateToken,
-// async (req, res) => {
-//   await productController.deleteProductByBarcode(req, res);
-// });
+router.post("/register", async (req, res) => {
+  console.log("POST /register endpoint hit");
+  await userController.userRegiser(req, res);
+});
 
 module.exports = router;

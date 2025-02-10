@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Row, Col, Card, Pagination,Button } from "antd";
 import { Link } from "react-router-dom";
 import { CloseOutlined } from '@ant-design/icons';
+import { DeleteOutlined } from '@ant-design/icons';
 
 function Products({ productos ,onDelete }) {
     const [hoveredCard, setHoveredCard] = useState(null);
@@ -93,7 +94,7 @@ function Products({ productos ,onDelete }) {
                                 />
                                 <Button
                                     type="text"
-                                    icon={<CloseOutlined />}
+                                    icon={<DeleteOutlined />}
                                     onClick={(e) => {
                                         e.preventDefault(); // Prevent navigation to product details
                                         e.stopPropagation();

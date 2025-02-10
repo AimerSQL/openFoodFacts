@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
- import { Row, Col, Skeleton, Pagination, Spin} from 'antd';
+import { Row, Col, Skeleton, Pagination, Spin, Button } from 'antd';
+import { DeleteOutlined } from '@ant-design/icons'; 
 import Products from './Products';
 import Filtro from './Filtro';
 import Servicios from '../service/Servicios';
 import { useNavigate, useLocation } from 'react-router-dom';
-import axios from 'axios'
+import axios from 'axios';
 
 const Menu = () => {
     const [productos, setProductos] = useState([]);
@@ -14,31 +15,41 @@ const Menu = () => {
     const [initialPageLoaded, setInitialPageLoaded] = useState(false);
     const navigate = useNavigate();
     const location = useLocation();
-    
+
     const handleLoadingFiltered = (isLoaded) => {
         setLoadingFiltered(isLoaded);
-      };
+    };
     
-      useEffect(() => {
+    useEffect(() => {
         const savedPage = localStorage.getItem('currentPage');
-        console.log('Saved page from localStorage on load:', savedPage); // 输出 savedPage
         if (savedPage) {
-            setCurrentPage(Number(savedPage)); // 从 localStorage 读取页码并设置为 currentPage
+            setCurrentPage(Number(savedPage)); // 从 localStorage 读取页码
+        } else {
+            setCurrentPage(1); // 如果没有保存的页码，默认加载第一页
         }
-        setInitialPageLoaded(true); // 加载完页码后标记为已加载
-    }, []); // 只在组件挂载时运行
+        setInitialPageLoaded(true); // 标记初始页码已加载
+    }, []);
+    
+    // useEffect(() => {
+    //     const savedPage = localStorage.getItem('currentPage');
+    //     console.log('Saved page from localStorage on load:', savedPage); // 输出 savedPage
+    //     if (savedPage) {
+    //         setCurrentPage(Number(savedPage)); // 从 localStorage 读取页码并设置为 currentPage
+    //     }
+    //     setInitialPageLoaded(true); // 加载完页码后标记为已加载
+    // }, []); // 只在组件挂载时运行
 
     useEffect(() => {
-        console.log('',initialPageLoaded)
-        if (!initialPageLoaded) return; 
-        fetchData(currentPage, 12); 
+        console.log('', initialPageLoaded)
+        if (!initialPageLoaded) return;
+        fetchData(currentPage, 12);
     }, [currentPage, initialPageLoaded]);
 
     const fetchData = async (page, limit) => {
         setLoading(true);
-        Servicios.getProducts(page,limit).then(data => {
+        Servicios.getProducts(page, limit).then(data => {
             setProductos(data);
-            setLoading(false);  
+            setLoading(false);
         }).catch((error) => {
             console.error('Error fetching data:', error);
         })
@@ -50,58 +61,49 @@ const Menu = () => {
             localStorage.setItem('currentPage', currentPage);
         }
     }, [currentPage, initialPageLoaded]);
+    
 
     useEffect(() => {
-        if (location.pathname === '/menu') {
-            // 判断当前历史记录的状态是否为空，防止重复替换
-            if (window.history.state === null) {
-              // 通过 replaceState 来替换当前历史记录，确保点击后退按钮时不会返回到 /login
-              window.history.replaceState({}, '', '/menu');
-            }
-        }
-    
+        console.log("useEffect called");
         const handlePopState = (e) => {
-          if (location.pathname === '/login') {
-            // 如果用户试图通过后退按钮回到登录页面，强制跳转到菜单页面
-            navigate('/menu');
-          }
+            console.log("111");
+            const token = localStorage.getItem('token'); // 只检查 token 是否存在
+            console.log("Token check:", token ? "Token exists" : "No token");
+    
+            if (!token) {
+                navigate('/login'); // 如果没有 token，跳转到登录页
+            } else {
+                // 如果 token 存在，执行你的业务逻辑
+                const previousPath = e.state?.from || '/';
+                console.log("Previous path:", previousPath);
+    
+                if (previousPath === '/login') {
+                    window.location.reload(); // 如果上一页是登录页，刷新页面
+                } else {
+                    navigate(-1); // 否则，返回上一页
+                }
+            }
         };
     
-        // 监听后退操作
+        // 监听 popstate 事件
         window.addEventListener('popstate', handlePopState);
+
+        //window.history.pushState({ from: 'test' }, 'Test state', '/test');
     
         // 清理事件监听
         return () => {
-          window.removeEventListener('popstate', handlePopState);
+            window.removeEventListener('popstate', handlePopState);
         };
-      }, [location, navigate]);
-
-
-    //   const token = localStorage.getItem("token");
-    //   const handleDelete = async (id) => {
-    //     try {
-    //         // 直接发送删除请求
-    //         await axios.delete(`http://localhost:4000/products/barcode/${id}`, {
-    //           headers: {
-    //             Authorization: `Bearer ${token}`,  // 如果需要 token，可以保留
-    //           },
-    //         });
-        
-    //         setLoading(false);
-    //         setProductos([]);  // 删除后清空产品列表，或者根据需求更新UI
-    //         console.log('Product deleted successfully');
-    //       } catch (error) {
-    //         console.log('Error deleting product', error);
-    //         setLoading(false);
-    //       }
-    //   };
-      
+    }, [navigate]); // 确保 navigate 作为依赖项传入
+    
+    
 
     const handleDelete = async (productId) => {
         try {
-           Servicios.deleteProduct(productId)
+            Servicios.deleteProduct(productId)
             setProductos((prevProductos) => {
                 const updatedData = prevProductos.data.filter(product => product._id !== productId);
+                fetchData(currentPage, 12);
                 return {
                     ...prevProductos,
                     data: updatedData,
@@ -135,13 +137,13 @@ const Menu = () => {
             <Row>
                 <Col xs={24} sm={24} md={6} lg={6} xl={6}>
                     <div style={{ marginRight: '20px' }}>
-                    <Filtro onLoading={handleLoadingFiltered}/>
+                        <Filtro onLoading={handleLoadingFiltered} />
                     </div>
                 </Col>
                 {loadingFiltered ? (<div style={{ marginTop: '-150px', marginLeft: '70vh', display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-                        <Spin size="large" />
-                    </div>):(
-                <Products productos={productos.data} onDelete={handleDelete} />)}
+                    <Spin size="large" />
+                </div>) : (
+                    <Products productos={productos.data} onDelete={handleDelete} />)}
             </Row>
 
 
@@ -157,9 +159,6 @@ const Menu = () => {
                     />
                 </Col>
             </Row>
-
-
-
         </>
     );
 };
