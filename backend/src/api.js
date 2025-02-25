@@ -5,6 +5,7 @@ const productController = require("./controllers/productController");
 const rateController = require("./controllers/rateController");
 const nodosController = require("./controllers/nodosController");
 const userController = require("./controllers/userController");
+const favoritoController = require("./controllers/favoritoController");
 const jwt = require("jsonwebtoken");
 
 const JWT_SECRET = "your_secret_key";
@@ -318,9 +319,14 @@ router.get("/products", authenticateToken, async (req, res) => {
   await foodController.getAllFoods(req, res);
 });
 
+router.get("/favoritos/:user_id",authenticateToken, async (req, res) => {
+  await favoritoController.getProductoByFavorito(req, res);
+});
+
 router.get("/products/:productId", authenticateToken, async (req, res) => {
   await productController.getProductById(req, res);
 });
+
 
 router.get(
   "/products/barcode/:barcode",
@@ -348,13 +354,24 @@ router.post("/user", async (req, res) => {
 });
 
 router.delete('/products/:productId',async(req,res) => {
-  console.log('111');
   await productController.deleteProductById(req,res);
 });
 
 router.post("/register", async (req, res) => {
   console.log("POST /register endpoint hit");
   await userController.userRegiser(req, res);
+});
+
+router.post("/favorito",async(req,res)=>{
+  await favoritoController.collectProductAndUser(req,res);
+}
+);
+router.delete('/favorito/:user_id/:product_id',async(req,res) => {
+  await favoritoController.deleteFavoritoById(req,res);
+});
+
+router.get('/favoritoByUser/:user_id', async (req, res) => {
+  await favoritoController.getFavoritoByUserId(req,res);
 });
 
 module.exports = router;

@@ -309,8 +309,8 @@ function FoodInfo() {
       <div>
         {console.log('Tab4 Like Rate:', userRate.Like)}
         <p>
-          <span style={{ fontWeight: 'bold', fontSize: '20px' }}>Like:</span>{" "}
-          <span style={{ display: "flex", alignItems: "center" }}>
+          <span style={{ fontWeight: 'bold', fontSize: '30px' }}>Like:</span>{" "}
+          <span style={{ display: "flex", alignItems: "center"}}>
             <Rate value={userRate.Like || 0} onChange={(value) => handleTab4RatingChange('Like', value)} />
           </span>
         </p>
@@ -380,6 +380,7 @@ function FoodInfo() {
               tabList={tabList}
               activeTabKey={activeTabKey1}
               onTabChange={onTab1Change}
+              
             >
               {contentList[activeTabKey1]}
             </Card>

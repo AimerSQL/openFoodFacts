@@ -10,6 +10,7 @@ import FilteredProducts from "../componente/FilteredProducts";
 import Login from "../componente/Login";
 import Register from "../componente/Register";
 import PrivateRoute from "../componente/PrivateRoute";
+import Favorito from "../componente/Favorito";
 
 const { Content, Footer } = Layout;
 
@@ -52,6 +53,7 @@ function DashboardVisitorContent() {
             <Route path="/register" element={<Register />} />
             <Route path="/" element={<Navigate to="/login" />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/favorito" element={<Favorito />} />
             <Route
               path="/menu"
               element={<PrivateRoute element={<Menu />} />}

@@ -2,9 +2,10 @@ import { useState } from "react";
 import { Row, Col, Card, Pagination,Button } from "antd";
 import { Link } from "react-router-dom";
 import { CloseOutlined } from '@ant-design/icons';
-import { DeleteOutlined } from '@ant-design/icons';
+import { DeleteOutlined,StarOutlined, StarFilled } from '@ant-design/icons';
 
-function Products({ productos ,onDelete }) {
+
+function Products({ productos ,onDelete ,favorites, onToggleFavorite}) {
     const [hoveredCard, setHoveredCard] = useState(null);
 
 
@@ -105,6 +106,21 @@ function Products({ productos ,onDelete }) {
                                         top: "10px",
                                         right: "10px",
                                         color: "red",
+                                    }}
+                                />
+                                <Button
+                                    type="text"
+                                    icon={favorites.includes(p._id) ? <StarFilled /> : <StarOutlined />}
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        e.stopPropagation();
+                                        onToggleFavorite(p._id); // 触发收藏切换
+                                    }}
+                                    style={{
+                                        position: "absolute",
+                                        top: "10px",
+                                        left: "10px",
+                                        color: "#f7b500",
                                     }}
                                 />
                             </Card>

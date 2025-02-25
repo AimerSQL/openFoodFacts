@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import upmEtsisiLogo from '../fotos/upmEtsisiLogo.jpg';
-import { AreaChartOutlined, PictureOutlined } from '@ant-design/icons';
+import { AreaChartOutlined, PictureOutlined,FolderAddOutlined } from '@ant-design/icons';
 import { Layout, Menu, Input, Button } from 'antd';
 import { useNavigate, useLocation } from 'react-router-dom';
 
@@ -35,6 +35,11 @@ const items = [
         key: '/grafica/tvoc',
       },
     ],
+  },
+  {
+    key:'/favorito',
+    icon:<FolderAddOutlined />,
+    label:<b>Favorito</b>,
   },
 ];
 

@@ -5,6 +5,7 @@ const User = require("../models/userModel");
 const  userController = {};
 const { ObjectId } = require('mongodb'); 
 
+
 // 假设你有一个密钥用于签发 JWT
 const JWT_SECRET = "your_secret_key";
 
@@ -14,11 +15,10 @@ userController.getUserIdentical = async (req, res) => {
 
     // 查找用户
     const user = await User.findOne({ username });
-
     if (user) {
       // 验证密码
-      //const isMatch = await bcrypt.compare(password, user.password);
-      if (password === user.password) {
+      const isMatch = await bcrypt.compare(password, user.password);
+      if (isMatch) {
         // 生成 JWT
         const token = jwt.sign(
           {
@@ -27,7 +27,7 @@ userController.getUserIdentical = async (req, res) => {
             role: user.role,
           },
           JWT_SECRET,
-          { expiresIn: "1h" } // 设置过期时间，如1小时
+          { expiresIn: "10m" } // 设置过期时间，如1小时
         );
 
         // 返回 token 和用户信息
@@ -36,6 +36,7 @@ userController.getUserIdentical = async (req, res) => {
           message: "User authenticated",
           token: token,
           user: {
+            user_id:user._id,
             username: user.username,
             role: user.role,
           },
@@ -68,9 +69,13 @@ userController.userRegiser = async (req, res) => {
 
     // 密码加密
     const hashedPassword = await bcrypt.hash(password, 10);
-    const objectId = new ObjectId("60d5ec495d4f4d0f7828b925");  // 这里需要传入有效的 ObjectId 字符串
     const role = "user";
-    const newUser = new User({ _id: objectId, username, password: hashedPassword,role });
+    const newUser = new User({
+      _id: new mongoose.Types.ObjectId(),  // 生成随机 ObjectId
+      username, 
+      password: hashedPassword, 
+      role
+    });
 
     await newUser.save();
     

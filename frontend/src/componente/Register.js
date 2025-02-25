@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios"; 
+import register from '../fotos/register.jpg';
 
 function Register() {
   const [username, setUsername] = useState("");
@@ -17,20 +18,33 @@ function Register() {
       });
 
       // 如果注册成功，跳转到登录页面
-      if (response.status === 200) {
+      if (response.status === 201) {
         alert("Registration successful!");
         navigate("/login");
       } else {
-        alert("Registration failed: " + response.data.message);
+        alert("" + response.data.message);
       }
     } catch (error) {
-      console.error("There was an error with the registration:", error);
-      alert("An error occurred during registration.");
+      if (error.response && error.response.status === 400) {
+        alert(error.response.data.message || "Registration failed");
+      } else {
+        console.error("There was an error with the registration:", error);
+        alert("An error occurred during registration.");
+      }
     }
   };
 
+  const [isHovered, setIsHovered] = useState(false);
   return (
     <div style={styles.container}>
+      <button 
+        onClick={() => navigate("/login")} 
+        style={{ ...styles.arrowButton, transform: isHovered ? 'scale(1.1)' : 'scale(1)' }}
+        onMouseEnter={() => setIsHovered(true)} // 鼠标进入时放大
+        onMouseLeave={() => setIsHovered(false)} // 鼠标离开时恢复
+      >
+         <span style={styles.arrowIcon}>←</span>
+      </button>
       <div style={styles.formContainer}>
       <h2>Register</h2>
       <input
@@ -60,7 +74,11 @@ const styles = {
     justifyContent: 'center',  // 水平居中
     alignItems: 'center',      // 垂直居中
     height: '100vh',           // 使容器的高度占满整个视窗
-    backgroundColor: '#f0f0f0', // 可自定义背景色
+    backgroundImage: `url(${register})`,
+    backgroundSize: 'cover', // 使背景图片覆盖整个容器
+    backgroundPosition: 'center', // 将背景图片居中
+    backgroundRepeat: 'no-repeat', // 防止背景图片重复
+    position: 'relative',
   },
   formContainer: {
     display: 'flex',
@@ -90,6 +108,29 @@ const styles = {
     fontSize: '16px',
     borderRadius: '4px',
     cursor: 'pointer',
+  },
+  arrowButton: {
+    position: 'absolute', // 使按钮浮动
+    top: '100px',          // 距离顶部20px
+    left: '100px',         // 距离左侧20px
+    width: '70px',        // 增大按钮的宽度
+    height: '70px',       // 增大按钮的高度
+    borderRadius: '50%',  // 圆形按钮
+    backgroundColor: 'white',  // 白色背景
+    color: 'black',       // 黑色箭头
+    fontSize: '60px',      // 增大字体大小
+    border: 'none',       // 无边框
+    cursor: 'pointer',     // 鼠标悬停时显示指针
+    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', // 阴影效果
+    transition: 'transform 0.3s ease',
+  },
+  arrowIcon: {
+    position: 'absolute', // 使用绝对定位
+    top: '40%',           // 垂直居中
+    left: '50%',          // 水平居中
+    transform: 'translate(-50%, -50%)', // 精确居中箭头
+    fontSize: '60px',
+    fontWeight: 'bolder',
   },
 };
 
