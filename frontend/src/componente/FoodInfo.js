@@ -1,17 +1,25 @@
-import React, { useState, useEffect } from "react";
-import { Card, Spin, Rate } from "antd";
-import { useParams, useLocation } from "react-router-dom";
-import Result404 from "./Result404";
-import Servicios from "../service/Servicios";
-import axios from "axios";
+import React, { useState, useEffect } from 'react';
+import { Card, Spin, Rate } from 'antd';
+import { useParams, useLocation } from 'react-router-dom';
+import Result404 from './Result404';
+import Servicios from '../service/Servicios';
+import axios from 'axios'
 function FoodInfo() {
   const [productos, setProductos] = useState([]);
-  const [rate, setRate] = useState([]);
+  const [rate, setRate] = useState({
+    manufacturingLike: 0,
+    packaging: 0,
+    palmoilLike: 0,
+    sizeLike: 0,
+    storageLike: 0,
+    transportLike: 0,
+  });
+  const [userRate, setUserRate] = useState({Like:0,});
   const [loading, setLoading] = useState(true);
   const { id } = useParams();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const productName = queryParams.get("productName");
+  const productName = queryParams.get('productName');
   const hasLetter = (id) => {
     const regex = /[a-zA-Z]/;
     return regex.test(id);
@@ -95,7 +103,23 @@ function FoodInfo() {
       key: "tab3",
       tab: "Valoraciones",
     },
+    {
+      key: 'tab4',
+      tab: 'Simpatía',
+    },
   ];
+
+  const handleTab4RatingChange = (category, value) => {
+    setUserRate({ ...userRate, [category]: value });
+    // 发送请求保存评分
+    axios.post(`http://localhost:4000/rate`, { id, category, rating: value })
+      .then(response => {
+        console.log("Rating for " + category + " submitted successfully:", response.data);
+      })
+      .catch(error => {
+        console.error("Error submitting rating for " + category + ":", error);
+      });
+  };
 
   const contentList = {
     tab1: (
@@ -281,6 +305,17 @@ function FoodInfo() {
         </p>
       </div>
     ),
+    tab4: (
+      <div>
+        {console.log('Tab4 Like Rate:', userRate.Like)}
+        <p>
+          <span style={{ fontWeight: 'bold', fontSize: '30px' }}>Like:</span>{" "}
+          <span style={{ display: "flex", alignItems: "center"}}>
+            <Rate value={userRate.Like || 0} onChange={(value) => handleTab4RatingChange('Like', value)} />
+          </span>
+        </p>
+      </div>
+    )
   };
 
   const [activeTabKey1, setActiveTabKey1] = useState("tab1");
@@ -345,6 +380,7 @@ function FoodInfo() {
               tabList={tabList}
               activeTabKey={activeTabKey1}
               onTabChange={onTab1Change}
+              
             >
               {contentList[activeTabKey1]}
             </Card>
