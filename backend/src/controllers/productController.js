@@ -2,6 +2,7 @@ const Product = require('../models/productModel');
 const Barcode = require('../models/barcodeModel');
 const mongoose = require('mongoose');
 const productController = {};
+const { ObjectId } = require('mongodb');
 
 productController.getFilteredProducts = async (req, res) => {
   try {
@@ -84,7 +85,7 @@ productController.getProductById = async (req, res) => {
     console.error(error.message);
     res.status(500).send('Server Error');
   }
-}
+};
 
 productController.getProductByBarcode = async (req, res) => {
   try {
@@ -128,6 +129,25 @@ productController.getProductByBarcode = async (req, res) => {
     console.error(error.message);
     res.status(500).send('Server Error');
   }
-}
+};
+
+productController.deleteProductById = async (req, res) => {
+  const productId = req.params.productId;
+  try {
+    
+    const objectId = ObjectId(productId);
+    const result = await Product.deleteOne({ _id:objectId });
+
+    if (result.deletedCount === 0) {
+      console.log('', result.deletedCount);
+      return res.status(404).send({ error: 'Product not found' });
+    }
+    res.status(200).send(result);
+  } catch (error) {
+    console.error('Error deleting product:', error);
+    res.status(500).send({ error: 'Error deleting product' });
+  }
+};
+
 
 module.exports = productController;

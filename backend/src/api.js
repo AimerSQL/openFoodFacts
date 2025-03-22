@@ -5,6 +5,7 @@ const productController = require("./controllers/productController");
 const rateController = require("./controllers/rateController");
 const nodosController = require("./controllers/nodosController");
 const userController = require("./controllers/userController");
+const favoritoController = require("./controllers/favoritoController");
 const jwt = require("jsonwebtoken");
 
 const JWT_SECRET = "your_secret_key";
@@ -279,6 +280,8 @@ const JWT_SECRET = "your_secret_key";
  *       bearerFormat: JWT
  */
 
+
+
 function authenticateToken(req, res, next) {
   const authHeader = req.headers["authorization"];
 
@@ -298,13 +301,32 @@ function authenticateToken(req, res, next) {
   });
 }
 
+router.post("/login", async (req, res) => {
+  const { username, password } = req.body;
+
+  // 假设你已经验证了用户名和密码
+  const user = { username };  // 假设你已经找到了用户
+
+  // 生成有效期为10分钟的 token
+  const accessToken = jwt.sign(user, JWT_SECRET, { expiresIn: "10m" });
+
+  // 返回 token 给客户端
+  res.json({ accessToken });
+});
+
+
 router.get("/products", authenticateToken, async (req, res) => {
   await foodController.getAllFoods(req, res);
+});
+
+router.get("/favoritos/:user_id",authenticateToken, async (req, res) => {
+  await favoritoController.getProductoByFavorito(req, res);
 });
 
 router.get("/products/:productId", authenticateToken, async (req, res) => {
   await productController.getProductById(req, res);
 });
+
 
 router.get(
   "/products/barcode/:barcode",
@@ -327,7 +349,29 @@ router.post("/nodos", authenticateToken, async (req, res) => {
 });
 
 router.post("/user", async (req, res) => {
+  console.log("POST /user endpoint hit");
   await userController.getUserIdentical(req, res);
+});
+
+router.delete('/products/:productId',async(req,res) => {
+  await productController.deleteProductById(req,res);
+});
+
+router.post("/register", async (req, res) => {
+  console.log("POST /register endpoint hit");
+  await userController.userRegiser(req, res);
+});
+
+router.post("/favorito",async(req,res)=>{
+  await favoritoController.collectProductAndUser(req,res);
+}
+);
+router.delete('/favorito/:user_id/:product_id',async(req,res) => {
+  await favoritoController.deleteFavoritoById(req,res);
+});
+
+router.get('/favoritoByUser/:user_id', async (req, res) => {
+  await favoritoController.getFavoritoByUserId(req,res);
 });
 
 module.exports = router;
