@@ -109,6 +109,37 @@ export default function TopHeader() {
     });
   };
 
+  const items = [
+    {
+      key: "/menu",
+      icon: <PictureOutlined />,
+      label: <b>{t("menu")}</b>,
+    },
+    {
+      label: <b>{t("grafica")}</b>,
+      key: "/grafica",
+      icon: <AreaChartOutlined />,
+      children: [
+        {
+          label: t("humedad"),
+          key: "/grafica/humedad",
+        },
+        {
+          label: t("temperatura"),
+          key: "/grafica/temperatura",
+        },
+        {
+          label: t("eco2"),
+          key: "/grafica/eco2",
+        },
+        {
+          label: t("tvoc"),
+          key: "/grafica/tvoc",
+        },
+      ],
+    },
+  ];
+
   return (
     <Header
       style={{
