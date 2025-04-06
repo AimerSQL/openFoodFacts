@@ -1,16 +1,16 @@
 import "./DashboardVisitor.css";
 import React from "react";
 import { BrowserRouter, Route, Routes, Navigate, useLocation } from "react-router-dom";
-import TopHeader from "../componente/TopHeader";
+import TopHeader from "../componentes/header/TopHeader";
 import { Layout, theme } from "antd";
-import Grafica from "../componente/Grafica";
-import Menu from "../componente/Menu";
-import FoodInfo from "../componente/FoodInfo";
-import FilteredProducts from "../componente/FilteredProducts";
-import Login from "../componente/Login";
-import Register from "../componente/Register";
-import PrivateRoute from "../componente/PrivateRoute";
-import Favorito from "../componente/Favorito";
+import Grafica from "../componentes/grafica/Grafica";
+import Menu from "../componentes/menu/Menu";
+import FoodInfo from "../componentes/foodInfo/FoodInfo";
+import FilteredProducts from "../componentes/filteredProducts/FilteredProducts";
+import Login from "../componentes/login/Login";
+import Register from "../componentes/register/Register";
+import PrivateRoute from "../componentes/PrivateRoute";
+import Favorito from "../componentes/favoritos/Favorito";
 
 const { Content, Footer } = Layout;
 

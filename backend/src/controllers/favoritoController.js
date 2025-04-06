@@ -24,13 +24,11 @@ favoritoController.collectProductAndUser = async (req, res) => {
 
 favoritoController.deleteFavoritoById = async (req, res) => {
   const { user_id,product_id } = req.params;  // 假设请求体包含 userId 和 productId
-  console.log("",req.params);
   try {
     const productId = mongoose.Types.ObjectId(product_id);
     const userId = mongoose.Types.ObjectId(user_id);
     
     const favorito = await Favorito.findOne({ user_id: userId, product_id: productId });
-    console.log("",favorito);
     if (!favorito) {
       console.log('No matching favorito found for the given user and product');
       return res.status(404).send({ error: 'No matching favorito found' });
@@ -54,7 +52,6 @@ favoritoController.getFavoritoByUserId= async (req, res) => {
   try {
     // 1. 查询 Favorito 数据库，找出该用户所有收藏的产品 ID
     const favoritos = await Favorito.find({ user_id }).select('product_id');
-    console.log("123456",favoritos);
     res.json( favoritos );
   } catch (error) {
     console.error(error);
@@ -71,7 +68,6 @@ favoritoController.getProductoByFavorito = async(req,res) =>{
 
       // 3. 查询 Product 数据库，获取对应的产品信息
       const products = await Product.find({ '_id': { $in: productId } });
-      console.log("",products);
 
       // 4. 返回查询到的产品信息
       res.json( products );
