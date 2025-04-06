@@ -349,6 +349,7 @@ router.post("/nodos", authenticateToken, async (req, res) => {
 });
 
 router.post("/user", async (req, res) => {
+  console.log("POST /user endpoint hit");
   await userController.getUserIdentical(req, res);
 });
 
