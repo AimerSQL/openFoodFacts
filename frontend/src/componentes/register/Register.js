@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios"; 
-import register from '../fotos/register.jpg';
+import register from '../../fotos/register.jpg';
 
 function Register() {
   const [username, setUsername] = useState("");

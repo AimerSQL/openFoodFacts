@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Skeleton, Pagination, Spin, Button } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons'; 
-import Products from './Products';
-import Filtro from './Filtro';
-import Servicios from '../service/Servicios';
+import Products from '../products/Products';
+import Filtro from '../filtro/Filtro';
+import Servicios from '../Servicios';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { StarOutlined, StarFilled } from '@ant-design/icons'; // 导入星星图标
 import axios from 'axios';

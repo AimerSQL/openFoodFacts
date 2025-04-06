@@ -1,52 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import upmEtsisiLogo from '../fotos/upmEtsisiLogo.jpg';
-import { AreaChartOutlined, PictureOutlined,FolderAddOutlined } from '@ant-design/icons';
+import upmEtsisiLogo from '../../fotos/upmEtsisiLogo.jpg';
+import { AreaChartOutlined, PictureOutlined } from '@ant-design/icons';
 import { Layout, Menu, Input, Button } from 'antd';
 import { useNavigate, useLocation } from 'react-router-dom';
-
+import { useTranslation } from 'react-i18next';
+import i18n from '../../i18n'; // 确保导入 i18n
 const { Header } = Layout;
 const { Search } = Input;
-
-const items = [
-  {
-    key: '/menu',
-    icon: <PictureOutlined />,
-    label: <b>Menu</b>,
-  },
-  {
-    label: <b>Grafica</b>,
-    key: '/grafica',
-    icon: <AreaChartOutlined />,
-    children: [
-      {
-        label: 'Humedad',
-        key: '/grafica/humedad',
-      },
-      {
-        label: 'Temperatura',
-        key: '/grafica/temperatura',
-      },
-      {
-        label: 'eCo2',
-        key: '/grafica/eco2',
-      },
-      {
-        label: 'Tvoc',
-        key: '/grafica/tvoc',
-      },
-    ],
-  },
-  {
-    key:'/favorito',
-    icon:<FolderAddOutlined />,
-    label:<b>Favorito</b>,
-  },
-];
 
 export default function TopHeader() {
   const navigate = useNavigate();
   const location = useLocation();
   const [selectedKey, setSelectedKey] = useState(location.pathname);
+  const { t } = useTranslation(); 
 
   useEffect(() => {
     setSelectedKey(location.pathname);
@@ -68,6 +34,10 @@ export default function TopHeader() {
     // 退出会话后替换历史记录，确保后退按钮只触发一次
     window.history.replaceState(null, '', '/login'); // 第一次替换
     navigate('/login'); // 跳转到登录页面
+  };
+
+  const changeLanguage = (lng) => {
+    i18n.changeLanguage(lng);
   };
 
   useEffect(() => {
@@ -109,6 +79,37 @@ export default function TopHeader() {
     });
   };
 
+  const items = [
+    {
+      key: "/menu",
+      icon: <PictureOutlined />,
+      label: <b>{t("menu")}</b>,
+    },
+    {
+      label: <b>{t("grafica")}</b>,
+      key: "/grafica",
+      icon: <AreaChartOutlined />,
+      children: [
+        {
+          label: t("humedad"),
+          key: "/grafica/humedad",
+        },
+        {
+          label: t("temperatura"),
+          key: "/grafica/temperatura",
+        },
+        {
+          label: t("eco2"),
+          key: "/grafica/eco2",
+        },
+        {
+          label: t("tvoc"),
+          key: "/grafica/tvoc",
+        },
+      ],
+    },
+  ];
+
   return (
     <Header
       style={{
@@ -146,6 +147,8 @@ export default function TopHeader() {
         >
           {renderMenu(items)}
         </Menu>
+        <Button onClick={() => changeLanguage('en')}>EN</Button>
+      <Button onClick={() => changeLanguage('es')}>ES</Button>
       </div>
 
       {/* Center: Search box */}

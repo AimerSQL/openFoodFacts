@@ -3,7 +3,7 @@ import { Form, Input, Button, Card } from 'antd';
 import './Filtro.css';
 import { useNavigate } from 'react-router-dom';
 import { Select } from 'antd';
-import Servicios from '../service/Servicios';
+import Servicios from '../Servicios';
 
 const Filtro = ({ onLoading }) => {
   const [form] = Form.useForm();

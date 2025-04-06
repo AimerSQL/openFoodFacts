@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Servicios from "../service/Servicios"; // 导入自定义的服务
-import food from '../fotos/food.jpg';
+import Servicios from "../Servicios"; // 导入自定义的服务
+import food from '../../fotos/food.jpg';
 import { Carousel } from "antd";
-import image1 from'../fotos/chorizo.jpg';
-import image2 from'../fotos/macarrones.jpg';
-import image3 from'../fotos/pollo.jpg';
+import image1 from'../../fotos/chorizo.jpg';
+import image2 from'../../fotos/macarrones.jpg';
+import image3 from'../../fotos/pollo.jpg';
 
 function Login() {
   const [username, setUsername] = useState("");

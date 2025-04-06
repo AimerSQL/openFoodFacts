@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Row, Col, Pagination, Spin } from "antd";
-import Products from './Products';
-import Filtro from './Filtro';
-import Result404 from './Result404';
+import Products from '../products/Products';
+import Filtro from '../filtro/Filtro';
+import Result404 from '../Result404';
 
 const FilteredProducts = () => {
     

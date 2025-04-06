@@ -358,7 +358,6 @@ router.delete('/products/:productId',async(req,res) => {
 });
 
 router.post("/register", async (req, res) => {
-  console.log("POST /register endpoint hit");
   await userController.userRegiser(req, res);
 });
 

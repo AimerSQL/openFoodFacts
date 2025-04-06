@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Spin, Rate } from 'antd';
 import { useParams, useLocation } from 'react-router-dom';
-import Result404 from './Result404';
-import Servicios from '../service/Servicios';
+import Result404 from '../Result404';
+import Servicios from '../Servicios';
 import axios from 'axios'
 function FoodInfo() {
   const [productos, setProductos] = useState([]);

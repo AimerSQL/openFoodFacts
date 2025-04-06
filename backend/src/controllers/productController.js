@@ -139,7 +139,6 @@ productController.deleteProductById = async (req, res) => {
     const result = await Product.deleteOne({ _id:objectId });
 
     if (result.deletedCount === 0) {
-      console.log('', result.deletedCount);
       return res.status(404).send({ error: 'Product not found' });
     }
     res.status(200).send(result);

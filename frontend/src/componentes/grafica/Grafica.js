@@ -5,8 +5,8 @@ import moment from 'moment'
 import dayjs from 'dayjs';
 import ReactEcharts from 'echarts-for-react';
 import './Grafica.css'
-import Result404 from './Result404';
-import Servicios from '../service/Servicios';
+import Result404 from '../Result404';
+import Servicios from '../Servicios';
 
 const { RangePicker } = DatePicker;
 
