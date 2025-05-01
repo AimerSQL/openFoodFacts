@@ -1,6 +1,12 @@
 import "./DashboardVisitor.css";
 import React from "react";
-import { BrowserRouter, Route, Routes, Navigate, useLocation } from "react-router-dom";
+import {
+  BrowserRouter,
+  Route,
+  Routes,
+  Navigate,
+  useLocation,
+} from "react-router-dom";
 import TopHeader from "../componentes/header/TopHeader";
 import { Layout, theme } from "antd";
 import Grafica from "../componentes/grafica/Grafica";
@@ -30,7 +36,8 @@ function DashboardVisitorContent() {
   const location = useLocation();
 
   // 判断当前路径是否为 /login 或 /register
-  const isLoginOrRegister = location.pathname === '/login' || location.pathname === '/register';
+  const isLoginOrRegister =
+    location.pathname === "/login" || location.pathname === "/register";
 
   const {
     token: { colorBgContainer },
@@ -53,11 +60,8 @@ function DashboardVisitorContent() {
             <Route path="/register" element={<Register />} />
             <Route path="/" element={<Navigate to="/login" />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/favorito" element={<Favorito />} />
-            <Route
-              path="/menu"
-              element={<PrivateRoute element={<Menu />} />}
-            />
+            <Route path="/favoritos" element={<Favorito />} />
+            <Route path="/menu" element={<PrivateRoute element={<Menu />} />} />
             <Route
               path="/grafica"
               element={<Navigate to="/grafica/humedad" />}
