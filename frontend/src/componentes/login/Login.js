@@ -30,6 +30,7 @@ function Login() {
         // 登录成功，存储 token
         localStorage.removeItem('currentPage');
         localStorage.setItem("token", response.token);
+        localStorage.setItem("role", response.user.role);
         console.log("Response:", response);
         localStorage.setItem("user_id", response.user.user_id);
         const favoritos = await Servicios.getProductsByUser(); // 等待获取收藏数据

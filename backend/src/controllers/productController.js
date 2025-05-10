@@ -87,6 +87,52 @@ productController.getProductById = async (req, res) => {
   }
 };
 
+productController.getProductStatics = async (req,res) => {
+  try {
+    const result = await Product.aggregate([
+      {
+        $facet: {
+          nutriscoreRatio: [
+            {
+              $group: {
+                _id: "$nutriscore_grade",
+                count: { $sum: 1 }
+              }
+            },
+            { $sort: { count: -1 } },
+            {
+              $group: {
+                _id: null,
+                total: { $sum: "$count" },
+                data: {
+                  $push: {
+                    grade: "$_id",
+                    count: "$count"
+                  }
+                }
+              }
+            },
+            { $unwind: "$data" },
+            {
+              $project: {
+                _id: 0,
+                nutriscore_grade: "$data.grade",
+                count: "$data.count",
+                ratio: { $divide: ["$data.count", "$total"] }
+              }
+            }
+          ]
+        }
+      }
+    ]);
+
+    console.log(res.status(200).json(result[0])) ;
+  } catch (err) {
+    console.error("Aggregation error:", err);
+    res.status(500).json({ error: "Failed to aggregate nutriscore ratio" });
+  }
+};
+
 productController.getProductByBarcode = async (req, res) => {
   try {
     const barcode = req.params.barcode;

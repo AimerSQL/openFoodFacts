@@ -327,6 +327,9 @@ router.get("/products/:productId", authenticateToken, async (req, res) => {
   await productController.getProductById(req, res);
 });
 
+router.get("/products/statics", async (req, res) => {
+  await productController.getProductStatics(req, res);
+});
 
 router.get(
   "/products/barcode/:barcode",

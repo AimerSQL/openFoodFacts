@@ -70,6 +70,13 @@ class Servicios {
     return response.data;
   };
 
+  getProductsStatics = async () => {
+    const response = await axios.get(
+      "http://localhost:4000/products/statics",
+    );
+    return response.data;
+  };
+
   getFoodRate = async (id) => {
     const response = await axios.get(
       `http://localhost:4000/rate-products/${id}`,

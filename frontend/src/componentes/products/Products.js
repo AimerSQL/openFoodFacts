@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Row, Col, Card, Pagination,Button } from "antd";
 import { Link } from "react-router-dom";
-import { CloseOutlined } from '@ant-design/icons';
 import { DeleteOutlined,StarOutlined, StarFilled } from '@ant-design/icons';
 
 
@@ -93,7 +92,7 @@ function Products({ productos ,onDelete ,favorites, onToggleFavorite}) {
                                         color: "#F0F2F5",
                                     }}
                                 />
-                                <Button
+                                {localStorage.getItem("role") === "admin" && (<Button
                                     type="text"
                                     icon={<DeleteOutlined />}
                                     onClick={(e) => {
@@ -108,6 +107,7 @@ function Products({ productos ,onDelete ,favorites, onToggleFavorite}) {
                                         color: "red",
                                     }}
                                 />
+                                )}
                                 <Button
                                     type="text"
                                     icon={favorites.includes(p._id) ? <StarFilled /> : <StarOutlined />}

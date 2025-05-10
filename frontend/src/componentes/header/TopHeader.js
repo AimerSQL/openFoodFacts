@@ -113,6 +113,11 @@ export default function TopHeader() {
       icon: <PictureOutlined />,
       label: <b>{t("favoritos")}</b>,
     },
+    {
+      key: "/stats",
+      icon: <PictureOutlined />,
+      label: <b>{t("stats")}</b>,
+    },
   ];
 
   return (

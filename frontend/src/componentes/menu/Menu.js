@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Row, Col, Skeleton, Pagination, Spin, Button } from "antd";
-import { DeleteOutlined } from "@ant-design/icons";
 import Products from "../products/Products";
 import Filtro from "../filtro/Filtro";
 import Servicios from "../Servicios";
 import { useNavigate, useLocation } from "react-router-dom";
-import { StarOutlined, StarFilled } from "@ant-design/icons"; // 导入星星图标
-import axios from "axios";
 
 const Menu = () => {
   const [productos, setProductos] = useState([]);
@@ -133,7 +130,6 @@ const Menu = () => {
         // 如果没有收藏，则添加收藏
         await Servicios.addToFavorito(product_id); // 调用后端添加收藏接口
         setFavorites((prevFavorites) => [...prevFavorites, product_id]);
-        console.log("collect successfully");
       }
     } catch (error) {
       console.error("Error toggling favorite:", error);
