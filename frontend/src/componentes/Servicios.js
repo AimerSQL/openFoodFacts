@@ -72,7 +72,7 @@ class Servicios {
 
   getProductsStatics = async () => {
     const response = await axios.get(
-      "http://localhost:4000/products/statics",
+      "http://localhost:4000/statics",
     );
     return response.data;
   };
