@@ -131,7 +131,7 @@ productController.getProductStatics = async (req, res) => {
           categoryRatio: [
             {
               $group: {
-                _id: "$category",
+                _id: "$countries_en",
                 count: { $sum: 1 },
               },
             },
@@ -161,7 +161,7 @@ productController.getProductStatics = async (req, res) => {
           brandRatio: [
             {
               $group: {
-                _id: "$brand",
+                _id: "$brands_tags",
                 count: { $sum: 1 },
               },
             },
@@ -193,8 +193,6 @@ productController.getProductStatics = async (req, res) => {
     ]);
 
     const statistics = result[0];
-
-    console.log(statistics); // 如需调试可打开
     res.status(200).json(statistics);
   } catch (err) {
     console.error("Aggregation error:", err);

@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import upmEtsisiLogo from "../../fotos/upmEtsisiLogo.jpg";
 import { AreaChartOutlined, PictureOutlined } from "@ant-design/icons";
 import { Layout, Menu, Input, Button } from "antd";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import i18n from "../../i18n"; // 确保导入 i18n
+import i18n from "../../i18n";
 const { Header } = Layout;
 const { Search } = Input;
 
@@ -31,9 +31,8 @@ export default function TopHeader() {
   };
 
   const handleLogout = () => {
-    // 退出会话后替换历史记录，确保后退按钮只触发一次
-    window.history.replaceState(null, "", "/login"); // 第一次替换
-    navigate("/login"); // 跳转到登录页面
+    window.history.replaceState(null, "", "/login");
+    navigate("/login");
   };
 
   const changeLanguage = (lng) => {
@@ -42,20 +41,14 @@ export default function TopHeader() {
 
   useEffect(() => {
     const handlePopState = (e) => {
-      // 显示警告并防止后退操作
-      alert("Token 已过期，请重新登录");
-      // 替换历史记录，阻止用户通过后退按钮返回
       window.history.replaceState(null, "", "/login");
       navigate("/login");
     };
 
-    // 监听后退操作
     if (location.pathname === "/login") {
-      // 添加监听器
       window.addEventListener("popstate", handlePopState);
     }
 
-    // 清理事件监听
     return () => {
       window.removeEventListener("popstate", handlePopState);
     };
@@ -124,13 +117,11 @@ export default function TopHeader() {
     <Header
       style={{
         display: "flex",
-        alignItems: "center", // 垂直居中
-        padding: "5px", // 去掉Header的内边距
+        alignItems: "center",
+        padding: "5px",
       }}
     >
-      {/* Left section: Logo and Menu */}
       <div style={{ display: "flex", alignItems: "center" }}>
-        {/* Logo */}
         <img
           src={upmEtsisiLogo}
           alt={"upmEtsisiLogo"}
@@ -138,10 +129,9 @@ export default function TopHeader() {
           style={{
             width: 174,
             height: 60,
-            marginRight: "5px", // Logo 和菜单按钮之间的间距
+            marginRight: "5px",
           }}
         />
-        {/* Menu (Left side buttons) */}
         <Menu
           theme="dark"
           mode="horizontal"
@@ -157,28 +147,33 @@ export default function TopHeader() {
         >
           {renderMenu(items)}
         </Menu>
-        <Button onClick={() => changeLanguage("en")}>EN</Button>
-        <Button onClick={() => changeLanguage("es")}>ES</Button>
       </div>
 
-      {/* Center: Search box */}
-      <div style={{ flex: 1, display: "flex", justifyContent: "center" }}>
+      <div style={{ 
+          flex: 1, 
+          display: "flex", 
+          justifyContent: "center",
+          width: "100%",      
+          maxWidth: "800px", 
+          margin: "0 auto"   
+        }}>
         <Search
-          placeholder="Introduce Código de Barra"
+          placeholder={t("Introduce Código de Barra")}
           allowClear
-          enterButton="Buscar"
-          size="large"
+          enterButton= {t("Buscar")}
+          size="medium"
           onSearch={onSearch}
           style={{
-            width: "400px", // Adjust the width as needed
+            width: "400px",
             margin: "12px",
           }}
           inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
         />
       </div>
 
-      {/* Right section (cerrar) */}
       <div>
+        <Button onClick={() => changeLanguage("en")}>EN</Button>
+        <Button onClick={() => changeLanguage("es")}>ES</Button>
         <Button
           type="primary"
           onClick={handleLogout}
@@ -188,7 +183,7 @@ export default function TopHeader() {
             borderColor: "#ff4d4f",
           }}
         >
-          Cerrar sesión
+          {t("Cerrar sesión")}
         </Button>
       </div>
     </Header>

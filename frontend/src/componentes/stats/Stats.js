@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Row, Col, Card, Spin } from "antd";
 import { Pie } from "@ant-design/plots";
 import Servicios from "../Servicios";
+import { useTranslation } from "react-i18next";
 
 function Products() {
   const [loading, setLoading] = useState(true);
   const [nutriscoreData, setNutriscoreData] = useState([]);
   const [categoryData, setCategoryData] = useState([]);
   const [brandData, setBrandData] = useState([]);
+  const { t } = useTranslation();
 
   useEffect(() => {
     Servicios.getProductsStatics().then((data) => {
@@ -52,23 +54,25 @@ function Products() {
 
   return (
     <div style={{ padding: "20px" }}>
-      <h1>Estadísticas de Productos</h1>
+      <h1 style={{ textAlign: "center" }}>
+        {t("Estadísticas de Productos")}
+      </h1>
       {loading ? (
         <Spin />
       ) : (
         <Row gutter={[16, 16]}>
-          <Col xs={24} lg={8}>
-            <Card title="Distribución Nutriscore" bordered={false}>
+          <Col xs={24} lg={24}>
+            <Card title={t("Distribución Nutriscore")} bordered={false}>
               <Pie {...getChartConfig(nutriscoreData, "Nutriscore")} />
             </Card>
           </Col>
-          <Col xs={24} lg={8}>
-            <Card title="Distribución por Categoría" bordered={false}>
+          <Col xs={24} lg={24}>
+            <Card title={t("Distribución Categoria")} bordered={false}>
               <Pie {...getChartConfig(categoryData, "Categoría")} />
             </Card>
           </Col>
-          <Col xs={24} lg={8}>
-            <Card title="Distribución por Marca" bordered={false}>
+          <Col xs={24} lg={24}>
+            <Card title={t("Distribución Marca")} bordered={false}>
               <Pie {...getChartConfig(brandData, "Marca")} />
             </Card>
           </Col>

@@ -69,11 +69,11 @@ function DashboardVisitorContent() {
             />
             <Route
               path="/grafica/humedad"
-              element={<Grafica dataType="humedad" title="Humedad" />}
+              element={<Grafica dataType="humedad" title="humedad" />}
             />
             <Route
               path="/grafica/temperatura"
-              element={<Grafica dataType="temperatura" title="Temperatura" />}
+              element={<Grafica dataType="temperatura" title="temperatura" />}
             />
             <Route
               path="/grafica/Eco2"

@@ -27,7 +27,7 @@ userController.getUserIdentical = async (req, res) => {
             role: user.role,
           },
           JWT_SECRET,
-          { expiresIn: "10m" } // 设置过期时间，如1小时
+          { expiresIn: "1h" } // 设置过期时间，如1小时
         );
 
         // 返回 token 和用户信息
