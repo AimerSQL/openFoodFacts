@@ -162,6 +162,14 @@ class Servicios {
     );
     return response.data;
   };
+
+  addProduct = async (data) => {
+    try {
+    const response = await axios.post("http://localhost:4000/addproduct", data);
+  }catch(error){
+    alert("error al guardar prodcuto.");
+  }
+  };
 }
 
 export default new Servicios();

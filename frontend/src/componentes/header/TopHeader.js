@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import upmEtsisiLogo from "../../fotos/upmEtsisiLogo.jpg";
 import { AreaChartOutlined, PictureOutlined } from "@ant-design/icons";
-import { Layout, Menu, Input, Button } from "antd";
+import { Layout, Menu, Form, Input,InputNumber, Button, Modal, message } from "antd";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import Servicios from "../Servicios";
 import i18n from "../../i18n";
 const { Header } = Layout;
 const { Search } = Input;
@@ -12,7 +13,9 @@ export default function TopHeader() {
   const navigate = useNavigate();
   const location = useLocation();
   const [selectedKey, setSelectedKey] = useState(location.pathname);
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const { t } = useTranslation();
+  const [form] = Form.useForm();
 
   useEffect(() => {
     setSelectedKey(location.pathname);
@@ -34,6 +37,37 @@ export default function TopHeader() {
     window.history.replaceState(null, "", "/login");
     navigate("/login");
   };
+
+const addProduct = () => {
+  setIsModalVisible(true);
+};
+
+const handleOk = async () => {
+  try {
+    const values = await form.validateFields();
+    console.log("Form values:", values);
+    const payload = {
+      ...values,
+      categories: values.categories
+        ? values.categories.split(',').map((c) => c.trim())
+        : [],
+    };
+
+    console.log("Payload to be sent:", payload);
+    Servicios.addProduct(payload)
+
+    message.success(t("Producto guardado con éxito"));
+    form.resetFields();
+    setIsModalVisible(false);
+  } catch (error) {
+    message.error(t("Error al guardar el producto"));
+  }
+};
+
+
+const handleCancel = () => {
+  setIsModalVisible(false);
+};
 
   const changeLanguage = (lng) => {
     i18n.changeLanguage(lng);
@@ -113,79 +147,145 @@ export default function TopHeader() {
     },
   ];
 
-  return (
-    <Header
-      style={{
-        display: "flex",
-        alignItems: "center",
-        padding: "5px",
-      }}
-    >
-      <div style={{ display: "flex", alignItems: "center" }}>
-        <img
-          src={upmEtsisiLogo}
-          alt={"upmEtsisiLogo"}
-          title={"upmEtsisiLogo"}
+return (
+    <>
+      <Header
+        style={{
+          display: "flex",
+          alignItems: "center",
+          padding: "5px",
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <img
+            src={upmEtsisiLogo}
+            alt="upmEtsisiLogo"
+            title="upmEtsisiLogo"
+            style={{
+              width: 174,
+              height: 60,
+              marginRight: "5px",
+            }}
+          />
+          <Menu
+            theme="dark"
+            mode="horizontal"
+            selectedKeys={[selectedKey]}
+            items={items}
+            onClick={handleClick}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              marginBottom: 0,
+              paddingLeft: 0,
+            }}
+          />
+        </div>
+        <div
           style={{
-            width: 174,
-            height: 60,
-            marginRight: "5px",
-          }}
-        />
-        <Menu
-          theme="dark"
-          mode="horizontal"
-          selectedKeys={[selectedKey]}
-          items={items}
-          onClick={handleClick}
-          style={{
+            flex: 1,
             display: "flex",
-            alignItems: "center",
-            marginBottom: 0,
-            paddingLeft: 0,
+            justifyContent: "center",
+            width: "100%",
+            maxWidth: "800px",
+            margin: "0 auto",
           }}
         >
-          {renderMenu(items)}
-        </Menu>
-      </div>
+          <Search
+            placeholder={t("Introduce Código de Barra")}
+            allowClear
+            enterButton={t("Buscar")}
+            size="medium"
+            onSearch={onSearch}
+            style={{
+              width: "400px",
+              margin: "12px",
+            }}
+            inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
+          />
+        </div>
+        <div>
+          <Button onClick={() => changeLanguage("en")}>EN</Button>
+          <Button onClick={() => changeLanguage("es")}>ES</Button>
 
-      <div style={{ 
-          flex: 1, 
-          display: "flex", 
-          justifyContent: "center",
-          width: "100%",      
-          maxWidth: "800px", 
-          margin: "0 auto"   
-        }}>
-        <Search
-          placeholder={t("Introduce Código de Barra")}
-          allowClear
-          enterButton= {t("Buscar")}
-          size="medium"
-          onSearch={onSearch}
-          style={{
-            width: "400px",
-            margin: "12px",
-          }}
-          inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
-        />
-      </div>
+          {localStorage.getItem("role") === "admin" && (<Button
+            type="primary"
+            onClick={addProduct}
+            style={{
+              marginLeft: "20px",
+              backgroundColor: "#1890ff",
+              borderColor: "#1890ff",
+            }}
+          >
+            {t("Añadir producto")}
+          </Button>)}
 
-      <div>
-        <Button onClick={() => changeLanguage("en")}>EN</Button>
-        <Button onClick={() => changeLanguage("es")}>ES</Button>
-        <Button
-          type="primary"
-          onClick={handleLogout}
-          style={{
-            marginLeft: "20px",
-            backgroundColor: "#ff4d4f",
-            borderColor: "#ff4d4f",
-          }}
-        >
-          {t("Cerrar sesión")}
-        </Button>
-      </div>
-    </Header>
+          <Button
+            type="primary"
+            onClick={handleLogout}
+            style={{
+              marginLeft: "20px",
+              backgroundColor: "#ff4d4f",
+              borderColor: "#ff4d4f",
+            }}
+          >
+            {t("Cerrar sesión")}
+          </Button>
+        </div>
+      </Header>
+      <Modal
+        title={t("Añadir producto")}
+        open={isModalVisible}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        okText={t("Guardar")}
+        cancelText={t("Cancelar")}
+      >
+    <Form form={form} layout="vertical">
+    <Form.Item label={t("Nombre del producto")} name="product_name" rules={[{ required: true }]}>
+      <Input />
+    </Form.Item>
+    <Form.Item label={t("Marca")} name="brands">
+      <Input />
+    </Form.Item>
+    <Form.Item label={t("País")} name="countries_en">
+      <Input />
+    </Form.Item>
+    <Form.Item label="Energía (100g)" name="energy_100g">
+      <InputNumber style={{ width: "100%" }} />
+    </Form.Item>
+    <Form.Item label="Grasas (100g)" name="fat_100g">
+      <InputNumber style={{ width: "100%" }} />
+    </Form.Item>
+    <Form.Item label="Carbohidratos (100g)" name="carbohydrates_100g">
+      <InputNumber style={{ width: "100%" }} />
+    </Form.Item>
+    <Form.Item label="Azúcares (100g)" name="sugars_100g">
+      <InputNumber style={{ width: "100%" }} />
+    </Form.Item>
+    <Form.Item label="Fibra (100g)" name="fiber_100g">
+      <InputNumber style={{ width: "100%" }} />
+    </Form.Item>
+    <Form.Item label="Proteínas (100g)" name="proteins_100g">
+      <InputNumber style={{ width: "100%" }} />
+    </Form.Item>
+    <Form.Item label="Sal (100g)" name="salt_100g">
+      <InputNumber style={{ width: "100%" }} />
+    </Form.Item>
+    <Form.Item label="Sodio (100g)" name="sodium_100g">
+      <InputNumber style={{ width: "100%" }} />
+    </Form.Item>
+    <Form.Item label={t("URL de la imagen")} name="image_url">
+      <Input />
+    </Form.Item>
+    <Form.Item label={t("Categorías (separadas por coma)")} name="categories">
+      <Input placeholder="ej. snacks, comida rápida, patatas" />
+    </Form.Item>
+    <Form.Item label={t("Nutriscore")} name="nutriscore_grade">
+      <Input />
+    </Form.Item>
+  </Form>
+  </Modal>
+    </>
   );
 }

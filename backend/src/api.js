@@ -361,6 +361,10 @@ router.delete('/products/:productId',async(req,res) => {
   await productController.deleteProductById(req,res);
 });
 
+router.post("/addproduct", async (req, res) => {
+  await productController.addProduct(req, res);
+});
+
 router.post("/register", async (req, res) => {
   await userController.userRegiser(req, res);
 });

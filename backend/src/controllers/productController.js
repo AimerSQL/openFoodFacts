@@ -261,4 +261,50 @@ productController.deleteProductById = async (req, res) => {
   }
 };
 
+productController.addProduct = async (req, res) => {
+  try {
+    const {
+      product_name,
+      brands,
+      countries_en,
+      energy_100g,
+      fat_100g,
+      carbohydrates_100g,
+      sugars_100g,
+      fiber_100g,
+      proteins_100g,
+      salt_100g,
+      sodium_100g,
+      image_url,
+      categories,
+      nutriscore_grade,
+    } = req.body;
+
+    const newProduct = new Product({
+      _id: new mongoose.Types.ObjectId(),
+      product_name,
+      brands,
+      countries_en,
+      energy_100g,
+      fat_100g,
+      carbohydrates_100g,
+      sugars_100g,
+      fiber_100g,
+      proteins_100g,
+      salt_100g,
+      sodium_100g,
+      image_url,
+      categories,
+      nutriscore_grade,
+    });
+
+    await newProduct.save();
+
+    res.status(201).json({ message: "Producto guardado exitosamente" });
+  } catch (error) {
+    console.error("Error al guardar el producto:", error);
+    res.status(500).json({ message: "Error del servidor" });
+  }
+};
+
 module.exports = productController;

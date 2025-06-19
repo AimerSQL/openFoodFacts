@@ -67,7 +67,7 @@ function Products() {
             </Card>
           </Col>
           <Col xs={24} lg={24}>
-            <Card title={t("Distribución Categoria")} bordered={false}>
+            <Card title={t("Distribución País")} bordered={false}>
               <Pie {...getChartConfig(categoryData, "Categoría")} />
             </Card>
           </Col>

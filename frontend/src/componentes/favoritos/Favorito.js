@@ -16,13 +16,9 @@ const Collection = () => {
         setLoading(true);
         try {
             const favoritos = await Servicios.getFavoritos(page, 10);
-            
-            console.log("Fetched favoritos:", favoritos);
             setProductos(favoritos);
-            console.log("tutu",productos[1].url);
             setLoading(false);
         } catch (error) {
-            console.error('Error fetching data:', error);
             setLoading(false);
         }
     };
@@ -87,7 +83,7 @@ const Collection = () => {
                   alt={p.product_name}
                   src={p.image_url || noImage}
                   onError={(e) => {
-                    e.target.onerror = null; // 防止死循环
+                    e.target.onerror = null;
                     e.target.src = noImage;
                   }}
                   style={{
