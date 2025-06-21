@@ -327,6 +327,10 @@ router.get("/products/:productId", authenticateToken, async (req, res) => {
   await productController.getProductById(req, res);
 });
 
+router.get("/statics", async (req, res) => {
+  console.log("api statics")
+  await productController.getProductStatics(req, res);
+});
 
 router.get(
   "/products/barcode/:barcode",
@@ -355,6 +359,10 @@ router.post("/user", async (req, res) => {
 
 router.delete('/products/:productId',async(req,res) => {
   await productController.deleteProductById(req,res);
+});
+
+router.post("/addproduct", async (req, res) => {
+  await productController.addProduct(req, res);
 });
 
 router.post("/register", async (req, res) => {

@@ -7,11 +7,13 @@ import ReactEcharts from 'echarts-for-react';
 import './Grafica.css'
 import Result404 from '../Result404';
 import Servicios from '../Servicios';
+import { useTranslation } from "react-i18next";
 
 const { RangePicker } = DatePicker;
 
 
 const Grafica = ({ dataType, title }) => {
+  const { t } = useTranslation();
   const [dates, setDates] = useState([
     dayjs('2021-08-01 18:00:00'),
     dayjs('2021-08-02 18:00:00').add(2, 'months')]);
@@ -121,10 +123,10 @@ const Grafica = ({ dataType, title }) => {
   };
 
   const titleToTooltip = {
-    'Humedad': 'Humedad',
-    'Temperatura': 'Temperatura',
-    'Eco2': 'Dióxido de Carbono Equivalente',
-    'Tvoc': 'Total de Compuestos Orgánicos Volátiles'
+    'Humedad': t('humedad'),
+    'Temperatura': t('temperatura'),
+    'Eco2': t('Dióxido de Carbono Equivalente'),
+    'Tvoc': t('Total de Compuestos Orgánicos Volátiles')
   };
 
   const getOption = () => {
@@ -148,7 +150,7 @@ const Grafica = ({ dataType, title }) => {
         },
       },
       series: [{
-        name: 'Nodo 1',
+        name: t('Nodo 1'),
         data: chartData1.map(item => item[dataType]),
         type: 'line',
         step: 'start',
@@ -158,7 +160,7 @@ const Grafica = ({ dataType, title }) => {
         smooth: true
       },
       {
-        name: 'Nodo 2',
+        name: t('Nodo 2'),
         data: chartData2.map(item => item[dataType]),
         type: 'line',
         step: 'start',
@@ -168,7 +170,7 @@ const Grafica = ({ dataType, title }) => {
         smooth: true
       },
       {
-        name: 'Nodo 3',
+        name: t('Nodo 3'),
         data: chartData3.map(item => item[dataType]),
         type: 'line',
         step: 'start',
@@ -183,7 +185,7 @@ const Grafica = ({ dataType, title }) => {
 
   const columns = [
     {
-      title: 'Nodos',
+      title: t('Nodos'),
       dataIndex: 'nodos',
       key: 'nodos',
       align: 'center',
@@ -220,7 +222,7 @@ const Grafica = ({ dataType, title }) => {
     <div>
       <Row className="text-center" style={{ marginBottom: '20px' }}>
         <Tooltip placement="right" color="blue" title={titleToTooltip[title]} overlayStyle={{ whiteSpace: 'nowrap', maxWidth: 'none' }}>
-          <span className="text-style">{title}</span>
+          <span className="text-style">{t(title)}</span>
         </Tooltip>
       </Row>
       <Row justify="center" align="middle" style={{ height: '100%', marginBottom: '20px' }}>
@@ -264,7 +266,7 @@ const Grafica = ({ dataType, title }) => {
           <ReactEcharts option={getOption()} />
         ) : (
           <Result404
-            subTitle={'No hay datos entre ese rango! Por favor, seleccione una franja horaria entre el 2021-07-20 y el 2022-01-01 .'}
+            subTitle={t('No hay datos entre ese rango! Por favor, seleccione una franja horaria entre el 2021-07-20 y el 2022-01-01 .')}
           />
         )
       )}

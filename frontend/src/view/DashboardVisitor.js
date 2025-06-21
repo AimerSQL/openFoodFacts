@@ -8,7 +8,7 @@ import {
   useLocation,
 } from "react-router-dom";
 import TopHeader from "../componentes/header/TopHeader";
-import { Layout, theme } from "antd";
+import { Layout, Statistic, theme } from "antd";
 import Grafica from "../componentes/grafica/Grafica";
 import Menu from "../componentes/menu/Menu";
 import FoodInfo from "../componentes/foodInfo/FoodInfo";
@@ -17,7 +17,7 @@ import Login from "../componentes/login/Login";
 import Register from "../componentes/register/Register";
 import PrivateRoute from "../componentes/PrivateRoute";
 import Favorito from "../componentes/favoritos/Favorito";
-
+import Stats from "../componentes/stats/Stats";
 const { Content, Footer } = Layout;
 
 export default function DashboardVisitor(props) {
@@ -61,6 +61,7 @@ function DashboardVisitorContent() {
             <Route path="/" element={<Navigate to="/login" />} />
             <Route path="/login" element={<Login />} />
             <Route path="/favoritos" element={<Favorito />} />
+            <Route path="/stats" element={<Stats />} />
             <Route path="/menu" element={<PrivateRoute element={<Menu />} />} />
             <Route
               path="/grafica"
@@ -68,11 +69,11 @@ function DashboardVisitorContent() {
             />
             <Route
               path="/grafica/humedad"
-              element={<Grafica dataType="humedad" title="Humedad" />}
+              element={<Grafica dataType="humedad" title="humedad" />}
             />
             <Route
               path="/grafica/temperatura"
-              element={<Grafica dataType="temperatura" title="Temperatura" />}
+              element={<Grafica dataType="temperatura" title="temperatura" />}
             />
             <Route
               path="/grafica/Eco2"

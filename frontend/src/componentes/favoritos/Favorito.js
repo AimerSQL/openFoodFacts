@@ -1,45 +1,30 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Skeleton, Card, Button } from 'antd';
+import { useState, useEffect, useRef } from 'react';
+import { Skeleton, Row, Col, Card, Button, Spin } from 'antd';
 import Servicios from '../Servicios';
-
+import noImage from "../../fotos/no_image.png"; 
+import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 const Collection = () => {
     const [productos, setProductos] = useState([]);
     const [loading, setLoading] = useState(true);
     const [page, setPage] = useState(1);
-    const [hasMore, setHasMore] = useState(true); // 用来判断是否还有数据
+    const [hasMore, setHasMore] = useState(true);
     const loaderRef = useRef(null);
-
-    const fetchProductDetails = async (productIds) => {
-        // 获取所有产品的详细信息
-        try {
-            const productsData = await Servicios.getProducts(productIds);  // 假设你可以传递一个数组的 product_id
-            return productsData;
-        } catch (error) {
-            console.error('Error fetching product details:', error);
-            return [];
-        }
-    };
+    const { t } = useTranslation();
 
     const fetchData = async (page) => {
-        setLoading(true);  // 开始加载数据
+        setLoading(true);
         try {
-            // 获取用户收藏的 product_id
-            const favoritos = await Servicios.getFavoritos(page, 10); // 请求收藏列表
-            
-            console.log("Fetched favoritos:", favoritos);  // 查看接收到的数据结构
+            const favoritos = await Servicios.getFavoritos(page, 10);
             setProductos(favoritos);
-            console.log("tutu",productos[1].url);
-            setLoading(false);  // 数据加载完毕
+            setLoading(false);
         } catch (error) {
-            console.error('Error fetching data:', error);
-            setLoading(false);  // 错误处理完毕
+            setLoading(false);
         }
     };
 
-    // 使用 IntersectionObserver 实现滚动监听
     useEffect(() => {
         if (!hasMore) return;
-
         const observer = new IntersectionObserver((entries) => {
             if (entries[0].isIntersecting) {
                 setPage(prevPage => {
@@ -61,7 +46,6 @@ const Collection = () => {
         };
     }, [hasMore]);
 
-    // 初始加载数据
     useEffect(() => {
         fetchData(page);
     }, [page]);
@@ -74,43 +58,66 @@ const Collection = () => {
         );
     }
 
-    return (
-        <div>
-            <div className="products-list">
-                {productos.map((producto, index) => (
-                    <Card
-                    key={producto._id} // 使用 _id 作为 key
-                    title={producto.title} // 显示产品的标题
-                    style={{ marginBottom: '16px' }}
-                  >
-                    {/* 渲染产品的详细信息 */}
-                    <p>{producto.product_name}</p>
-                    <img
-                      alt="example"
-                      src={producto.image_url}  
-                      style={{
-                        maxHeight: "100%",
-                        maxWidth: "100%",
-                        objectFit: "contain",
-                      }}
-                    />
-                  </Card>
-                ))}
-                
-            </div>
+   return (
+  <div style={{ padding: "24px" }}>
+    <h1 style={{ textAlign: "center", marginBottom: "24px" }}>{t("Mis Favoritos") }</h1>
 
-            {loading && <div>Loading...</div>}
+    {loading && (
+      <div style={{ textAlign: "center", padding: "40px 0" }}>
+        <Spin size="large" />
+      </div>
+    )}
 
-            {/* 加载更多的触发器 */}
-            {hasMore && (
-                <div ref={loaderRef} style={{ textAlign: 'center', padding: '20px 0' }}>
-                    <Button loading={loading} type="primary">
-                        加载更多
-                    </Button>
-                </div>
-            )}
-        </div>
-    );
+    <Row gutter={[16, 16]}>
+      {productos.map((p) => (
+        <Col key={p._id} xs={24} sm={12} md={8} lg={6}>
+          <Link
+            to={`/foodInfo/${p._id}?productName=${encodeURIComponent(p.product_name)}`}
+            style={{ textDecoration: "none" }}
+          >
+            <Card
+              hoverable
+              title={p.title}
+              cover={
+                <img
+                  alt={p.product_name}
+                  src={p.image_url || noImage}
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = noImage;
+                  }}
+                  style={{
+                    height: 200,
+                    objectFit: "contain",
+                    padding: "12px",
+                  }}
+                />
+              }
+              style={{
+                borderRadius: "12px",
+                overflow: "hidden",
+                boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+              }}
+            >
+
+              <p style={{ fontWeight: "bold", color: "black" }}>
+                {p.product_name}
+              </p>
+            </Card>
+          </Link>
+        </Col>
+      ))}
+    </Row>
+
+    {hasMore && (
+      <div ref={loaderRef} style={{ textAlign: "center", padding: "24px 0" }}>
+        <Button loading={loading} type="primary">
+          {t("Cargar más")}
+        </Button>
+      </div>
+    )}
+  </div>
+);
 };
 
 export default Collection;

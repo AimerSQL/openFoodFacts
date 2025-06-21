@@ -70,6 +70,13 @@ class Servicios {
     return response.data;
   };
 
+  getProductsStatics = async () => {
+    const response = await axios.get(
+      "http://localhost:4000/statics",
+    );
+    return response.data;
+  };
+
   getFoodRate = async (id) => {
     const response = await axios.get(
       `http://localhost:4000/rate-products/${id}`,
@@ -154,6 +161,14 @@ class Servicios {
       `http://localhost:4000/favorito/${user_id}/${productId}`
     );
     return response.data;
+  };
+
+  addProduct = async (data) => {
+    try {
+    const response = await axios.post("http://localhost:4000/addproduct", data);
+  }catch(error){
+    alert("error al guardar prodcuto.");
+  }
   };
 }
 
