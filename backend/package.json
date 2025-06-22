@@ -7,14 +7,16 @@
         "test": "jest"
     },
     "jest": {
-    "collectCoverage": true,
-    "coverageDirectory": "coverage",
-    "coverageReporters": ["lcov", "text", "html"],
-    "testEnvironment": "node",
-    "coveragePathIgnorePatterns": [
-    "src/test/",
-    ".*\\.test\\.js$"
-    ]
+        "collectCoverage": true,
+        "coverageDirectory": "coverage",
+        "coverageReporters": ["lcov", "text", "html"],
+        "testEnvironment": "node",
+        "collectCoverageFrom": [
+            "src/controllers/**/*.js"
+        ],
+        "coveragePathIgnorePatterns": [
+            "/node_modules/"
+        ]
     },
     "keywords": [],
     "author": "",
