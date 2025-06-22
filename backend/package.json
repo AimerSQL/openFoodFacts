@@ -6,6 +6,12 @@
     "scripts": {
         "test": "jest"
     },
+    "jest": {
+        "collectCoverage": true,
+        "coverageDirectory": "coverage",
+        "coverageReporters": ["lcov", "text", "html"],
+        "testEnvironment": "node"
+    },
     "keywords": [],
     "author": "",
     "license": "ISC",
