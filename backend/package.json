@@ -12,8 +12,8 @@
     "coverageReporters": ["lcov", "text", "html"],
     "testEnvironment": "node",
     "coveragePathIgnorePatterns": [
-        "/node_modules/",
-        "/src/test/"
+    "src/test/",
+    ".*\\.test\\.js$"
     ]
     },
     "keywords": [],
