@@ -49,12 +49,18 @@ rateController.getProductRate = async (req, res) => {
     const maxRating = 5;
     const minRating = 0;
     
-    manufacturingLike = Math.round((manufacturingLike / totalProductos) * (maxRating - minRating) + minRating);
-    packagingLike = Math.round((packagingLike / totalProductos) * (maxRating - minRating) + minRating);
-    palmoilLike = Math.round((palmoilLike / totalProductos) * (maxRating - minRating) + minRating);
-    sizeLike = Math.round((sizeLike / totalProductos) * (maxRating - minRating) + minRating);
-    storageLike = Math.round((storageLike / totalProductos) * (maxRating - minRating) + minRating);
-    transportLike = Math.round((transportLike / totalProductos) * (maxRating - minRating) + minRating);
+    function safeRound(val, total) {
+    if (!total || total === 0) return 0;
+        return Math.round((val / total) * (maxRating - minRating) + minRating);
+    }
+
+    manufacturingLike = safeRound(manufacturingLike, totalProductos);
+    packagingLike = safeRound(packagingLike, totalProductos);
+    palmoilLike = safeRound(palmoilLike, totalProductos);
+    sizeLike = safeRound(sizeLike, totalProductos);
+    storageLike = safeRound(storageLike, totalProductos);
+    transportLike = safeRound(transportLike, totalProductos);
+
 
     const response = {
         manufacturingLike: manufacturingLike,

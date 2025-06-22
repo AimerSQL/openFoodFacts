@@ -18,7 +18,7 @@ userController.getUserIdentical = async (req, res) => {
     if (user) {
       // 验证密码
       const isMatch = await bcrypt.compare(password, user.password);
-      if (true) {
+      if (isMatch) {
         // 生成 JWT
         const token = jwt.sign(
           {
@@ -36,7 +36,7 @@ userController.getUserIdentical = async (req, res) => {
           message: "User authenticated",
           token: token,
           user: {
-            user_id:user._id,
+            user_id: user._id,
             username: user.username,
             role: user.role,
           },
@@ -58,6 +58,7 @@ userController.getUserIdentical = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
 userController.userRegiser = async (req, res) => {
   try {
     const { username, password } = req.body;

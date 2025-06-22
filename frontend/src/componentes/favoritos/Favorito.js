@@ -4,7 +4,7 @@ import Servicios from '../Servicios';
 import noImage from "../../fotos/no_image.png"; 
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-const Collection = () => {
+const Favoritos = () => {
     const [productos, setProductos] = useState([]);
     const [loading, setLoading] = useState(true);
     const [page, setPage] = useState(1);
@@ -120,5 +120,5 @@ const Collection = () => {
 );
 };
 
-export default Collection;
+export default Favoritos;
 
