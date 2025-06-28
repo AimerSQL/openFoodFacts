@@ -348,12 +348,11 @@ router.get("/rate-products/:productId", authenticateToken, async (req, res) => {
   await rateController.getProductRate(req, res);
 });
 
-router.post("/nodos", authenticateToken, async (req, res) => {
+router.post("/nodos", async (req, res) => {
   await nodosController.getNodos(req, res);
 });
 
 router.post("/user", async (req, res) => {
-  console.log("POST /user endpoint hit");
   await userController.getUserIdentical(req, res);
 });
 

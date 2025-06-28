@@ -245,6 +245,9 @@ return (
     <Form.Item label={t("Nombre del producto")} name="product_name" rules={[{ required: true }]}>
       <Input />
     </Form.Item>
+    <Form.Item label={t("Código de barras")} name="code" rules={[{ required: true }]}>
+      <Input />
+    </Form.Item>
     <Form.Item label={t("Marca")} name="brands">
       <Input />
     </Form.Item>

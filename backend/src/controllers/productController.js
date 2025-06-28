@@ -204,7 +204,6 @@ productController.getProductByBarcode = async (req, res) => {
   try {
     const barcode = req.params.barcode;
     const product = await Barcode.findOne({ barcode: barcode });
-
     if (!product) {
       return res.status(404).json({ error: "Product not found" });
     }
@@ -212,7 +211,7 @@ productController.getProductByBarcode = async (req, res) => {
     const productName = product.product_name;
 
     const foundProduct = await Product.findOne({ product_name: productName });
-
+    console.log("Found product:", foundProduct);
     if (!foundProduct) {
       return res.status(404).json({ error: "Product not found" });
     }
@@ -265,6 +264,7 @@ productController.addProduct = async (req, res) => {
   try {
     const {
       product_name,
+      code,
       brands,
       countries_en,
       energy_100g,
@@ -282,6 +282,7 @@ productController.addProduct = async (req, res) => {
 
     const newProduct = new Product({
       _id: new mongoose.Types.ObjectId(),
+      code,
       product_name,
       brands,
       countries_en,
@@ -299,6 +300,14 @@ productController.addProduct = async (req, res) => {
     });
 
     await newProduct.save();
+
+    const newBarcode = new Barcode({
+      _id: new mongoose.Types.ObjectId(),
+      product_name: product_name,
+      barcode: code
+    });
+
+    await newBarcode.save();
 
     res.status(201).json({ message: "Producto guardado exitosamente" });
   } catch (error) {

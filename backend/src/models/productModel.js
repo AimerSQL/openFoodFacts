@@ -2,6 +2,7 @@ const { Schema, model, default: mongoose } = require('mongoose');
 
 const productSchema = new Schema({
     _id: { type: mongoose.Schema.Types.ObjectId },
+    code: { type: String },
     product_name: { type: String },
     brands: { type: String },
     countries_en: { type: String },
