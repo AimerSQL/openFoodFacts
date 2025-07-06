@@ -327,7 +327,7 @@ router.get("/products/:productId", authenticateToken, async (req, res) => {
   await productController.getProductById(req, res);
 });
 
-router.get("/statics", async (req, res) => {
+router.get("/statics", authenticateToken, async (req, res) => {
   console.log("api statics")
   await productController.getProductStatics(req, res);
 });
@@ -348,19 +348,19 @@ router.get("/rate-products/:productId", authenticateToken, async (req, res) => {
   await rateController.getProductRate(req, res);
 });
 
-router.post("/nodos", async (req, res) => {
+router.post("/nodos", authenticateToken, async (req, res) => {
   await nodosController.getNodos(req, res);
 });
 
-router.post("/user", async (req, res) => {
+router.post("/user", authenticateToken, async (req, res) => {
   await userController.getUserIdentical(req, res);
 });
 
-router.delete('/products/:productId',async(req,res) => {
+router.delete('/products/:productId', authenticateToken, async(req,res) => {
   await productController.deleteProductById(req,res);
 });
 
-router.post("/addproduct", async (req, res) => {
+router.post("/addproduct", authenticateToken, async (req, res) => {
   await productController.addProduct(req, res);
 });
 
@@ -368,15 +368,15 @@ router.post("/register", async (req, res) => {
   await userController.userRegiser(req, res);
 });
 
-router.post("/favorito",async(req,res)=>{
+router.post("/favorito", authenticateToken, async(req,res)=>{
   await favoritoController.collectProductAndUser(req,res);
 }
 );
-router.delete('/favorito/:user_id/:product_id',async(req,res) => {
+router.delete('/favorito/:user_id/:product_id', authenticateToken, async(req,res) => {
   await favoritoController.deleteFavoritoById(req,res);
 });
 
-router.get('/favoritoByUser/:user_id', async (req, res) => {
+router.get('/favoritoByUser/:user_id', authenticateToken, async (req, res) => {
   await favoritoController.getFavoritoByUserId(req,res);
 });
 

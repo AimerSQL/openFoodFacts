@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Row, Col, Pagination, Spin } from "antd";
 import Products from '../products/Products';
 import Filtro from '../filtro/Filtro';
 import Result404 from '../Result404';
-
+import Servicios from "../Servicios";
+import React, { useState, useEffect } from "react";
 const FilteredProducts = () => {
     
     const productsPerPage = 12;
@@ -12,7 +12,10 @@ const FilteredProducts = () => {
     const data = location.state;
     const [currentPage, setCurrentPage] = useState(1);
     const [loadingFiltered, setLoadingFiltered] = useState(false);
+    const [favorites, setFavorites] = useState([]);
     
+    const { favoritos } = location.state || {};
+
     const handleLoadingFiltered = (isLoaded) => {
         setLoadingFiltered(isLoaded); // 设置 dataLoaded 状态
       };
@@ -26,6 +29,17 @@ const FilteredProducts = () => {
         setCurrentPage(page);
     };
 
+    useEffect(() => {
+        Servicios.getProductsByUser().then((data) => {
+          const productIds = data.map((item) => item.product_id);
+          setFavorites(productIds);
+        });
+        if (Array.isArray(favoritos)) {
+          const productIds = favoritos.map((item) => item.product_id);
+          setFavorites(productIds);
+        }
+    }, [favoritos]);
+
     return (
         data.count !== 0 ? (
             <>
@@ -38,7 +52,7 @@ const FilteredProducts = () => {
                     {loadingFiltered ? (<div style={{ marginTop: '-150px', marginLeft: '70vh', display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
                         <Spin size="large" />
                     </div>):(
-                    <Products productos={currentProducts} />)}
+                    <Products productos={currentProducts} favorites={favorites} />)}
                 </Row>
                 <Row>
                     <Col xs={18} sm={18} md={18} lg={18} xl={18} style={{ textAlign: 'center', marginTop: '20px', marginLeft: '25%' }}>
@@ -60,7 +74,7 @@ const FilteredProducts = () => {
                         <Filtro />
                     </div>
                 </Col>
-                <Products productos={currentProducts} />
+                <Products productos={currentProducts} favorites={favorites}/>
             </Row>
             <Row>
                 <Col xs={18} sm={18} md={18} lg={18} xl={18} style={{ textAlign: 'center', marginTop: '-30%', marginLeft: '20%', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>

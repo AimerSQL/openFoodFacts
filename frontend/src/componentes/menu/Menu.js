@@ -178,8 +178,8 @@ const Menu = () => {
           <Products
             productos={productos.data}
             onDelete={handleDelete}
-            favorites={favorites} // 传递已收藏的产品ID
-            onToggleFavorite={toggleFavorite} // 收藏切换功能
+            favorites={favorites}
+            onToggleFavorite={toggleFavorite}
           />
         )}
       </Row>

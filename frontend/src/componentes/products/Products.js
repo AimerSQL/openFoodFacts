@@ -8,7 +8,6 @@ import { useTranslation } from "react-i18next";
 function Products({ productos ,onDelete ,favorites, onToggleFavorite}) {
     const [hoveredCard, setHoveredCard] = useState(null);
     const { t } = useTranslation();
-
     const handleMouseEnter = (id) => {
         setHoveredCard(id);
     };

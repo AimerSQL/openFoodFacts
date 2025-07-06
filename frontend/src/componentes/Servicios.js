@@ -73,6 +73,11 @@ class Servicios {
   getProductsStatics = async () => {
     const response = await axios.get(
       "http://localhost:4000/statics",
+      {
+        headers: {
+          Authorization: `Bearer ${this.token}`,
+        },
+      }
     );
     return response.data;
   };
@@ -90,6 +95,7 @@ class Servicios {
   };
 
   getNodos = async (date) => {
+    console.log("Fetching nodos with:", this.token);
     const response = await axios.post("http://localhost:4000/nodos", date, {
       headers: {
         Authorization: `Bearer ${this.token}`,
@@ -113,7 +119,13 @@ class Servicios {
 
   getUserCredentical = async (userdata) => {
     try {
-      const response = await axios.post("http://localhost:4000/user", userdata);
+      const response = await axios.post("http://localhost:4000/user", userdata,
+      {
+        headers: {
+          Authorization: `Bearer ${this.token}`,
+        },
+      }
+      );
       return response.data;
     } catch (error) {
       alert("Contraseña o nombre de usuario incorrecto.");
@@ -121,12 +133,17 @@ class Servicios {
   };
 
   deleteProduct = async (productId) => {
-    console.log("Sending delete request for productId:", productId);
     const response = await axios.delete(
-      `http://localhost:4000/products/${productId}`
+      `http://localhost:4000/products/${productId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${this.token}`,
+        },
+      }
     );
     return response.data;
   };
+
   userRegister = async (userdata) => {
     const response = await axios.post(
       "http://localhost:4000/register",
@@ -139,12 +156,17 @@ class Servicios {
     );
     return response.data;
   };
+
   addToFavorito = async (product_id) => {
     const user_id = localStorage.getItem("user_id");
     try {
       const response = await axios.post("http://localhost:4000/favorito", {
         product_id,
         user_id,
+      },{
+        headers: {
+          Authorization: `Bearer ${this.token}`,
+        },
       });
       return response.data; // 返回后端响应的数据
     } catch (error) {
@@ -158,14 +180,25 @@ class Servicios {
     const productId = product_id;
     console.log("mqw", product_id);
     const response = await axios.delete(
-      `http://localhost:4000/favorito/${user_id}/${productId}`
+      `http://localhost:4000/favorito/${user_id}/${productId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${this.token}`,
+        },
+      }
     );
     return response.data;
   };
 
   addProduct = async (data) => {
     try {
-    const response = await axios.post("http://localhost:4000/addproduct", data);
+    const response = await axios.post("http://localhost:4000/addproduct", data,
+      {
+        headers: {
+          Authorization: `Bearer ${this.token}`,
+        },
+      }
+    );
   }catch(error){
     alert("error al guardar prodcuto.");
   }
